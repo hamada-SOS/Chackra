@@ -22,7 +22,8 @@ namespace AuthAPI.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+
+                return BadRequest("modelState is not valid");
 
             var authResponse = await _authService.RegisterAsync(registerDto);
             if (authResponse == null)

@@ -8,6 +8,6 @@ namespace API.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public bool IsFirstLogin { get; set; }
+        public bool IsFirstLogin { get; set; } = true;
     }
 }

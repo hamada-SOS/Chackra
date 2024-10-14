@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.Interface;
 using API.Models;
 using Microsoft.AspNetCore.Identity;
@@ -35,19 +31,20 @@ namespace API.Repository
 
 
             var result = await _userManager.CreateAsync(user, password);
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                return user;
+                Console.WriteLine("this error from reposervice");
+                return null;
             }
 
             // Handle errors as needed (e.g., log them)
-            return null;
+            return user;
 
         }
 
 
 
-        public async Task<ApplicationUser> GetUsersByIdAsync(string id)
+        public async Task<ApplicationUser> GetUsersByIdAsync(string? id)
         {
             if (id.IsNullOrEmpty())
             {
@@ -57,7 +54,7 @@ namespace API.Repository
             return await _userManager.FindByIdAsync(id);
         }
 
-        public async Task<ApplicationUser> GetUsersByEmailAsync(string email)
+        public async Task<ApplicationUser> GetUsersByEmailAsync(string? email)
         {
             if (email.IsNullOrEmpty())
             {

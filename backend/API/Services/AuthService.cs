@@ -33,7 +33,8 @@ namespace API.Services
             var user = await _authRepository.RegisterAsync(registerDto.Id, registerDto.Email, defaultPassword);
             if (user == null)
             {
-                // Handle registration failure
+                Console.WriteLine("this error from authservice");
+
                 return null;
             }
 
