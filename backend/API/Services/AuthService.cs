@@ -105,13 +105,11 @@ namespace API.Services
             var secretKey = jwtSettings["Secret"];
             var issuer = jwtSettings["Issuer"];
             var Audience = jwtSettings["Audience"];
-            var expirationMinutes = Convert.ToDouble(jwtSettings["ExpirationMinutes"]);
-
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
 
-            var claims = new Claim[]
+            var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
@@ -122,16 +120,30 @@ namespace API.Services
             };
 
 
-            var token = new JwtSecurityToken(
-                issuer,
-                Audience,
-                claims,
-                expires: DateTime.Now.AddMinutes(expirationMinutes),
-                signingCredentials: credentials
-            );
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.Now.AddDays(7),
+                SigningCredentials = credentials,
+                Issuer = issuer,
+                Audience = Audience,
+
+            };
 
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            // var token = new JwtSecurityToken(
+            //     issuer,
+            //     Audience,
+            //     claims,
+            //     expires: DateTime.Now.AddMinutes(expirationMinutes),
+            //     signingCredentials: credentials
+            // );
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
 
 
 
