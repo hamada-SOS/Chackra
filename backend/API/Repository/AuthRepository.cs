@@ -41,9 +41,9 @@ namespace API.Repository
                 return user;
             }
 
-            //Handle Error Here
-
+            // Handle errors as needed (e.g., log them)
             return null;
+
         }
 
 
