@@ -12,6 +12,10 @@ namespace API.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }
+
+
+        public DbSet<PreRegisteredStudent> PreRegisteredStudents { get; set; } // Add this line
+
     }
 
 }

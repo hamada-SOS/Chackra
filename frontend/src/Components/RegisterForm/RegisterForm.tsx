@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const RegisterForm: React.FC = () => {
+interface props {
+  isLogin: boolean;
+  setIsLogin: (isLogin: boolean) => void; // Function to change the state
+}
+const RegisterForm: React.FC<props> = ({setIsLogin}): JSX.Element => {
+    
   const [universityId, setUniversityId] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -45,6 +50,7 @@ const RegisterForm: React.FC = () => {
         />
         <button type="submit">Register</button>
       </form>
+      <button onClick={() => setIsLogin(true)}>Have Account?</button>
     </div>
   );
 };

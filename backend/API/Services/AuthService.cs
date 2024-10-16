@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using API.Data;
 using API.Dtos.Account;
 using API.Interfaces;
 using API.Models;
@@ -20,18 +21,26 @@ namespace API.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConfiguration _configuration;
+        private readonly ApplicationDbContext _context;
 
-        public AuthService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration)
+        public AuthService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration, ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
+            _context = context;
         }
 
 
 
         public async Task<IdentityResult> RegisterStudentAsync(RegisterStudentDto registerStudentDto)
         {
+
+            var validID = await _context.PreRegisteredStudents.FirstOrDefaultAsync(s => s.UniversityId == registerStudentDto.UniversityId);
+            if (validID == null)
+            {
+                throw new Exception("Sduent Dont Exisit");
+            }
             var user = new ApplicationUser
             {
                 UserName = registerStudentDto.Email, // Or set it to UniversityId if you want

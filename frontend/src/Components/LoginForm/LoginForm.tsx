@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 import axios from 'axios';
 
-const LoginForm: React.FC = () => {
+
+interface props {
+  isLogin: boolean;
+  setIsLogin: (isLogin: boolean) => void; // Function to change the state
+}
+const LoginForm: React.FC<props> = ({setIsLogin}): JSX.Element => {
   const [universityId, setUniversityId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
@@ -44,6 +49,7 @@ const LoginForm: React.FC = () => {
         />
         <button type="submit">Login</button>
       </form>
+      <button onClick={() => setIsLogin(false)}>New Account</button>
     </div>
   );
 };
