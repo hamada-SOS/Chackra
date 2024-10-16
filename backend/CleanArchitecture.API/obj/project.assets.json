@@ -465,11 +465,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\api.csproj",
-      "projectName": "api",
-      "projectPath": "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\api.csproj",
+      "projectUniqueName": "C:\\Users\\moham\\Documents\\Chackra\\backend\\CleanArchitecture.API\\CleanArchitecture.API.csproj",
+      "projectName": "CleanArchitecture.API",
+      "projectPath": "C:\\Users\\moham\\Documents\\Chackra\\backend\\CleanArchitecture.API\\CleanArchitecture.API.csproj",
       "packagesPath": "C:\\Users\\moham\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\obj\\",
+      "outputPath": "C:\\Users\\moham\\Documents\\Chackra\\backend\\CleanArchitecture.API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\moham\\AppData\\Roaming\\NuGet\\NuGet.Config",

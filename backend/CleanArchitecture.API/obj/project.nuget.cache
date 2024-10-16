@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8XTBSbM7Msg=",
+  "dgSpecHash": "2f9wCy1DaKA=",
   "success": true,
-  "projectFilePath": "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\api.csproj",
+  "projectFilePath": "C:\\Users\\moham\\Documents\\Chackra\\backend\\CleanArchitecture.API\\CleanArchitecture.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\moham\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.8\\microsoft.aspnetcore.openapi.8.0.8.nupkg.sha512",
     "C:\\Users\\moham\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",

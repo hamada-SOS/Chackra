@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\api.csproj": {}
+    "C:\\Users\\moham\\Documents\\Chackra\\backend\\CleanArchitecture.Application\\CleanArchitecture.Application.csproj": {}
   },
   "projects": {
-    "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\api.csproj": {
+    "C:\\Users\\moham\\Documents\\Chackra\\backend\\CleanArchitecture.Application\\CleanArchitecture.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\api.csproj",
-        "projectName": "api",
-        "projectPath": "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\api.csproj",
+        "projectUniqueName": "C:\\Users\\moham\\Documents\\Chackra\\backend\\CleanArchitecture.Application\\CleanArchitecture.Application.csproj",
+        "projectName": "CleanArchitecture.Application",
+        "projectPath": "C:\\Users\\moham\\Documents\\Chackra\\backend\\CleanArchitecture.Application\\CleanArchitecture.Application.csproj",
         "packagesPath": "C:\\Users\\moham\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\obj\\",
+        "outputPath": "C:\\Users\\moham\\Documents\\Chackra\\backend\\CleanArchitecture.Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\moham\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -45,16 +45,6 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "dependencies": {
-            "Microsoft.AspNetCore.OpenApi": {
-              "target": "Package",
-              "version": "[8.0.8, )"
-            },
-            "Swashbuckle.AspNetCore": {
-              "target": "Package",
-              "version": "[6.4.0, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",
@@ -67,9 +57,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
