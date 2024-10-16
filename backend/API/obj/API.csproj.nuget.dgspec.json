@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\API.csproj": {}
+    "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\API.csproj": {
+    "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\API.csproj",
-        "projectName": "API",
-        "projectPath": "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\API.csproj",
+        "projectUniqueName": "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\api.csproj",
+        "projectName": "api",
+        "projectPath": "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\api.csproj",
         "packagesPath": "C:\\Users\\moham\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\obj\\",
         "projectStyle": "PackageReference",
@@ -46,49 +46,13 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "AutoMapper": {
-              "target": "Package",
-              "version": "[13.0.1, )"
-            },
-            "FluentValidation.AspNetCore": {
-              "target": "Package",
-              "version": "[11.3.0, )"
-            },
-            "Microsoft.AspNetCore.Authentication.JwtBearer": {
-              "target": "Package",
-              "version": "[8.0.10, )"
-            },
-            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[8.0.10, )"
-            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.8, )"
             },
-            "Microsoft.EntityFrameworkCore.Design": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[8.0.10, )"
-            },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
-              "target": "Package",
-              "version": "[8.0.10, )"
-            },
-            "Microsoft.EntityFrameworkCore.Tools": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[8.0.10, )"
-            },
-            "Microsoft.Extensions.DependencyInjection": {
-              "target": "Package",
-              "version": "[8.0.1, )"
-            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[6.8.1, )"
+              "version": "[6.4.0, )"
             }
           },
           "imports": [
