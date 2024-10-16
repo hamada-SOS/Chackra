@@ -23,6 +23,19 @@ internal class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowReactApp",
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000") // React app URL
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+        });
+
+
         // Add DbContext for SQL Server and Identity
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -79,6 +92,7 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+        app.UseCors("AllowReactApp");
 
         app.UseRouting();
 
@@ -87,7 +101,7 @@ internal class Program
         app.MapControllers();
 
 
-        app.UseHttpsRedirection();
+        // app.UseHttpsRedirection();
 
         app.Run();
     }

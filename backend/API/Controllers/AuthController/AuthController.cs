@@ -46,6 +46,21 @@ namespace API.Controllers.AuthController
             }
         }
 
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequestDto refreshTokenRequest)
+        {
+            try
+            {
+                var token = await _authService.RefreshTokenAsync(refreshTokenRequest);
+                return Ok(new { Token = token });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
         // Other endpoints (ChangePassword, RefreshToken) go here...
     }
 
