@@ -61,7 +61,7 @@ namespace API.Services
             var result = await _signInManager.PasswordSignInAsync(user, loginDto.Password, false, false);
             if (!result.Succeeded) throw new Exception("Invalid credentials.");
 
-            if (user.ForcePasswordChange) throw new Exception("Password change required.");
+            // if (user.ForcePasswordChange) throw new Exception("Password change required.");
 
             return GenerateJwtToken(user);
         }
