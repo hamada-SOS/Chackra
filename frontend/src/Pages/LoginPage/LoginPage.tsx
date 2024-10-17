@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import LoginForm from '../../Components/LoginForm/LoginForm'
-
 import '../LoginPage/LoginPage.css'
 import RegisterForm from '../../Components/RegisterForm/RegisterForm';
+import { Link } from 'react-router-dom';
+
+
 interface Props {
 }
 
@@ -12,8 +14,13 @@ const LoginPage:React.FC<Props> = (Props): JSX.Element => {
     <div className='Container'>
         <div className='img'>
           <div className="labels">
-            <div>student</div>
-            <div>Admin</div>
+            <Link to={"/"}>
+              <div>student</div>
+            </Link>
+            <div>Teacher</div>
+            <Link to={"/AdminLogin"}>
+              <div>Admin</div>
+            </Link>
           </div>
         </div>
         <div className='loginContainer'>
