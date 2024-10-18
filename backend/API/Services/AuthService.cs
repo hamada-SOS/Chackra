@@ -35,11 +35,38 @@ namespace API.Services
 
         public async Task<IdentityResult> RegisterStudentAsync(RegisterStudentDto registerStudentDto)
         {
-
             var validID = await _context.PreRegisteredStudents.FirstOrDefaultAsync(s => s.UniversityId == registerStudentDto.UniversityId);
             if (validID == null)
             {
                 throw new Exception("Sduent Dont Exisit");
+            }
+            var user = new ApplicationUser
+            {
+                UserName = registerStudentDto.Email, // Or set it to UniversityId if you want
+                Email = registerStudentDto.Email,
+                UniversityId = registerStudentDto.UniversityId,
+                ForcePasswordChange = true // Force password change on first login
+            };
+            // Create the user with the default password
+            var result = await _userManager.CreateAsync(user, registerStudentDto.Password);
+
+            // You can also assign roles if needed, e.g., student roles
+            if (result.Succeeded)
+            {
+                // Optionally, assign a default "Student" role to the user
+                await _userManager.AddToRoleAsync(user, "Student");
+            }
+
+            return result;
+        }
+
+        public async Task<IdentityResult> RegisterTeacherAsync(RegisterStudentDto registerStudentDto)
+        {
+
+            var validID = await _context.PreRegisteredTeachers.FirstOrDefaultAsync(s => s.UniversityId == registerStudentDto.UniversityId);
+            if (validID == null)
+            {
+                throw new Exception("Teacher Dont Exisit");
             }
             var user = new ApplicationUser
             {
@@ -56,11 +83,38 @@ namespace API.Services
             if (result.Succeeded)
             {
                 // Optionally, assign a default "Student" role to the user
-                // await _userManager.AddToRoleAsync(user, "Student");
+                await _userManager.AddToRoleAsync(user, "Teacher");
             }
 
             return result;
         }
+
+
+        public async Task<string> TeacherLoginAsync(LoginDto loginDto)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UniversityId == loginDto.UniversityId);
+            if (user == null) throw new Exception("Invalid credentials.");
+
+            var result = await _signInManager.PasswordSignInAsync(user, loginDto.Password, false, false);
+            if (!result.Succeeded) throw new Exception("Invalid credentials.");
+
+            // if (user.ForcePasswordChange) throw new Exception("Password change required.");
+
+            return GenerateJwtToken(user);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public async Task<string> LoginAsync(LoginDto loginDto)
         {
@@ -185,6 +239,7 @@ namespace API.Services
                 return null;
             }
         }
+
     }
 
 }

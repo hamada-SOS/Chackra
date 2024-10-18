@@ -13,6 +13,8 @@ namespace API.Interfaces
         Task<bool> ChangePasswordAsync(ChangePasswordDto changePasswordDto, string userId);
         Task<string> RefreshTokenAsync(RefreshTokenRequestDto refreshTokenRequest);
         Task<IdentityResult> RegisterStudentAsync(RegisterStudentDto registerStudentDto); // Added registration method
+        Task<IdentityResult> RegisterTeacherAsync(RegisterStudentDto registerStudentDto); // Added registration method
+        Task<string> TeacherLoginAsync(LoginDto loginDto); // Added registration method
 
     }
 

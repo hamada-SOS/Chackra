@@ -20,8 +20,8 @@ namespace API.Controllers.AuthController
         }
 
         // Registration endpoint for students
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterStudentDto registerStudentDto)
+        [HttpPost("Sregister")]
+        public async Task<IActionResult> SRegister([FromBody] RegisterStudentDto registerStudentDto)
         {
             var result = await _authService.RegisterStudentAsync(registerStudentDto);
             if (result.Succeeded)
@@ -32,8 +32,8 @@ namespace API.Controllers.AuthController
             return BadRequest(result.Errors);
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto loginDto)
+        [HttpPost("Slogin")]
+        public async Task<IActionResult> SLogin(LoginDto loginDto)
         {
             try
             {
@@ -45,6 +45,36 @@ namespace API.Controllers.AuthController
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("Tregister")]
+        public async Task<IActionResult> TRegister([FromBody] RegisterStudentDto registerStudentDto)
+        {
+            var result = await _authService.RegisterTeacherAsync(registerStudentDto);
+            if (result.Succeeded)
+            {
+                return Ok("Teacher registered successfully.");
+            }
+
+            return BadRequest(result.Errors);
+        }
+
+        [HttpPost("Tlogin")]
+        public async Task<IActionResult> TLogin(LoginDto loginDto)
+        {
+            try
+            {
+                var token = await _authService.TeacherLoginAsync(loginDto);
+                return Ok(new { Token = token });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
 
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequestDto refreshTokenRequest)

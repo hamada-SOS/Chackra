@@ -8,17 +8,15 @@ using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 internal class Program
 {
-    private static void Main(string[] args)
+    private static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -34,7 +32,6 @@ internal class Program
                         .AllowCredentials();
                 });
         });
-
 
         // Add DbContext for SQL Server and Identity
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -52,8 +49,6 @@ internal class Program
         })
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();
-
-
 
         // JWT Authentication setup
         var key = Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]);
@@ -83,8 +78,26 @@ internal class Program
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 
-
         var app = builder.Build();
+
+        // Role creation logic on app startup
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+
+            try
+            {
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+
+                // Create roles if they do not exist
+                await CreateRolesAsync(roleManager);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error creating roles: {ex.Message}");
+            }
+        }
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -92,6 +105,7 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
         app.UseCors("AllowReactApp");
 
         app.UseRouting();
@@ -100,9 +114,24 @@ internal class Program
         app.UseAuthorization();
         app.MapControllers();
 
-
         // app.UseHttpsRedirection();
 
-        app.Run();
+        await app.RunAsync();
+    }
+
+    // Role creation logic
+    private static async Task CreateRolesAsync(RoleManager<IdentityRole> roleManager)
+    {
+        string[] roleNames = { "Student", "Teacher" };
+
+        foreach (var roleName in roleNames)
+        {
+            var roleExist = await roleManager.RoleExistsAsync(roleName);
+            if (!roleExist)
+            {
+                // Create the role if it doesn't exist
+                await roleManager.CreateAsync(new IdentityRole(roleName));
+            }
+        }
     }
 }
