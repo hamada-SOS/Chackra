@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\API.csproj": {}
+    "C:\\Users\\moham\\Documents\\Chackra\\backend\\API\\API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\API.csproj": {
+    "C:\\Users\\moham\\Documents\\Chackra\\backend\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\API.csproj",
+        "projectUniqueName": "C:\\Users\\moham\\Documents\\Chackra\\backend\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\API.csproj",
+        "projectPath": "C:\\Users\\moham\\Documents\\Chackra\\backend\\API\\API.csproj",
         "packagesPath": "C:\\Users\\moham\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\moham\\Documents\\Chackra\\backend\\api\\obj\\",
+        "outputPath": "C:\\Users\\moham\\Documents\\Chackra\\backend\\API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\moham\\AppData\\Roaming\\NuGet\\NuGet.Config",
