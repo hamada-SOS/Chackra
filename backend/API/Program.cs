@@ -37,6 +37,8 @@ internal class Program
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+        builder.Services.AddHttpClient();
+
         // Add Identity with custom ApplicationUser
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
         {

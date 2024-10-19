@@ -25,21 +25,20 @@ const Judge0: React.FC = (): JSX.Element => {
 
     try {
       // Step 1: Submit code to Judge0
-      const { data: submission } = await axios.post(
-        "https://api.judge0.com/submissions/?base64_encoded=false&wait=false",
+      const { data: submission } = await axios.post("http://localhost:5149/api/judge/submit",
         {
           source_code: sourceCode,
           language_id: languageId,
           stdin: stdin,
-        }
-      );
+        });
+
 
       const token = submission.token;
 
       // Step 2: Poll the result after 3 seconds
       setTimeout(async () => {
         const { data: resultData } = await axios.get(
-          `https://api.judge0.com/submissions/${token}?base64_encoded=false`
+            `http://localhost:5149/api/judge/result/${token}`
         );
         setResult(resultData);
         setLoading(false);
@@ -68,18 +67,6 @@ const Judge0: React.FC = (): JSX.Element => {
             selectOnLineNumbers: true,
           }}
         />
-
-        <TextField
-          label="Language ID"
-          type="number"
-          value={languageId}
-          onChange={(e) => setLanguageId(parseInt(e.target.value))}
-          fullWidth
-          margin="normal"
-          variant="outlined"
-          style={{ marginTop: "10px" }}
-        />
-
         <TextField
           label="Standard Input (Optional)"
           value={stdin}
@@ -103,6 +90,7 @@ const Judge0: React.FC = (): JSX.Element => {
 
         {result && (
           <Paper style={{ padding: "20px", marginTop: "20px" }}>
+
             <Typography variant="h6">Result:</Typography>
             <Typography>Status: {result.status.description}</Typography>
             {result.stdout && (
@@ -120,6 +108,7 @@ const Judge0: React.FC = (): JSX.Element => {
           </Paper>
         )}
       </Paper>
+      {}
     </Container>
   );
 };

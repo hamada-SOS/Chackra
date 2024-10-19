@@ -149,3 +149,5 @@ C:\Users\moham\Documents\Chackra\backend\api\obj\Debug\net8.0\refint\API.dll
 C:\Users\moham\Documents\Chackra\backend\api\obj\Debug\net8.0\API.pdb
 C:\Users\moham\Documents\Chackra\backend\api\obj\Debug\net8.0\API.genruntimeconfig.cache
 C:\Users\moham\Documents\Chackra\backend\api\obj\Debug\net8.0\ref\API.dll
+C:\Users\moham\Documents\Chackra\backend\api\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\moham\Documents\Chackra\backend\api\bin\Debug\net8.0\System.Net.Http.Json.dll
