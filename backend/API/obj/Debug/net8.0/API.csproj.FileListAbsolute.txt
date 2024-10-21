@@ -303,3 +303,5 @@ C:/Users/moham/Documents/Chackra/backend/api/bin/Debug/net8.0/System.Net.Http.Js
 /home/hamada/Documents/FOCSA/Chackra/backend/API/obj/Debug/net8.0/API.pdb
 /home/hamada/Documents/FOCSA/Chackra/backend/API/obj/Debug/net8.0/API.genruntimeconfig.cache
 /home/hamada/Documents/FOCSA/Chackra/backend/API/obj/Debug/net8.0/ref/API.dll
+/home/hamada/Documents/FOCSA/Chackra/backend/API/bin/Debug/net8.0/MySqlConnector.dll
+/home/hamada/Documents/FOCSA/Chackra/backend/API/bin/Debug/net8.0/Pomelo.EntityFrameworkCore.MySql.dll

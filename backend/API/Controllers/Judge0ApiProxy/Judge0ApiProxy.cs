@@ -30,7 +30,6 @@ namespace Judge0ApiProxy.Controllers
                 source_code = model.sourceCode,
                 language_id = model.languageId,
                 stdin = model.stdin,
-                expected_output = model.expectedOutput
             };
 
 
@@ -71,10 +70,9 @@ namespace Judge0ApiProxy.Controllers
 
     public class CodeSubmission
     {
-        public string sourceCode { get; set; }
+        public string? sourceCode { get; set; }
         public int languageId { get; set; }
-        public string stdin { get; set; }
-        public string expectedOutput { get; set; }
+        public string? stdin { get; set; }
     }
 
     public class Judge0Submission

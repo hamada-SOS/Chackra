@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text;
 using API.Data;
 using API.Interfaces;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure; // Add this for MySQL configuration
 
 internal class Program
 {
@@ -32,10 +34,21 @@ internal class Program
                         .AllowCredentials();
                 });
         });
+        // var certPath = Path.Combine(Directory.GetCurrentDirectory(), "localhost.crt");
 
-        // Add DbContext for SQL Server and Identity
+        // builder.WebHost.ConfigureKestrel(options =>
+        // {
+        //     options.Listen(IPAddress.Any, 5149, listenOptions =>
+        //     {
+        //         listenOptions.UseHttps(certPath, "1234");
+        //     });
+        // });
+
+
+        // Configure DbContext for MySQL
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), 
+                new MySqlServerVersion(new Version(8, 0, 39)))); // Use your actual MySQL version here
 
         builder.Services.AddHttpClient();
 
@@ -81,6 +94,19 @@ internal class Program
         builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 
         var app = builder.Build();
+        app.UseWebSockets();
+        app.Use(async (context, next) =>
+        {
+            if (context.Request.IsHttps)
+            {
+                var socket = await context.WebSockets.AcceptWebSocketAsync();
+                // Handle the socket connection
+            }
+            else
+            {
+                await next();
+            }
+        });
 
         // Role creation logic on app startup
         using (var scope = app.Services.CreateScope())
