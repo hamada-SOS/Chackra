@@ -6,9 +6,6 @@ import { TextField, Button, Container, Typography, CircularProgress, Paper } fro
 interface SubmissionResult {
   stdout: string;
   stderr: string;
-  status: {
-    description: string;
-  };
 }
 
 const Judge0: React.FC = (): JSX.Element => {
@@ -25,11 +22,11 @@ const Judge0: React.FC = (): JSX.Element => {
 
     try {
       // Step 1: Submit code to Judge0
-      const { data: submission } = await axios.post("http://localhost:5149/api/judge/submit",
+      const { data: submission } = await axios.post("http://localhost:5149/api/Judge/submit",
         {
-          source_code: sourceCode,
-          language_id: languageId,
-          stdin: stdin,
+          sourceCode: sourceCode,
+          LanguageId: languageId,
+          StandardInput: stdin,
         });
 
 
@@ -38,7 +35,7 @@ const Judge0: React.FC = (): JSX.Element => {
       // Step 2: Poll the result after 3 seconds
       setTimeout(async () => {
         const { data: resultData } = await axios.get(
-            `http://localhost:5149/api/judge/result/${token}`
+            `http://localhost:5149/api/Judge/result/${token}`
         );
         setResult(resultData);
         setLoading(false);
@@ -87,26 +84,18 @@ const Judge0: React.FC = (): JSX.Element => {
         </Button>
 
         {loading && <CircularProgress style={{ marginTop: "20px" }} />}
-
-        {result && (
           <Paper style={{ padding: "20px", marginTop: "20px" }}>
 
             <Typography variant="h6">Result:</Typography>
-            <Typography>Status: {result.status.description}</Typography>
-            {result.stdout && (
               <div>
                 <Typography variant="subtitle1">Output:</Typography>
-                <pre>{result.stdout}</pre>
+                <pre>{result?.stdout}</pre>
               </div>
-            )}
-            {result.stderr && (
               <div>
                 <Typography variant="subtitle1">Error:</Typography>
-                <pre>{result.stderr}</pre>
+                <pre>{result?.stderr}</pre>
               </div>
-            )}
           </Paper>
-        )}
       </Paper>
       {}
     </Container>
