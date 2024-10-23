@@ -4,8 +4,9 @@ import MonacoEditor from "@monaco-editor/react";
 import { TextField, Button, Container, Typography, CircularProgress, Paper } from "@mui/material";
 
 interface SubmissionResult {
-  stdout: string;
-  stderr: string;
+  standardOutput: string;
+  standardError: string;
+  time:string;
 }
 
 const Judge0: React.FC = (): JSX.Element => {
@@ -38,6 +39,7 @@ const Judge0: React.FC = (): JSX.Element => {
             `http://localhost:5149/api/Judge/result/${token}`
         );
         setResult(resultData);
+        console.log(resultData);
         setLoading(false);
       }, 3000); // Add delay for result processing
     } catch (error) {
@@ -87,17 +89,27 @@ const Judge0: React.FC = (): JSX.Element => {
           <Paper style={{ padding: "20px", marginTop: "20px" }}>
 
             <Typography variant="h6">Result:</Typography>
+            {result?.standardOutput && (
               <div>
                 <Typography variant="subtitle1">Output:</Typography>
-                <pre>{result?.stdout}</pre>
+                <Typography>{result?.standardOutput}</Typography>
               </div>
+            )}
+            {result?.standardError && (
               <div>
                 <Typography variant="subtitle1">Error:</Typography>
-                <pre>{result?.stderr}</pre>
+                <Typography>{result?.standardError}</Typography>
               </div>
+            )}
+
+            {result?.time && (
+                <div>
+                  <Typography variant="subtitle1">Compile Output:</Typography>
+                  <Typography>{result.time}</Typography>
+                </div>
+            )}
           </Paper>
       </Paper>
-      {}
     </Container>
   );
 };
