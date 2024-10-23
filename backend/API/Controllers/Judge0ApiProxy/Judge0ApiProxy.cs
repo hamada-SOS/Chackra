@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Text.Json.Serialization;
 
 namespace Judge0ApiProxy.Controllers
 {
@@ -25,9 +25,9 @@ namespace Judge0ApiProxy.Controllers
             var client = _httpClientFactory.CreateClient();
 
 
-            var url = "https://ce.judge0.com/submissions/?base64_encoded=true&wait=false";
+            var url = "http://localhost:2358/submissions/?base64_encoded=false&wait=false";
 
-            var payload = new 
+            var payload = new
             {
                 source_code = model.SourceCode,
                 language_id = model.LanguageId,
@@ -57,7 +57,7 @@ namespace Judge0ApiProxy.Controllers
         {
             var client = _httpClientFactory.CreateClient();
 
-            var response = await client.GetAsync($"https://ce.judge0.com/submissions/{token}?base64_encoded=false");
+            var response = await client.GetAsync($"http://localhost:2358/submissions/{token}?base64_encoded=false");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -66,15 +66,13 @@ namespace Judge0ApiProxy.Controllers
 
             var resultResponse = await response.Content.ReadAsStringAsync();
             Console.WriteLine(resultResponse);
-            var result = JsonConvert.DeserializeObject<subm>(resultResponse);
+            var result = JsonConvert.DeserializeObject<Judge0SubmissionResponse>(resultResponse);
             Console.WriteLine(result);
 
 
             return Ok(result);
         }
     }
-
-
 public class Judge0SubmissionRequest
 {
     [JsonProperty("source_code")]
@@ -86,26 +84,28 @@ public class Judge0SubmissionRequest
     [JsonProperty("stdin")]
     public string StandardInput { get; set; }
 
+
 }
+
     public class Judge0Submission
     {
-        public string? Token { get; set; }
+        public string Token { get; set; }
     }
 
 
 public class Judge0SubmissionResponse
 {
     [JsonProperty("stdout")]
-    public string? StandardOutput { get; set; }
+    public string StandardOutput { get; set; }
 
     [JsonProperty("stderr")]
-    public string? StandardError { get; set; }
+    public string StandardError { get; set; }
 
     [JsonProperty("status_id")]
     public int StatusId { get; set; }
 
     [JsonProperty("time")]
-    public string? Time { get; set; }
+    public string Time { get; set; }
 
     [JsonProperty("memory")]
     public int? Memory { get; set; }
