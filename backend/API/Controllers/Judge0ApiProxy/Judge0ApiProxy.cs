@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Judge0ApiProxy.Controllers
 {
@@ -16,29 +17,31 @@ namespace Judge0ApiProxy.Controllers
         {
             _httpClientFactory = httpClientFactory;
         }
-
-        private const string Judge0ApiUrl = "https://api.judge0.com";
         
         // POST /api/judge/submit
         [HttpPost("submit")]
-        public async Task<IActionResult> SubmitCode([FromBody] CodeSubmission model)
+        public async Task<IActionResult> SubmitCode([FromBody] Judge0SubmissionRequest model)
         {
             var client = _httpClientFactory.CreateClient();
 
-            var submissionRequest = new
+
+            var url = "https://ce.judge0.com/submissions/?base64_encoded=true&wait=false";
+
+            var payload = new 
             {
-                source_code = model.sourceCode,
-                language_id = model.languageId,
-                stdin = model.stdin,
+                source_code = model.SourceCode,
+                language_id = model.LanguageId,
+                stdin = model.StandardInput,
             };
 
+            string jsonRequest = JsonConvert.SerializeObject(payload);
 
-            var content = new StringContent(JsonConvert.SerializeObject(submissionRequest), Encoding.UTF8, "application/json");
-
-            var response = await client.PostAsync($"{Judge0ApiUrl}/submissions/?base64_encoded=false&wait=false", content);
+            var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(url, content);
 
             if (!response.IsSuccessStatusCode)
             {
+                // return BadRequest("faield mis");
                 return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
             }
 
@@ -54,7 +57,7 @@ namespace Judge0ApiProxy.Controllers
         {
             var client = _httpClientFactory.CreateClient();
 
-            var response = await client.GetAsync($"{Judge0ApiUrl}/submissions/{token}?base64_encoded=false");
+            var response = await client.GetAsync($"https://ce.judge0.com/submissions/{token}?base64_encoded=false");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -62,35 +65,50 @@ namespace Judge0ApiProxy.Controllers
             }
 
             var resultResponse = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<Judge0Result>(resultResponse);
+            Console.WriteLine(resultResponse);
+            var result = JsonConvert.DeserializeObject<subm>(resultResponse);
+            Console.WriteLine(result);
+
 
             return Ok(result);
         }
     }
 
-    public class CodeSubmission
-    {
-        public string? sourceCode { get; set; }
-        public int languageId { get; set; }
-        public string? stdin { get; set; }
-    }
 
+public class Judge0SubmissionRequest
+{
+    [JsonProperty("source_code")]
+    public string SourceCode { get; set; }
+
+    [JsonProperty("language_id")]
+    public int LanguageId { get; set; }
+
+    [JsonProperty("stdin")]
+    public string StandardInput { get; set; }
+
+}
     public class Judge0Submission
     {
-        public string Token { get; set; }
+        public string? Token { get; set; }
     }
 
-    public class Judge0Result
+
+public class Judge0SubmissionResponse
 {
-    public string stdout { get; set; }       // Standard output from the code execution
-    public string stderr { get; set; }       // Standard error from the code execution
-    public int exit_code { get; set; }       // Exit code of the executed program
-    public string message { get; set; }      // Any additional messages (error or status)
-    public bool timed_out { get; set; }      // If the execution timed out
-    public bool memory_limit_exceeded { get; set; }  // If memory limit was exceeded
-    public bool cpu_time_limit_exceeded { get; set; } // If CPU time exceeded limit
-    public int time { get; set; }            // Time taken for execution
-    public int memory { get; set; }          // Memory used during execution
+    [JsonProperty("stdout")]
+    public string? StandardOutput { get; set; }
+
+    [JsonProperty("stderr")]
+    public string? StandardError { get; set; }
+
+    [JsonProperty("status_id")]
+    public int StatusId { get; set; }
+
+    [JsonProperty("time")]
+    public string? Time { get; set; }
+
+    [JsonProperty("memory")]
+    public int? Memory { get; set; }
 }
 
 

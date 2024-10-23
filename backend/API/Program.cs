@@ -94,19 +94,19 @@ internal class Program
         builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 
         var app = builder.Build();
-        app.UseWebSockets();
-        app.Use(async (context, next) =>
-        {
-            if (context.Request.IsHttps)
-            {
-                var socket = await context.WebSockets.AcceptWebSocketAsync();
-                // Handle the socket connection
-            }
-            else
-            {
-                await next();
-            }
-        });
+        // app.UseWebSockets();
+        // app.Use(async (context, next) =>
+        // {
+        //     if (context.Request.IsHttps)
+        //     {
+        //         var socket = await context.WebSockets.AcceptWebSocketAsync();
+        //         // Handle the socket connection
+        //     }
+        //     else
+        //     {
+        //         await next();
+        //     }
+        // });
 
         // Role creation logic on app startup
         using (var scope = app.Services.CreateScope())
