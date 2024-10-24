@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import MonacoEditor from "@monaco-editor/react";
-import { TextField, Button, Container, Typography, CircularProgress, Paper } from "@mui/material";
+import { TextField, Button, Container, Typography, CircularProgress, Paper, useTheme } from "@mui/material";
 
 interface SubmissionResult {
   standardOutput: string;
@@ -11,6 +11,7 @@ interface SubmissionResult {
 
 const Judge0: React.FC = (): JSX.Element => {
 
+  const theme = useTheme(); // You can also access the theme directly if needed
   const [sourceCode, setSourceCode] = useState<string>("print('Hello, World!')");
   const [languageId, setLanguageId] = useState<number>(71); // Default to Python 3
   const [stdin, setStdin] = useState<string>("");
@@ -49,7 +50,7 @@ const Judge0: React.FC = (): JSX.Element => {
   };
 
   return (
-    <Container maxWidth="md">
+    <Container style={{backgroundColor:"accent" }}>
       <Paper elevation={3} style={{ padding: "20px", marginTop: "20px" }}>
         <Typography variant="h5" gutterBottom>
           Submit Code to Judge0 API
@@ -61,7 +62,7 @@ const Judge0: React.FC = (): JSX.Element => {
           language="python"
           value={sourceCode}
           onChange={(value) => setSourceCode(value || "")}
-          theme="vs-dark"
+          theme="paper"
           options={{
             selectOnLineNumbers: true,
           }}
