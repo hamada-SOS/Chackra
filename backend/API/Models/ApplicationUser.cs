@@ -16,13 +16,10 @@ namespace API.Models
 
         // Additional properties specific to your application
 
-        public ICollection<Classroom> CreatedClassrooms { get; set; }
-        public ICollection<Problem> CreatedProblems { get; set; }
         public ICollection<Submission> Submissions { get; set; }
         public ICollection<Leaderboard> Leaderboards { get; set; }
         public ICollection<CompetitiveRoom> HostedRooms { get; set; }
-        public ICollection<Classroom_Student> ClassroomStudents { get; set; }
-        public ICollection<ClassroomProblem> ClassroomProblems { get; set; }
+        
     }
 
 }
