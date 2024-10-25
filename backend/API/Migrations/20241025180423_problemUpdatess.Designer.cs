@@ -4,6 +4,7 @@ using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241025180423_problemUpdatess")]
+    partial class problemUpdatess
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,13 +218,16 @@ namespace API.Migrations
                     b.Property<string>("Constraints")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("CreatorId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Difficulty")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Domain")
+                    b.Property<string>("Example")
                         .HasColumnType("longtext");
 
                     b.Property<string>("InputFormat")
@@ -243,6 +249,8 @@ namespace API.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("ProblemID");
+
+                    b.HasIndex("CreatorId");
 
                     b.ToTable("Problems");
                 });
@@ -465,6 +473,15 @@ namespace API.Migrations
                     b.Navigation("Problem");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("API.Models.Problem", b =>
+                {
+                    b.HasOne("API.Models.ApplicationUser", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId");
+
+                    b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("API.Models.Room_Problem", b =>
