@@ -3,7 +3,9 @@ using System.Text;
 using API.Data;
 using API.Interfaces;
 using API.Interfaces.Account;
+using API.Interfaces.Problema;
 using API.Models;
+using API.Repositories.ProblemRe;
 using API.Repositories.Student;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -92,6 +94,7 @@ internal class Program
         // Add services and repositories
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+        builder.Services.AddScoped<IProblemRepository, ProblemRepository>();
 
         var app = builder.Build();
         // app.UseWebSockets();
