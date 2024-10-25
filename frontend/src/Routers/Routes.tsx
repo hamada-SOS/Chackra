@@ -5,6 +5,7 @@ import AdminLogin from "../Pages/AdminLogin/AdminLogin";
 import TheFuckinD from "../Components/Drawer/TheFuckinD";
 import HomePage from "../Pages/HomePage/HomePage";
 import PlaygroundPage from "../Pages/PlaygroundPage/PlaygroundPage";
+import ProblemtopicsPage from "../Pages/ProblemTopicsPage/ProblemtopicsPage";
 
 export const routes = createBrowserRouter([
     {
@@ -15,6 +16,8 @@ export const routes = createBrowserRouter([
             {path:"fvv", element:<LoginPage/>},
             {path:"/AdminLogin", element:<AdminLogin/>},
             {path:"/", element:<HomePage/>},
+            {path:"/ProblemtopicsPage", element:<ProblemtopicsPage/>},
+
         ]
     }
 ])
