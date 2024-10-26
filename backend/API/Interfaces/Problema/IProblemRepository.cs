@@ -10,6 +10,9 @@ namespace API.Interfaces.Problema
     public interface IProblemRepository
     {
         Task <List<Problem>> GetProblemsByCatagoryAsync(string Catagory);
+        Task<List<Problem>> GetProblemCardsAsync(string Catagory);
+        Task<Problem> GetProblemDetails(string Catagory);
+
         
     }
 }
