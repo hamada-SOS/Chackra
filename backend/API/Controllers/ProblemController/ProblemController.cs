@@ -27,6 +27,33 @@ namespace API.Controllers.ProblemController
             return Ok(problemdto);
 
         }
+
+
+        [HttpGet("problmesCardsByCatagory")]
+        public async Task<IActionResult> GetProblmeCardByCatagory([FromQuery] string Catagory){
+
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
+            }
+            
+            var problemsCard = await _problemrepo.GetProblemCardsAsync(Catagory);
+            var problemCardDto = problemsCard.Select(p => p.ToProblemCardDto());
+            return Ok(problemCardDto);
+
+        }
+
+        [HttpGet("problmesByID/{id}")]
+        public async Task<IActionResult> GetProblmeDetailsById(int id){
+
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
+            }
+            
+            var problemsDetails = await _problemrepo.GetProblemDetails(id);
+            var problemDetailDto = problemsDetails.ToProblemDetailDto();
+            return Ok(problemDetailDto);
+
+        }
         
 
 

@@ -13,9 +13,49 @@ namespace API.Mappers
         {
             return new ProblemDto
             {
+                Id = problemModel.ProblemID,
                 Title = problemModel.Title,
                 Description = problemModel.Description,
                 Domain = problemModel.Domain,
+                InputFormat = problemModel.InputFormat,
+                Note = problemModel.Note, 
+                Constraints = problemModel.Constraints,
+                Catagory = problemModel.Catagory,
+                Language = problemModel.Language,
+                Difficulty = problemModel.Difficulty,
+                SampleInput = problemModel.SampleInput,
+                SampleOutput = problemModel.SampleOutput
+            };
+
+        }
+
+
+
+
+
+        public static ProblemCard ToProblemCardDto(this ProblemCard problemModel)
+        {
+            return new ProblemCard
+            {
+                Id = problemModel.Id,
+                Title = problemModel.Title,
+                Diffculty = problemModel.Diffculty
+            };
+
+        }
+
+
+
+
+
+
+        public static ProblemDetail ToProblemDetailDto(this ProblemDetail problemModel)
+        {
+            return new ProblemDetail
+            {
+                Id = problemModel.Id,
+                Title = problemModel.Title,
+                Description = problemModel.Description,
                 InputFormat = problemModel.InputFormat,
                 Note = problemModel.Note, 
                 Constraints = problemModel.Constraints,
