@@ -7,6 +7,7 @@ namespace API.Dtos.Problemea
 {
     public class ProblemDetail
     {
+        public int Id {get; set;}
         public string Title { get; set; } // VARCHAR(200)
         public string Description { get; set; } // TEXT
         public string InputFormat { get; set; }
