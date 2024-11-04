@@ -25,7 +25,7 @@ const ProblemByTopics = () => {
   useEffect(() => {
     const fetchProblems = async () => {
       try {
-        const response = await axios.get(`http://localhost:5149/api/Problem/problmesCardsByCatagory?Catagory=${topic}`);
+        const response = await axios.get(`http://localhost:5149/api/Problem/problmesCardsByCatagory?Catagory=python`);
         setProblems(response.data); // Adjust based on the structure of your response
       } catch (error) {
         console.error('Error fetching problems:', error);
