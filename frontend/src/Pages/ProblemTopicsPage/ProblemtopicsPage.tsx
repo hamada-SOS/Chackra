@@ -1,46 +1,41 @@
-import { Box, Button, Icon, Typography, useTheme } from '@mui/material';
 import React from 'react';
+import { Box, Button, Typography, useTheme } from '@mui/material';
 import Navbar from '../../Components/Navbar/Navbar';
-import { useNavigate } from 'react-router';
-import StarIcon from '@mui/icons-material/Star'; // Importing a star icon for button
+import { useNavigate } from 'react-router-dom';
+import StarIcon from '@mui/icons-material/Star';
 
-type Props = {}
-
-const ProblemtopicsPage = (props: Props) => {
+const ProblemtopicsPage = () => {
   const theme = useTheme();
+  const topics = ['Python', 'JavaScript', 'C#', 'SQL', 'Data Structures', 'Algorithms', 'Java'];
+  const navigate = useNavigate();
 
-  // List of topics
-  const topics = ['Python', 'JavaScript', 'C#', 'SQL', 'Data Structures', 'Algorthms', 'Java'];
-
-  // const handleNavigate = (topic: string) => {
-  //   useNavigate(`/problems/${topic.toLowerCase()}`);  // Navigate to a page with the selected topic
-  // };
-
+  const handleNavigate = (topic: string) => {
+    navigate(`/ProblemByTopics/${topic.toLowerCase()}`);  // Navigate to a page with the selected topic
+  };
 
   return (
-    <>
-      <Box sx={{ width: '100%', minHeight: '720px', display: 'flex', flexDirection: 'column', background: theme.palette.background.default }}>
-        <Navbar />
-        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', background: '#d2dff3', padding: '20px 100px' }}>
-          <Typography variant='h6' sx={{ opacity: 0.6 }}>Problem</Typography>
-          <Typography variant='h4' color='#010104' sx={{ fontWeight: 600 }}>Solve problems to enhance your skills</Typography>
-        </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-          <Typography variant='h5' sx={{ color: 'text.main', padding: '20px 10px', opacity: 0.8 }}>Solve By Topics</Typography>
-          <Box sx={{
+    <Box sx={{ width: '100%', minHeight: '720px', display: 'flex', flexDirection: 'column', background: theme.palette.background.default }}>
+      <Navbar />
+      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', background: '#d2dff3', padding: '20px 100px' }}>
+        <Typography variant='h6' sx={{ opacity: 0.6 }}>Problem</Typography>
+        <Typography variant='h4' color='#010104' sx={{ fontWeight: 600 }}>Solve problems to enhance your skills</Typography>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+        <Typography variant='h5' sx={{ color: 'text.main', padding: '20px 10px', opacity: 0.8 }}>Solve By Topics</Typography>
+        <Box sx={{
           display: 'flex',
-          width:'800px',
+          width: '800px',
           flexWrap: 'wrap',
           gap: '20px',
           justifyContent: 'center',
           padding: '20px',
           borderRadius: '10px'
         }}>
-          {topics.map((topic, index) => (
+          {topics.map((topic) => (
             <Button
-              key={index}
+              key={topic}
               variant='contained'
-              // onClick={() => handleNavigate(topic)}
+              onClick={() => handleNavigate(topic)}
               sx={{
                 backgroundColor: '#d6e4f0',
                 color: '#000',
@@ -63,8 +58,7 @@ const ProblemtopicsPage = (props: Props) => {
           ))}
         </Box>
       </Box>
-      </Box>
-    </>
+    </Box>
   );
 }
 

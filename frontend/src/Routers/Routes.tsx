@@ -6,6 +6,7 @@ import TheFuckinD from "../Components/Drawer/TheFuckinD";
 import HomePage from "../Pages/HomePage/HomePage";
 import PlaygroundPage from "../Pages/PlaygroundPage/PlaygroundPage";
 import ProblemtopicsPage from "../Pages/ProblemTopicsPage/ProblemtopicsPage";
+import ProblemByTopics from "../Pages/ProblemByTopicsPage/ProblemByTopics";
 
 export const routes = createBrowserRouter([
     {
@@ -17,6 +18,8 @@ export const routes = createBrowserRouter([
             {path:"/AdminLogin", element:<AdminLogin/>},
             {path:"/", element:<HomePage/>},
             {path:"/ProblemtopicsPage", element:<ProblemtopicsPage/>},
+            {path:"/ProblemByTopics/:Catagory", element:<ProblemByTopics/>},
+
 
         ]
     }
