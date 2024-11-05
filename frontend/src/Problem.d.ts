@@ -16,3 +16,16 @@ export interface Problem {
     message?: string;
   }
   
+  export interface ProblemDetails {
+    id: number,
+    title: string,
+    description:string,
+    inputFormat:string,
+    note:string,
+    constraints:string,
+    catagory:string,
+    difficulty:string,
+    smapleInput:string,
+    sampleOutput:string,
+
+  }
