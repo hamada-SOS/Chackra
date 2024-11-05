@@ -6,7 +6,7 @@ import StarIcon from '@mui/icons-material/Star';
 
 const ProblemtopicsPage = () => {
   const theme = useTheme();
-  const topics = ['Python', 'JavaScript', 'C#', 'SQL', 'Data Structures', 'Algorithms', 'Java'];
+  const topics = ['Python', 'JavaScript', 'Csharp', 'SQL', 'Data Structures', 'Algorithms', 'Java'];
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null); // State to hold the selected topic
   const navigate = useNavigate();
 

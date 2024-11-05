@@ -2,7 +2,7 @@
 export interface Problem {
     id: number;
     title: string;
-    difficulty: string;
+    diffculty: string;
     // Add other fields as necessary
   }
   
