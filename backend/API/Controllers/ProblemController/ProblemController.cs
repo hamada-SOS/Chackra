@@ -17,7 +17,7 @@ namespace API.Controllers.ProblemController
         }
         [HttpGet("problmesByCatagory")]
         public async Task<IActionResult> GetProblmeByCatagory([FromQuery] string Catagory){
-
+                Console.WriteLine($"Received Catagory: {Catagory}"); // For debugging
             if(!ModelState.IsValid){
                 return BadRequest(ModelState);
             }

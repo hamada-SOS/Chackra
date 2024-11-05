@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { Box, Typography, Button, Checkbox, FormControlLabel } from '@mui/material';
 import Navbar from '../../Components/Navbar/Navbar';
 import { Problem } from '../../Problem'; // Ensure this type is correctly defined
 import axios from 'axios';
+import { fetchProblemsByCategory } from '../../api';
 
 // Define the type for difficulty levels
 type DifficultyLevel = 'veryEasy' | 'easy' | 'medium' | 'hard' | 'veryHard';
@@ -14,27 +15,51 @@ interface Filters {
   difficulty: Record<DifficultyLevel, boolean>;
 }
 
+
+// Correct typing of useParams
+
 const ProblemByTopics = () => {
-  const { topic } = useParams<{ topic: string }>();
+  // const  topic  = 'python';
+  const location = useLocation();
+  const { topic } = location.state || { topic: null };
   const [problems, setProblems] = useState<Problem[]>([]);
+  
   const [filters, setFilters] = useState<Filters>({
     status: { solved: false, unsolved: false },
     difficulty: { veryEasy: false, easy: false, medium: false, hard: false, veryHard: false },
   });
-
+  
   useEffect(() => {
-    const fetchProblems = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5149/api/Problem/problmesCardsByCatagory?Catagory=python`);
-        setProblems(response.data); // Adjust based on the structure of your response
-      } catch (error) {
-        console.error('Error fetching problems:', error);
-      }
-    };
-
-    fetchProblems();
+      const loadProblems = async () => {
+          if (!topic) return;
+  
+          try {
+              const problemsList = await fetchProblemsByCategory(topic);
+              setProblems(problemsList);
+          } catch (error) {
+              console.error('Error loading problems:', error);
+          } finally {
+          }
+      };
+  
+      loadProblems();
   }, [topic]);
 
+
+
+  // useEffect(() => {
+  //   const fetchProblems = async () => {
+  //     try {
+  //       const response = await axios.get(`http://localhost:5149/api/Problem/problmesCardsByCatagory?Catagory=${topic}`);
+  //       setProblems(response.data); // Adjust based on the structure of your response
+  //     } catch (error) {
+  //       console.error('Error fetching problems:', error);
+  //     }
+  //   };
+
+  //   fetchProblems();
+  // }, [topic]);
+  
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Navbar />
@@ -49,7 +74,7 @@ const ProblemByTopics = () => {
               borderRadius: '8px'
             }}>
               <Typography variant="h6">{problem.title}</Typography>
-              <Typography variant="body2">Difficulty: {problem.diffculty}</Typography>
+              <Typography variant="body2">Difficulty: {problem.difficulty}</Typography>
               <Button variant="contained" sx={{ marginTop: '10px' }}>Solve</Button>
             </Box>
           ))}

@@ -18,7 +18,7 @@ export const routes = createBrowserRouter([
             {path:"/AdminLogin", element:<AdminLogin/>},
             {path:"/", element:<HomePage/>},
             {path:"/ProblemtopicsPage", element:<ProblemtopicsPage/>},
-            {path:"/ProblemByTopics/:Catagory", element:<ProblemByTopics/>},
+            {path:"/ProblemByTopics", element:<ProblemByTopics/>},
 
 
         ]

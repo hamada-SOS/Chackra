@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Typography, useTheme } from '@mui/material';
 import Navbar from '../../Components/Navbar/Navbar';
 import { useNavigate } from 'react-router-dom';
@@ -7,10 +7,14 @@ import StarIcon from '@mui/icons-material/Star';
 const ProblemtopicsPage = () => {
   const theme = useTheme();
   const topics = ['Python', 'JavaScript', 'C#', 'SQL', 'Data Structures', 'Algorithms', 'Java'];
+  const [selectedTopic, setSelectedTopic] = useState<string | null>(null); // State to hold the selected topic
   const navigate = useNavigate();
 
   const handleNavigate = (topic: string) => {
-    navigate(`/ProblemByTopics/${topic.toLowerCase()}`);  // Navigate to a page with the selected topic
+    // Build the route dynamically
+    setSelectedTopic(topic);
+    navigate(`/ProblemByTopics`,  { state: { topic: topic.toLowerCase() } }); // Navigate to the new route with the topic
+    console.log('Navigating to topic:', topic);  // Debugging
   };
 
   return (
