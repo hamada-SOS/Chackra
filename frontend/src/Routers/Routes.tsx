@@ -7,6 +7,7 @@ import HomePage from "../Pages/HomePage/HomePage";
 import PlaygroundPage from "../Pages/PlaygroundPage/PlaygroundPage";
 import ProblemtopicsPage from "../Pages/ProblemTopicsPage/ProblemtopicsPage";
 import ProblemByTopics from "../Pages/ProblemByTopicsPage/ProblemByTopics";
+import SolvingPage from "../Pages/solvingPAge/SolvingPage";
 
 export const routes = createBrowserRouter([
     {
@@ -16,9 +17,11 @@ export const routes = createBrowserRouter([
 
             {path:"fvv", element:<LoginPage/>},
             {path:"/AdminLogin", element:<AdminLogin/>},
-            {path:"/", element:<HomePage/>},
+            {path:"SlovingPage", element:<HomePage/>},
             {path:"/ProblemtopicsPage", element:<ProblemtopicsPage/>},
             {path:"/ProblemByTopics", element:<ProblemByTopics/>},
+            {path:"/", element:<SolvingPage/>},
+
 
 
         ]
