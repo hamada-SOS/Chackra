@@ -15,7 +15,7 @@ const Navbar = (props: Props) => {
             </Box>
             <Box sx={{display: 'flex', justifyContent:'sp', alignItems:'center'}}>
                 <Link to={'/HomePage'} style={{ marginRight: '50px', textDecoration: 'none' }}><Typography sx={{color:'text.primary', '&:hover':{color:'primary.main'}, fontWeight:''}}>Home</Typography></Link>
-                <Link to={'/'} style={{ marginRight: '50px', textDecoration: 'none' }}><Typography sx={{color:'text.primary', '&:hover':{color:'primary.main'}}}>Problems</Typography></Link>
+                <Link to={'/ProblemtopicsPage'} style={{ marginRight: '50px', textDecoration: 'none' }}><Typography sx={{color:'text.primary', '&:hover':{color:'primary.main'}}}>Problems</Typography></Link>
                 <Link to={'/'} style={{ marginRight: '50px',textDecoration: 'none' }}><Typography sx={{color:'text.primary', '&:hover':{color:'primary.main'}}}>Contest</Typography></Link>
                 <Link to={'/'} style={{marginRight: '50px', textDecoration: 'none'}}><Typography sx={{color:'text.primary', '&:hover':{color:'primary.main'}}}>LeaderBoard</Typography></Link>
             </Box>

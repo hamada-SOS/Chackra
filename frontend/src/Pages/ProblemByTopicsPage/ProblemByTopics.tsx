@@ -23,6 +23,7 @@ const ProblemByTopics = () => {
   const location = useLocation();
   const { topic } = location.state || { topic: null };
   const [problems, setProblems] = useState<Problem[]>([]);
+  const [currentProblem, setcurrentProblem] = useState()
   const [filters, setFilters] = useState<Filters>({
     status: { solved: false, unsolved: false },
     difficulty: { veryEasy: false, easy: false, medium: false, hard: false, veryHard: false },
@@ -74,7 +75,7 @@ const ProblemByTopics = () => {
             }}>
               <Typography variant="h6">{problem.title}</Typography>
               <Typography variant="body2">Difficulty: {problem.diffculty}</Typography>
-              <Button variant="contained" sx={{ marginTop: '10px' }}>Solve</Button>
+              <Button onClick={(problem.title) => {}} variant="contained" sx={{ marginTop: '10px' }}>Solve</Button>
             </Box>
           ))}
         </Box>
