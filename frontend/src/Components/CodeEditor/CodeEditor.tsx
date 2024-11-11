@@ -90,7 +90,7 @@ const Judge0: React.FC<StyledEditorProps> = ({ themee = 'myCustomTheme' }) => {
   return (
     <Box sx={{display:'flex', flexDirection:"column"}}>
 
-    <Paper elevation={3} sx={{ background: "#d2dff3", height: '500px', ml: '30px' , padding:'10px'}}>
+    <Paper elevation={3} sx={{ background: "#d2dff3", height: '500px', ml: '15px' , padding:'10px'}}>
       <Box sx={{display:'flex', justifyContent:'space-between'}}>
         <FormControl sx={{ width: '150px', height: '60px', borderRadius: 3 }}>
           <Select
@@ -117,7 +117,7 @@ const Judge0: React.FC<StyledEditorProps> = ({ themee = 'myCustomTheme' }) => {
       <Box>
         <MonacoEditor
           height="400px"
-          width="700px"
+          width="660px"
           language={language}
           value={sourceCode}
           onChange={(value) => setSourceCode(value || "")}
@@ -126,9 +126,9 @@ const Judge0: React.FC<StyledEditorProps> = ({ themee = 'myCustomTheme' }) => {
         />
       </Box>
     </Paper>
-    <Paper elevation={3} sx={{ background: "#d2dff3", height: '500px', ml: '30px' , padding:'10px'}}>
+    <Paper elevation={3} sx={{ background: "#d2dff3", height: '500px', ml: '15px', mt:'20px' , padding:'10px'}}>
       <Box>
-        d
+        {result?.standardOutput}
       </Box>
     </Paper>
     </Box>

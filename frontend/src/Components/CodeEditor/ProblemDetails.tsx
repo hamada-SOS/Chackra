@@ -33,8 +33,8 @@ const ProblemDetials = ({ProblemID}: Props) => {
 
   return (
     <>
-    <Paper elevation={3} sx={{borderRadius:2, background:"#d2dff3"}}>
-        <Box sx={{display:'flex', flexDirection:'column', width:'550px', height:'720px', background: "#d2dff3", borderRadius:2, padding:'20px'}}>
+    <Paper elevation={3} sx={{borderRadius:2, background:"#d2dff3", ml:'10px'}}>
+        <Box sx={{display:'flex', flexDirection:'column', width:'590px', height:'720px', background: "#d2dff3", borderRadius:2, padding:'20px'}}>
             <Typography sx={{fontSize:'1.4rem', fontWeight:'bold', mb:'40px' }}>{problemsDetails?.title}</Typography>
             <Box sx={{display:'flex',width:'500px', height:"fir-content", mb:'20px'}}>
                 <Typography sx={{fontSize:'1rem' , overflow: 'hidden', whiteSpace:'normal' , wordBreak:'break-word'}}>{problemsDetails?.description}</Typography>
