@@ -14,7 +14,7 @@ const Navbar = (props: Props) => {
                 <Typography sx={{ fontWeight:'bold', fontSize:'25px'}}>FOCSA eLab</Typography> {/* add the logo */}
             </Box>
             <Box sx={{display: 'flex', justifyContent:'sp', alignItems:'center'}}>
-                <Link to={'/HomePage'} style={{ marginRight: '50px', textDecoration: 'none' }}><Typography sx={{color:'text.primary', '&:hover':{color:'primary.main'}, fontWeight:''}}>Home</Typography></Link>
+                <Link to={'/'} style={{ marginRight: '50px', textDecoration: 'none' }}><Typography sx={{color:'text.primary', '&:hover':{color:'primary.main'}, fontWeight:''}}>Home</Typography></Link>
                 <Link to={'/ProblemtopicsPage'} style={{ marginRight: '50px', textDecoration: 'none' }}><Typography sx={{color:'text.primary', '&:hover':{color:'primary.main'}}}>Problems</Typography></Link>
                 <Link to={'/'} style={{ marginRight: '50px',textDecoration: 'none' }}><Typography sx={{color:'text.primary', '&:hover':{color:'primary.main'}}}>Contest</Typography></Link>
                 <Link to={'/'} style={{marginRight: '50px', textDecoration: 'none'}}><Typography sx={{color:'text.primary', '&:hover':{color:'primary.main'}}}>LeaderBoard</Typography></Link>

@@ -12,7 +12,7 @@ namespace API.Interfaces.Problema
     {
         Task <List<Problem>> GetProblemsByCatagoryAsync(string Catagory);
         Task<List<ProblemCard>> GetProblemCardsAsync(string Catagory);
-        Task<ProblemDetail> GetProblemDetails(int ProblemID);
+        Task<ProblemDetail> GetProblemDetails(int id);
 
         
     }

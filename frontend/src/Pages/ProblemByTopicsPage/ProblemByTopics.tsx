@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Box, Typography, Button, Checkbox, FormControlLabel } from '@mui/material';
 import Navbar from '../../Components/Navbar/Navbar';
 import { Problem } from '../../Problem'; // Ensure this type is correctly defined
 import axios from 'axios';
 import { fetchProblemsByCategory } from '../../api';
+import { title } from 'process';
 
 // Define the type for difficulty levels
 type DifficultyLevel = 'veryEasy' | 'easy' | 'medium' | 'hard' | 'veryHard';
@@ -23,11 +24,12 @@ const ProblemByTopics = () => {
   const location = useLocation();
   const { topic } = location.state || { topic: null };
   const [problems, setProblems] = useState<Problem[]>([]);
-  const [currentProblem, setcurrentProblem] = useState()
   const [filters, setFilters] = useState<Filters>({
     status: { solved: false, unsolved: false },
     difficulty: { veryEasy: false, easy: false, medium: false, hard: false, veryHard: false },
   });
+  const navigate = useNavigate();
+
   
   useEffect(() => {
       const loadProblems = async () => {
@@ -45,7 +47,10 @@ const ProblemByTopics = () => {
       loadProblems();
   }, [topic]);
 
-
+  const handleSolveClick = (id: number) => {
+    // Navigate to ProblemDetails and pass the problem title via state
+    navigate(`/SolvingPage`, { state: { id } });
+  }
 
   // useEffect(() => {
   //   const fetchProblems = async () => {
@@ -75,7 +80,7 @@ const ProblemByTopics = () => {
             }}>
               <Typography variant="h6">{problem.title}</Typography>
               <Typography variant="body2">Difficulty: {problem.diffculty}</Typography>
-              <Button onClick={(problem.title) => {}} variant="contained" sx={{ marginTop: '10px' }}>Solve</Button>
+              <Button onClick={() => handleSolveClick(problem.id)} variant="contained" sx={{ marginTop: '10px' }}>Solve</Button>
             </Box>
           ))}
         </Box>

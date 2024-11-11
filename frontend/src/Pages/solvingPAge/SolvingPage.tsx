@@ -4,8 +4,9 @@ import React from 'react';
 import { Box, Typography, Paper, Tabs, Tab, TextField, Button, useTheme } from '@mui/material';
 import MonacoEditor from "@monaco-editor/react";
 import { useState } from 'react';
-import ProblemDetails from '../../Components/CodeEditor/ProblemDetails';
 import Navbar from '../../Components/Navbar/Navbar';
+import { useLocation } from 'react-router-dom';
+import ProblemDetials from '../../Components/CodeEditor/ProblemDetails';
 
 // Define props for the SolvingPage component
 // type SolvingPageProps = {
@@ -16,6 +17,8 @@ import Navbar from '../../Components/Navbar/Navbar';
 const SolvingPage = () => {
 
     const theme = useTheme();
+    const location = useLocation();
+    const { id } = location.state || { id:  null};
 
     // const [code, setCode] = useState('// Write your solution here...');
     // const [activeTab, setActiveTab] = useState(0);
@@ -30,7 +33,7 @@ const SolvingPage = () => {
             <>  
                 <Navbar/>
                 <Box sx={{display:'flex', width:'9.rem', height:'720px', background:theme.palette.background.default, padding:'10px'}}>
-                    <ProblemDetails/>
+                    <ProblemDetials ProblemID={id}/>
                 </Box>
             </>
     

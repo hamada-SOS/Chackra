@@ -17,15 +17,15 @@ export interface Problem {
   }
   
   export interface ProblemDetails {
-    id: number,
+    ProblemID: number,
     title: string,
     description:string,
     inputFormat:string,
     note:string,
     constraints:string,
-    catagory:string,
-    difficulty:string,
-    smapleInput:string,
+    // catagory:string,
+    // difficulty:string,
+    sampleInput:string,
     sampleOutput:string,
 
   }

@@ -53,15 +53,12 @@ namespace API.Mappers
         {
             return new ProblemDetail
             {
-                Id = problemModel.Id,
+                ProblemID = problemModel.ProblemID,
                 Title = problemModel.Title,
                 Description = problemModel.Description,
                 InputFormat = problemModel.InputFormat,
                 Note = problemModel.Note, 
                 Constraints = problemModel.Constraints,
-                Catagory = problemModel.Catagory,
-                Language = problemModel.Language,
-                Difficulty = problemModel.Difficulty,
                 SampleInput = problemModel.SampleInput,
                 SampleOutput = problemModel.SampleOutput
             };

@@ -8,6 +8,7 @@ import PlaygroundPage from "../Pages/PlaygroundPage/PlaygroundPage";
 import ProblemtopicsPage from "../Pages/ProblemTopicsPage/ProblemtopicsPage";
 import ProblemByTopics from "../Pages/ProblemByTopicsPage/ProblemByTopics";
 import SolvingPage from "../Pages/solvingPAge/SolvingPage";
+import ProblemDetails from "../Components/CodeEditor/ProblemDetails";
 
 export const routes = createBrowserRouter([
     {
@@ -17,10 +18,11 @@ export const routes = createBrowserRouter([
 
             {path:"fvv", element:<LoginPage/>},
             {path:"/AdminLogin", element:<AdminLogin/>},
-            {path:"SlovingPage", element:<HomePage/>},
+            {path:"/", element:<HomePage/>},
             {path:"/ProblemtopicsPage", element:<ProblemtopicsPage/>},
             {path:"/ProblemByTopics", element:<ProblemByTopics/>},
-            {path:"/", element:<SolvingPage/>},
+            {path:"/SolvingPage", element:< SolvingPage/>},
+
 
 
 

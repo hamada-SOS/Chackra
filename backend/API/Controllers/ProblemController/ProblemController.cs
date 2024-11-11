@@ -43,7 +43,7 @@ namespace API.Controllers.ProblemController
         }
 
         [HttpGet("problmesByID/{id}")]
-        public async Task<IActionResult> GetProblmeDetailsById(int id){
+        public async Task<IActionResult> GetProblmeDetailsByTitle(int id){
 
             if(!ModelState.IsValid){
                 return BadRequest(ModelState);

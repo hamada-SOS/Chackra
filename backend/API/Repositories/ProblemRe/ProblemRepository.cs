@@ -33,18 +33,19 @@ namespace API.Repositories.ProblemRe
             return ProblemCard;
         }
 
-        public async Task<ProblemDetail> GetProblemDetails(int ProblemID)
+        public async Task<ProblemDetail> GetProblemDetails(int id)
         {
             var probemDetails = await _context.Problems
-            .Where(p => p.ProblemID == ProblemID)
+            .Where(p => p.ProblemID == id)
             .Select(p => new ProblemDetail{
+                ProblemID = p.ProblemID,
                 Title = p.Title,
                 Description = p.Description,
                 InputFormat = p.InputFormat,
                 Constraints = p.Constraints,
                 SampleInput = p.SampleInput,
                 SampleOutput = p.SampleOutput,
-                Language = p.Language,
+                Note = p.Note
             })
 
             .FirstOrDefaultAsync();
