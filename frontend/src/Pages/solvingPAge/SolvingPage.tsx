@@ -7,6 +7,7 @@ import { useState } from 'react';
 import Navbar from '../../Components/Navbar/Navbar';
 import { useLocation } from 'react-router-dom';
 import ProblemDetials from '../../Components/CodeEditor/ProblemDetails';
+import Judge0 from '../../Components/CodeEditor/CodeEditor';
 
 // Define props for the SolvingPage component
 // type SolvingPageProps = {
@@ -32,8 +33,9 @@ const SolvingPage = () => {
         return (
             <>  
                 <Navbar/>
-                <Box sx={{display:'flex', width:'9.rem', height:'720px', background:theme.palette.background.default, padding:'10px'}}>
+                <Box sx={{display:'flex', width:'9.rem', height:'900px', background:theme.palette.background.default, padding:'10px'}}>
                     <ProblemDetials ProblemID={id}/>
+                    <Judge0 />
                 </Box>
             </>
     

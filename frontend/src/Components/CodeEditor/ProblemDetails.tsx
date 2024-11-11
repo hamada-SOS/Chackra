@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from '@mui/material'
+import { Box, Paper, Typography, useTheme } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
@@ -13,10 +13,6 @@ const ProblemDetials = ({ProblemID}: Props) => {
 
     const theme = useTheme();
     const [problemsDetails, setProblemsDetails] = useState<ProblemDetails>();
-
-    // const location = useLocation();
-    // const { problemTitle } = location.state || { problemTitle: "Default Problem" }; // Default value in case the state is undefined
-
 
     useEffect(() => {
         const loadProblemDetails = async () => {
@@ -37,6 +33,7 @@ const ProblemDetials = ({ProblemID}: Props) => {
 
   return (
     <>
+    <Paper elevation={3} sx={{borderRadius:2, background:"#d2dff3"}}>
         <Box sx={{display:'flex', flexDirection:'column', width:'550px', height:'720px', background: "#d2dff3", borderRadius:2, padding:'20px'}}>
             <Typography sx={{fontSize:'1.4rem', fontWeight:'bold', mb:'40px' }}>{problemsDetails?.title}</Typography>
             <Box sx={{display:'flex',width:'500px', height:"fir-content", mb:'20px'}}>
@@ -65,6 +62,7 @@ const ProblemDetials = ({ProblemID}: Props) => {
                     {problemsDetails?.inputFormat}
             </Box>
         </Box>
+    </Paper>
     </>
   )
 }
