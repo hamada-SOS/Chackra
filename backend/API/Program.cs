@@ -4,6 +4,7 @@ using API.Data;
 using API.Interfaces;
 using API.Interfaces.Account;
 using API.Interfaces.Problema;
+using API.Interfaces.testcase;
 using API.Models;
 using API.Repositories.ProblemRe;
 using API.Repositories.Student;
@@ -95,6 +96,8 @@ internal class Program
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddScoped<IStudentRepository, StudentRepository>();
         builder.Services.AddScoped<IProblemRepository, ProblemRepository>();
+        builder.Services.AddScoped<ITestCases, TestCaseRepository>();
+
 
         var app = builder.Build();
         // app.UseWebSockets();

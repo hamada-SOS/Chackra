@@ -18,7 +18,7 @@ namespace API.Mappers
                 Description = problemModel.Description,
                 Domain = problemModel.Domain,
                 InputFormat = problemModel.InputFormat,
-                Note = problemModel.Note, 
+                Note = problemModel.Note,
                 Constraints = problemModel.Constraints,
                 Catagory = problemModel.Catagory,
                 Language = problemModel.Language,
@@ -26,12 +26,7 @@ namespace API.Mappers
                 SampleInput = problemModel.SampleInput,
                 SampleOutput = problemModel.SampleOutput
             };
-
         }
-
-
-
-
 
         public static ProblemCard ToProblemCardDto(this ProblemCard problemModel)
         {
@@ -41,13 +36,17 @@ namespace API.Mappers
                 Title = problemModel.Title,
                 Diffculty = problemModel.Diffculty
             };
-
         }
 
-
-
-
-
+        public static TestCaseDTO ToTestCaseDTO(this TestCase testCaseModel)
+        {
+            return new TestCaseDTO
+            {
+                TestCaseID = testCaseModel.TestCaseID,
+                Input = testCaseModel.Input,
+                ExpectedOutput = testCaseModel.ExpectedOutput
+            };
+        }
 
         public static ProblemDetail ToProblemDetailDto(this ProblemDetail problemModel)
         {
@@ -57,13 +56,16 @@ namespace API.Mappers
                 Title = problemModel.Title,
                 Description = problemModel.Description,
                 InputFormat = problemModel.InputFormat,
-                Note = problemModel.Note, 
+                Note = problemModel.Note,
                 Constraints = problemModel.Constraints,
                 SampleInput = problemModel.SampleInput,
-                SampleOutput = problemModel.SampleOutput
+                SampleOutput = problemModel.SampleOutput,
+                
+
+                // TestCases = problemModel.TestCases?
+                //     .Select(tc => tc.ToTestCaseDTO())
+                //     .ToList() // Maps each TestCase to TestCaseDTO and includes in ProblemDetail
             };
-
         }
-
     }
 }

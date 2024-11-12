@@ -20,7 +20,7 @@ namespace API.Data
         public DbSet<PreRegisteredTeacher> PreRegisteredTeachers { get; set; } // Add this line
         public DbSet<Problem> Problems { get; set; }
        
-        
+        public DbSet<TestCase> TestCases {get; set;}
         public DbSet<Submission> Submissions { get; set; }
         public DbSet<Leaderboard> Leaderboards { get; set; }
         public DbSet<CompetitiveRoom> CompetitiveRooms { get; set; }
