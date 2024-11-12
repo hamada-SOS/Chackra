@@ -38,7 +38,7 @@ namespace API.Repositories.ProblemRe
         {
             var problemDetails = await _context.Problems
                 // .Include(p => p.TestCases) // Ensures TestCases are loaded
-                .Where(p => p.ProblemID == id)
+                .Where(p => p.ProblemID == id).Include(p => p.TestCases)
                 .Select(p => new ProblemDetail
                 {
                     ProblemID = p.ProblemID,
@@ -48,14 +48,8 @@ namespace API.Repositories.ProblemRe
                     Constraints = p.Constraints,
                     SampleInput = p.SampleInput,
                     SampleOutput = p.SampleOutput,
-                    Note = p.Note
-                //     TestCases = p.TestCases.ToList()
-                //     // TestCases = p.TestCases.Select(tc => new TestCaseDTO
-                //     // {
-                //     //     TestCaseID = tc.TestCaseID,
-                //     //     Input = tc.Input,
-                //     //     ExpectedOutput = tc.ExpectedOutput
-                //     // }).ToList()
+                    Note = p.Note,
+                    TestCases = p.TestCases.Where(tc => tc.ProblemID == id).ToList()
                 })
                 .FirstOrDefaultAsync();
 

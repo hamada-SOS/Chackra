@@ -21,6 +21,7 @@ namespace API.Models
         public string SampleOutput { get; set; } // TEXT
 
         // Navigation Properties
+        public ICollection<TestCase> TestCases { get; set; } // Collection of test cases for this problem
         public ICollection<Room_Problem> RoomProblems { get; set; }
         public ICollection<Submission> Submissions { get; set; }
     }

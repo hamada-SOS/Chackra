@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Models;
 
 namespace API.Dtos.Problemea
 {
@@ -15,5 +16,7 @@ namespace API.Dtos.Problemea
         public string Constraints { get; set; }
         public string SampleInput { get; set; } // TEXT
         public string SampleOutput { get; set; } // TEXT
+        public List<TestCase> TestCases { get; set; }
+
     }
 }

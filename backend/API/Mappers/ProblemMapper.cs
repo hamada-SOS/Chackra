@@ -60,11 +60,7 @@ namespace API.Mappers
                 Constraints = problemModel.Constraints,
                 SampleInput = problemModel.SampleInput,
                 SampleOutput = problemModel.SampleOutput,
-                
-
-                // TestCases = problemModel.TestCases?
-                //     .Select(tc => tc.ToTestCaseDTO())
-                //     .ToList() // Maps each TestCase to TestCaseDTO and includes in ProblemDetail
+                TestCases = problemModel.TestCases,
             };
         }
     }
