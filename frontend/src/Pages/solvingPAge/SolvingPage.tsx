@@ -46,7 +46,7 @@ const SolvingPage = () => {
         loadProblemDetails();
     }, []);
 
-    console.log(problemsDetails?.testCases)
+    // console.log(problemsDetails?.testCases)
 
     // const [code, setCode] = useState('// Write your solution here...');
     // const [activeTab, setActiveTab] = useState(0);
@@ -62,7 +62,7 @@ const SolvingPage = () => {
                 <Navbar/>
                 <Box sx={{display:'flex', width:'9.rem', height:'900px', background:theme.palette.background.default, padding:'10px'}}>
                     <ProblemDetials ProblemDetails={problemsDetails}/>
-                    <Judge0 TetsCases={problemsDetails?.testCases}/>
+                    <Judge0 TestCases={problemsDetails?.testCases}/>
                 </Box>
             </>
     

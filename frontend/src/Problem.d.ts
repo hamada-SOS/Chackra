@@ -15,6 +15,13 @@ export interface Problem {
     status: string;
     message?: string;
   }
+
+  interface TestCase {
+    problemID:number
+    testCaseID: number;
+    input: string;
+    expectedOutput: string;
+  }
   
   export interface ProblemDetails {
     ProblemID: number,
@@ -27,6 +34,6 @@ export interface Problem {
     // difficulty:string,
     sampleInput:string,
     sampleOutput:string,
-    testCases:string[]
+    testCases:TestCase[]
 
   }

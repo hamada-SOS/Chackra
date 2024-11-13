@@ -1,11 +1,22 @@
 import React, { useState } from "react";
 import axios from "axios";
 import MonacoEditor from "@monaco-editor/react";
-import { Paper, Box, Button, FormControl, Select, MenuItem, SelectChangeEvent, Tabs, Typography } from "@mui/material"; // Note SelectChangeEvent import
-import { defaultCodeSnippets } from "../../defaultCodeSnippets";
-import Tab from '@mui/material/Tab';
+import {
+  Paper,
+  Box,
+  Button,
+  FormControl,
+  Select,
+  MenuItem,
+  Tabs,
+  Typography,
+  SelectChangeEvent,
+  useTheme,
+} from "@mui/material";
+import Tab from "@mui/material/Tab";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { ProblemDetails } from "../../Problem";
+import { defaultCodeSnippets } from "../../defaultCodeSnippets";
+import { ProblemDetails, TestCase } from "../../Problem";
 
 interface SubmissionResult {
   standardOutput: string;
@@ -13,29 +24,23 @@ interface SubmissionResult {
   time: string;
 }
 
-interface StyledEditorProps {
-  themee?: string;
-    TetsCases:ProblemDetails[]
-
-
+interface Props {
+  TestCases?: TestCase[];
 }
 
-interface Props{
-  TetsCases:string[] | undefined;
-}
-
-
-
-const Judge0: React.FC<Props> = (TestCases:Props ) => {
+const Judge0: React.FC<Props> = ({ TestCases }) => {
   const [sourceCode, setSourceCode] = useState<string>(defaultCodeSnippets.python);
   const [language, setLanguage] = useState<string>("python");
   const [languageId, setLanguageId] = useState<number>(71); // Default to Python 3
   const [stdin, setStdin] = useState<string>("");
-  const [selected, setSelected] = useState('1');
+  const [selectedTab, setSelectedTab] = useState("1");
   const [result, setResult] = useState<SubmissionResult | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [currentTestCaseIndex, setCurrentTestCaseIndex] = useState(0)
+  const [selectedTestCaseIndex, setSelectedTestCaseIndex] = useState<number>(0);
 
-  // Adjust the type of event to SelectChangeEvent
+  const theme = useTheme();
+
   const handleLanguageChange = (event: SelectChangeEvent<string>) => {
     const selectedLanguage = event.target.value as string;
     setLanguage(selectedLanguage);
@@ -49,11 +54,9 @@ const Judge0: React.FC<Props> = (TestCases:Props ) => {
     setLanguageId(languageIds[selectedLanguage]);
   };
 
-  // tabs satat
-
-  const handleTabChange = (event: React.SyntheticEvent, newValue:string) => {
-        setSelected(newValue);
-  }
+  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+    setSelectedTab(newValue);
+  };
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -61,7 +64,7 @@ const Judge0: React.FC<Props> = (TestCases:Props ) => {
 
     try {
       const { data: submission } = await axios.post("http://localhost:5149/api/Judge/submit", {
-        sourceCode: sourceCode,
+        sourceCode,
         LanguageId: languageId,
         StandardInput: stdin,
       });
@@ -105,84 +108,128 @@ const Judge0: React.FC<Props> = (TestCases:Props ) => {
     });
   };
 
+  // const handleNextClick = () => {
+  //   if (TestCases && TestCases.length > 0) {
+  //     setCurrentTestCaseIndex((prevIndex) => (prevIndex + 1) % TestCases.length);
+      
+  //   }
+  // };
 
-
-
-
-
-
-
+  const handleTestCaseClick = (index: number) => {
+    setSelectedTestCaseIndex(index);
+  };
+  
 
   return (
-    <Box sx={{display:'flex', flexDirection:"column"}}>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Paper elevation={3} sx={{ background: "#d2dff3", height: "500px", ml: "15px", padding: "10px" }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <FormControl sx={{ width: "150px", height: "60px", borderRadius: 3 }}>
+            <Select
+              value={language}
+              onChange={handleLanguageChange}
+              sx={{ width: "150px", height: "50px" }}
+            >
+              <MenuItem value="python">Python</MenuItem>
+              <MenuItem value="java">Java</MenuItem>
+              <MenuItem value="cpp">C++</MenuItem>
+            </Select>
+          </FormControl>
 
-    <Paper elevation={3} sx={{ background: "#d2dff3", height: '500px', ml: '15px' , padding:'10px'}}>
-      <Box sx={{display:'flex', justifyContent:'space-between'}}>
-        <FormControl sx={{ width: '150px', height: '60px', borderRadius: 3 }}>
-          <Select
-            value={language}
-            onChange={handleLanguageChange} // Correctly typed here
-            sx={{ width: '150px', height: '50px' }}
+          <Button
+            variant="contained"
+            disableElevation
+            sx={{ width: "110px", height: "50px" }}
+            onClick={handleSubmit}
           >
-            <MenuItem value="python">Python</MenuItem>
-            <MenuItem value="java">Java</MenuItem>
-            <MenuItem value="cpp">C++</MenuItem>
-          </Select>
-        </FormControl>
-
-        <Button
-          variant="contained"
-          disableElevation
-          sx={{ width: '110px', height: '50px' }}
-          onClick={handleSubmit}
-        >
-          {loading ? "Running..." : "Run Code"}
-        </Button>
-      </Box>
-
-      <Box>
-        <MonacoEditor
-          height="400px"
-          width="660px"
-          language={language}
-          value={sourceCode}
-          onChange={(value) => setSourceCode(value || "")}
-          theme="myCustomTheme"
-          beforeMount={beforeMount}
-        />
-      </Box>
-    </Paper>
-    <Paper elevation={3} sx={{ background: "#d2dff3", height: '500px', ml: '15px', mt:'20px' , padding:'10px'}}>
-      <TabContext value={selected}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <TabList aria-label="Tabs Example" onChange={handleTabChange}>
-          <Tab label='Test Cases' value={'1'}/>
-          <Tab label='Test Results' value={'2'}/>
-        </TabList>
-      </Box>
-
-
-
-      <TabPanel value={'1'}>
-        <Box>
-          <Button variant="outlined" sx={{mr:'6px'}}>case 1</Button>
-          <Box sx={{margin:'20px', display:'flex', flexDirection:'column'}}>
-            <Typography>Input: </Typography>
-            <Box sx={{background:'grey', width:'fit', height:'30px', mt:'20px', display:'flex', alignItems:'center', padding:'10px', borderRadius:2}}>
-              2347289
-            </Box>
-            <Typography>Expected Output: </Typography>
-            <Box sx={{background:'grey', width:'fit', height:'30px', mt:'20px', display:'flex', alignItems:'center', padding:'10px', borderRadius:2}}>
-              2347289
-            </Box>
-          </Box>
+            {loading ? "Running..." : "Run Code"}
+          </Button>
         </Box>
-      </TabPanel>
 
+        <Box>
+          <MonacoEditor
+            height="400px"
+            width="660px"
+            language={language}
+            value={sourceCode}
+            onChange={(value) => setSourceCode(value || "")}
+            theme="myCustomTheme"
+            beforeMount={beforeMount}
+          />
+        </Box>
+      </Paper>
 
+      <Paper elevation={3} sx={{ background: "#d2dff3", height: "500px", ml: "15px", mt: "20px", padding: "10px" }}>
+        <TabContext value={selectedTab}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <TabList aria-label="Tabs Example" onChange={handleTabChange}>
+              <Tab label="Test Cases" value="1" />
+              <Tab label="Test Results" value="2" />
+            </TabList>
+          </Box>
 
-      </TabContext>
-    </Paper>
+          {/* // Mapping buttons for each test case to allow switching between them. */}
+          <TabPanel value={'1'}>
+
+              {TestCases && TestCases.length > 0 && (
+                <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+                  {TestCases.map((_, index) => (
+                    <Button
+                      key={index}
+                      variant={selectedTestCaseIndex === index ? 'contained' : 'outlined'}
+                      onClick={() => handleTestCaseClick(index)}
+                    >
+                      {`Case ${index + 1}`}
+                    </Button>
+                  ))}
+                </Box>
+              )}
+
+              {/* // Displaying the information of the selected test case */}
+              {TestCases && TestCases.length > 0 ? (
+                
+                <Box sx={{ margin: '20px', display: 'flex', flexDirection: 'column' }}>
+                  <Typography>Input:</Typography>
+                  <Box
+                    sx={{
+                      background:theme.palette.background.default,
+                      width: 'fit',
+                      height: '30px',
+                      mt: '20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '10px',
+                      borderRadius: 2,
+                    }}
+                  >
+                    {TestCases[selectedTestCaseIndex].input}
+                  </Box>
+
+                  <Typography>Expected Output:</Typography>
+                  <Box
+                    sx={{
+                      background:theme.palette.background.default,
+                      width: 'fit',
+                      height: '30px',
+                      mt: '20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '10px',
+                      borderRadius: 2,
+                    }}
+                    >
+                    {TestCases[selectedTestCaseIndex].expectedOutput}
+                  </Box>
+                </Box>
+              ) : (
+                <Typography>No test cases available.</Typography>
+              )}
+
+              </TabPanel>
+              <TabPanel value={'2'}> the test panel</TabPanel>
+
+        </TabContext>
+      </Paper>
     </Box>
   );
 };
