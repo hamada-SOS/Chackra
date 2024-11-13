@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import MonacoEditor from "@monaco-editor/react";
-import { Paper, Box, Button, FormControl, Select, MenuItem, SelectChangeEvent } from "@mui/material"; // Note SelectChangeEvent import
+import { Paper, Box, Button, FormControl, Select, MenuItem, SelectChangeEvent, Tabs, Typography } from "@mui/material"; // Note SelectChangeEvent import
 import { defaultCodeSnippets } from "../../defaultCodeSnippets";
+import Tab from '@mui/material/Tab';
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+import { ProblemDetails } from "../../Problem";
 
 interface SubmissionResult {
   standardOutput: string;
@@ -12,13 +15,23 @@ interface SubmissionResult {
 
 interface StyledEditorProps {
   themee?: string;
+    TetsCases:ProblemDetails[]
+
+
 }
 
-const Judge0: React.FC<StyledEditorProps> = ({ themee = 'myCustomTheme' }) => {
+interface Props{
+  TetsCases:string[] | undefined;
+}
+
+
+
+const Judge0: React.FC<Props> = (TestCases:Props ) => {
   const [sourceCode, setSourceCode] = useState<string>(defaultCodeSnippets.python);
   const [language, setLanguage] = useState<string>("python");
   const [languageId, setLanguageId] = useState<number>(71); // Default to Python 3
   const [stdin, setStdin] = useState<string>("");
+  const [selected, setSelected] = useState('1');
   const [result, setResult] = useState<SubmissionResult | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -27,7 +40,6 @@ const Judge0: React.FC<StyledEditorProps> = ({ themee = 'myCustomTheme' }) => {
     const selectedLanguage = event.target.value as string;
     setLanguage(selectedLanguage);
     setSourceCode(defaultCodeSnippets[selectedLanguage]);
-    
     // Set languageId based on selected language
     const languageIds: { [key: string]: number } = {
       python: 71,
@@ -36,6 +48,12 @@ const Judge0: React.FC<StyledEditorProps> = ({ themee = 'myCustomTheme' }) => {
     };
     setLanguageId(languageIds[selectedLanguage]);
   };
+
+  // tabs satat
+
+  const handleTabChange = (event: React.SyntheticEvent, newValue:string) => {
+        setSelected(newValue);
+  }
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -87,6 +105,14 @@ const Judge0: React.FC<StyledEditorProps> = ({ themee = 'myCustomTheme' }) => {
     });
   };
 
+
+
+
+
+
+
+
+
   return (
     <Box sx={{display:'flex', flexDirection:"column"}}>
 
@@ -127,9 +153,35 @@ const Judge0: React.FC<StyledEditorProps> = ({ themee = 'myCustomTheme' }) => {
       </Box>
     </Paper>
     <Paper elevation={3} sx={{ background: "#d2dff3", height: '500px', ml: '15px', mt:'20px' , padding:'10px'}}>
-      <Box>
-        {result?.standardOutput}
+      <TabContext value={selected}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <TabList aria-label="Tabs Example" onChange={handleTabChange}>
+          <Tab label='Test Cases' value={'1'}/>
+          <Tab label='Test Results' value={'2'}/>
+        </TabList>
       </Box>
+
+
+
+      <TabPanel value={'1'}>
+        <Box>
+          <Button variant="outlined" sx={{mr:'6px'}}>case 1</Button>
+          <Box sx={{margin:'20px', display:'flex', flexDirection:'column'}}>
+            <Typography>Input: </Typography>
+            <Box sx={{background:'grey', width:'fit', height:'30px', mt:'20px', display:'flex', alignItems:'center', padding:'10px', borderRadius:2}}>
+              2347289
+            </Box>
+            <Typography>Expected Output: </Typography>
+            <Box sx={{background:'grey', width:'fit', height:'30px', mt:'20px', display:'flex', alignItems:'center', padding:'10px', borderRadius:2}}>
+              2347289
+            </Box>
+          </Box>
+        </Box>
+      </TabPanel>
+
+
+
+      </TabContext>
     </Paper>
     </Box>
   );

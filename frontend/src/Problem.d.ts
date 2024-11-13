@@ -27,5 +27,6 @@ export interface Problem {
     // difficulty:string,
     sampleInput:string,
     sampleOutput:string,
+    testCases:string[]
 
   }

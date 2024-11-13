@@ -1,6 +1,6 @@
 // SolvingPage.tsx
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Typography, Paper, Tabs, Tab, TextField, Button, useTheme } from '@mui/material';
 import MonacoEditor from "@monaco-editor/react";
 import { useState } from 'react';
@@ -8,18 +8,45 @@ import Navbar from '../../Components/Navbar/Navbar';
 import { useLocation } from 'react-router-dom';
 import ProblemDetials from '../../Components/CodeEditor/ProblemDetails';
 import Judge0 from '../../Components/CodeEditor/CodeEditor';
+import { ProblemDetails } from '../../Problem';
+import { fetchProblemDetails } from '../../api';
 
 // Define props for the SolvingPage component
 // type SolvingPageProps = {
 //     problemID: number
 // };
 
-// const SolvingPage: React.FC<SolvingPageProps> = ({ problemID }) => {
+
 const SolvingPage = () => {
 
+
+    const [problemsDetails, setProblemsDetails] = useState<ProblemDetails>();
     const theme = useTheme();
     const location = useLocation();
     const { id } = location.state || { id:  null};
+
+
+
+
+
+    useEffect(() => {
+        const loadProblemDetails = async () => {
+            if (!id) return;
+    
+            try {
+                const problemmDetails = await fetchProblemDetails(id);
+                setProblemsDetails(problemmDetails);
+                
+            } catch (error) {
+                console.error('Error loading problems:', error);
+            } finally {
+            }
+        };
+    
+        loadProblemDetails();
+    }, []);
+
+    console.log(problemsDetails?.testCases)
 
     // const [code, setCode] = useState('// Write your solution here...');
     // const [activeTab, setActiveTab] = useState(0);
@@ -34,8 +61,8 @@ const SolvingPage = () => {
             <>  
                 <Navbar/>
                 <Box sx={{display:'flex', width:'9.rem', height:'900px', background:theme.palette.background.default, padding:'10px'}}>
-                    <ProblemDetials ProblemID={id}/>
-                    <Judge0 />
+                    <ProblemDetials ProblemDetails={problemsDetails}/>
+                    <Judge0 TetsCases={problemsDetails?.testCases}/>
                 </Box>
             </>
     
