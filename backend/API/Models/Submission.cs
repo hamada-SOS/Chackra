@@ -17,6 +17,7 @@ namespace API.Models
         public DateTime SubmissionDate { get; set; }
         public string Code { get; set; } // TEXT
         public string Language { get; set; } // VARCHAR(20)
+        public int LanguageId {get;set;}
         public string Result { get; set; } // VARCHAR(50)
         public decimal ExecutionTime { get; set; } // DECIMAL(5,2)
         public decimal MemoryUsed { get; set; } // DECIMAL(8,2)

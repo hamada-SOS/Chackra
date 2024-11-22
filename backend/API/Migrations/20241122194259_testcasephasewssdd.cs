@@ -5,25 +5,25 @@
 namespace API.Migrations
 {
     /// <inheritdoc />
-    public partial class problemUpdatesss : Migration
+    public partial class testcasephasewssdd : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Domain",
-                table: "Problems",
-                type: "longtext",
-                nullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4");
+            migrationBuilder.AddColumn<int>(
+                name: "LanguageId",
+                table: "Submissions",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Domain",
-                table: "Problems");
+                name: "LanguageId",
+                table: "Submissions");
         }
     }
 }

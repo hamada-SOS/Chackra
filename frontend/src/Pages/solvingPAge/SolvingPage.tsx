@@ -62,7 +62,7 @@ const SolvingPage = () => {
                 <Navbar/>
                 <Box sx={{display:'flex', width:'9.rem', height:'900px', background:theme.palette.background.default, padding:'10px'}}>
                     <ProblemDetials ProblemDetails={problemsDetails}/>
-                    <Judge0 TestCases={problemsDetails?.testCases}/>
+                    <Judge0 TestCases={problemsDetails?.testCases} ProblemDetails={problemsDetails}/>
                 </Box>
             </>
     

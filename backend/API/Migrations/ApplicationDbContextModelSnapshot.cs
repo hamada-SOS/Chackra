@@ -215,6 +215,9 @@ namespace API.Migrations
                     b.Property<string>("Constraints")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("DefualtCode")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
 
@@ -224,6 +227,9 @@ namespace API.Migrations
                     b.Property<string>("Domain")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("FunctionSignature")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("InputFormat")
                         .HasColumnType("longtext");
 
@@ -231,12 +237,6 @@ namespace API.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Note")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("SampleInput")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("SampleOutput")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Title")
@@ -282,6 +282,9 @@ namespace API.Migrations
                     b.Property<string>("Language")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("MemoryUsed")
                         .HasColumnType("decimal(65,30)");
 
@@ -307,6 +310,33 @@ namespace API.Migrations
                     b.HasIndex("StudentID");
 
                     b.ToTable("Submissions");
+                });
+
+            modelBuilder.Entity("API.Models.TestCase", b =>
+                {
+                    b.Property<int>("TestCaseID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("TestCaseID"));
+
+                    b.Property<string>("ExpectedOutput")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Input")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("ProblemID")
+                        .HasColumnType("int");
+
+                    b.HasKey("TestCaseID");
+
+                    b.HasIndex("ProblemID");
+
+                    b.ToTable("TestCases");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -503,6 +533,17 @@ namespace API.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("API.Models.TestCase", b =>
+                {
+                    b.HasOne("API.Models.Problem", "Problem")
+                        .WithMany("TestCases")
+                        .HasForeignKey("ProblemID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Problem");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -573,6 +614,8 @@ namespace API.Migrations
                     b.Navigation("RoomProblems");
 
                     b.Navigation("Submissions");
+
+                    b.Navigation("TestCases");
                 });
 #pragma warning restore 612, 618
         }

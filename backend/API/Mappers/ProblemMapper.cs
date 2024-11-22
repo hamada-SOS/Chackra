@@ -23,8 +23,9 @@ namespace API.Mappers
                 Catagory = problemModel.Catagory,
                 Language = problemModel.Language,
                 Difficulty = problemModel.Difficulty,
-                SampleInput = problemModel.SampleInput,
-                SampleOutput = problemModel.SampleOutput
+                DefualtCode = problemModel.DefualtCode,
+                FunctionSignature = problemModel.FunctionSignature
+
             };
         }
 
@@ -58,8 +59,6 @@ namespace API.Mappers
                 InputFormat = problemModel.InputFormat,
                 Note = problemModel.Note,
                 Constraints = problemModel.Constraints,
-                SampleInput = problemModel.SampleInput,
-                SampleOutput = problemModel.SampleOutput,
                 TestCases = problemModel.TestCases,
             };
         }

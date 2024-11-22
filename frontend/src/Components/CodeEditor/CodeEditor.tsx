@@ -26,11 +26,14 @@ interface SubmissionResult {
 
 interface Props {
   TestCases?: TestCase[];
+  ProblemDetails:ProblemDetails | undefined;
+
 }
 
-const Judge0: React.FC<Props> = ({ TestCases }) => {
+const Judge0: React.FC<Props> = ({ TestCases, ProblemDetails }) => {
   const [sourceCode, setSourceCode] = useState<string>(defaultCodeSnippets.python);
   const [language, setLanguage] = useState<string>("python");
+  const [setcode, setsetcode] = useState<string>('')
   const [languageId, setLanguageId] = useState<number>(71); // Default to Python 3
   const [stdin, setStdin] = useState<string>("");
   const [selectedTab, setSelectedTab] = useState("1");

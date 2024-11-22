@@ -30,6 +30,7 @@ export interface Problem {
     inputFormat:string,
     note:string,
     constraints:string,
+    DefaultCode:string,
     // catagory:string,
     // difficulty:string,
     sampleInput:string,

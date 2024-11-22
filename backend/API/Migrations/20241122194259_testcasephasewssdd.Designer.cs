@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241112175602_tastecasesTss")]
-    partial class tastecasesTss
+    [Migration("20241122194259_testcasephasewssdd")]
+    partial class testcasephasewssdd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -218,6 +218,9 @@ namespace API.Migrations
                     b.Property<string>("Constraints")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("DefualtCode")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
 
@@ -227,6 +230,9 @@ namespace API.Migrations
                     b.Property<string>("Domain")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("FunctionSignature")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("InputFormat")
                         .HasColumnType("longtext");
 
@@ -234,12 +240,6 @@ namespace API.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Note")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("SampleInput")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("SampleOutput")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Title")
@@ -285,6 +285,9 @@ namespace API.Migrations
                     b.Property<string>("Language")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("MemoryUsed")
                         .HasColumnType("decimal(65,30)");
 
@@ -325,6 +328,9 @@ namespace API.Migrations
 
                     b.Property<string>("Input")
                         .HasColumnType("longtext");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("ProblemID")
                         .HasColumnType("int");

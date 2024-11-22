@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241025180423_problemUpdatess")]
-    partial class problemUpdatess
+    [Migration("20241122185540_testcasephasewssd")]
+    partial class testcasephasewssd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -218,8 +218,8 @@ namespace API.Migrations
                     b.Property<string>("Constraints")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("CreatorId")
-                        .HasColumnType("varchar(255)");
+                    b.Property<string>("DefualtCode")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
@@ -227,7 +227,10 @@ namespace API.Migrations
                     b.Property<string>("Difficulty")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Example")
+                    b.Property<string>("Domain")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("FunctionSignature")
                         .HasColumnType("longtext");
 
                     b.Property<string>("InputFormat")
@@ -239,18 +242,10 @@ namespace API.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("SampleInput")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("SampleOutput")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Title")
                         .HasColumnType("longtext");
 
                     b.HasKey("ProblemID");
-
-                    b.HasIndex("CreatorId");
 
                     b.ToTable("Problems");
                 });
@@ -315,6 +310,33 @@ namespace API.Migrations
                     b.HasIndex("StudentID");
 
                     b.ToTable("Submissions");
+                });
+
+            modelBuilder.Entity("API.Models.TestCase", b =>
+                {
+                    b.Property<int>("TestCaseID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("TestCaseID"));
+
+                    b.Property<string>("ExpectedOutput")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Input")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("ProblemID")
+                        .HasColumnType("int");
+
+                    b.HasKey("TestCaseID");
+
+                    b.HasIndex("ProblemID");
+
+                    b.ToTable("TestCases");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -475,15 +497,6 @@ namespace API.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("API.Models.Problem", b =>
-                {
-                    b.HasOne("API.Models.ApplicationUser", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId");
-
-                    b.Navigation("Creator");
-                });
-
             modelBuilder.Entity("API.Models.Room_Problem", b =>
                 {
                     b.HasOne("API.Models.Problem", "Problem")
@@ -518,6 +531,17 @@ namespace API.Migrations
                     b.Navigation("Problem");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("API.Models.TestCase", b =>
+                {
+                    b.HasOne("API.Models.Problem", "Problem")
+                        .WithMany("TestCases")
+                        .HasForeignKey("ProblemID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Problem");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -590,6 +614,8 @@ namespace API.Migrations
                     b.Navigation("RoomProblems");
 
                     b.Navigation("Submissions");
+
+                    b.Navigation("TestCases");
                 });
 #pragma warning restore 612, 618
         }
