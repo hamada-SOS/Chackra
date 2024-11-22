@@ -64,9 +64,8 @@ const Judge0: React.FC<Props> = ({ TestCases }) => {
 
     try {
       const { data: submission } = await axios.post("http://localhost:5149/api/Judge/submit", {
-        sourceCode,
+        sourceCode:sourceCode,
         LanguageId: languageId,
-        StandardInput: stdin,
       });
 
       const token = submission.token;
@@ -219,6 +218,22 @@ const Judge0: React.FC<Props> = ({ TestCases }) => {
                     }}
                     >
                     {TestCases[selectedTestCaseIndex].expectedOutput}
+
+                  </Box>
+                  <Box
+                    sx={{
+                      background:theme.palette.background.default,
+                      width: 'fit',
+                      height: '30px',
+                      mt: '20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '10px',
+                      borderRadius: 2,
+                    }}
+                    >
+                    {result?.standardOutput}
+                    
                   </Box>
                 </Box>
               ) : (
