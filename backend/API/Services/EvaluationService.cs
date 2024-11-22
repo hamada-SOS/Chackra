@@ -34,13 +34,13 @@ namespace API.Services
                 );
 
                 // Compare actual output with expected output
-                bool isPassed = executionResult.Output.Trim() == testCase.ExpectedOutput.Trim();
+                bool isPassed = executionResult.Stdout.Trim() == testCase.ExpectedOutput.Trim();
 
                 evaluationResults.Add(new TestCaseResultDto
                 {
                     Input = testCase.Input,
                     ExpectedOutput = testCase.ExpectedOutput,
-                    ActualOutput = executionResult.Output,
+                    ActualOutput = executionResult.Stdout,
                     Passed = isPassed
                 });
             }

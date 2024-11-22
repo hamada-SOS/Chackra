@@ -96,14 +96,14 @@ internal class Program
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddScoped<IStudentRepository, StudentRepository>();
         builder.Services.AddScoped<IProblemRepository, ProblemRepository>();
-        builder.Services.AddScoped<ITestCases, TestCaseRepository>();
+        builder.Services.AddScoped<ITestCaseRepository, TestCaseRepository>();
 
         builder.Services.AddHttpClient("Judge0", client =>
         {
             client.BaseAddress = new Uri(builder.Configuration["Judge0:BaseUrl"]);
             client.DefaultRequestHeaders.Add("Accept", "application/json");
         });
-        
+
 // .AddTransientHttpErrorPolicy(policyBuilder =>
 //     policyBuilder.WaitAndRetryAsync(
 //         3, // Number of retries

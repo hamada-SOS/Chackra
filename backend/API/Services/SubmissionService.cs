@@ -2,19 +2,20 @@ using API.Dtos.Problemea.Submission;
 using API.Interfaces.Excution;
 using API.Interfaces.Problema;
 using API.Interfaces.Submission;
+using API.Interfaces.testcase;
 using API.Models;
 using static API.Dtos.Problemea.Submission.SubmissionResultDto;
 
 public class SubmissionService : ISubmissionService
 {
     private readonly IProblemRepository _problemRepository;
-    private readonly ITestCaseService _testCaseService;
+    private readonly ITestCaseRepository _testCaseService;
     private readonly IExecutionService _executionService;
     private readonly ISubmissionRepository _submissionRepository;
 
     public SubmissionService(
         IProblemRepository problemRepository,
-        ITestCaseService testCaseService,
+        ITestCaseRepository testCaseService,
         IExecutionService executionService,
         ISubmissionRepository submissionRepository)
     {
@@ -46,13 +47,13 @@ public class SubmissionService : ISubmissionService
                 request.LanguageId
             );
 
-            var passed = executionResult.Output == testCase.ExpectedOutput;
+            var passed = executionResult.Stdout == testCase.ExpectedOutput;
             if (!passed) allPassed = false;
 
             results.Add(new TestCaseResult
             {
                 Input = testCase.Input,
-                Output = executionResult.Output,
+                Output = executionResult.Stdout,
                 ExpectedOutput = testCase.ExpectedOutput,
                 Passed = passed
             });
