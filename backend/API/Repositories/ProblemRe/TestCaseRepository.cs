@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories.ProblemRe
 {
-    public class TestCaseRepository : ITestCases
+    public class TestCaseRepository : ITestCaseRepository
     {
         private readonly ApplicationDbContext _context;
         public TestCaseRepository(ApplicationDbContext applicationDbContext)
@@ -46,6 +46,13 @@ namespace API.Repositories.ProblemRe
             }).ToListAsync();
 
             return testById;
+        }
+
+ public async Task<List<TestCase>> GetTestCasesByProblemIdAsync(int problemId)
+        {
+            return await _context.TestCases
+                .Where(tc => tc.ProblemID == problemId)
+                .ToListAsync();
         }
     }
 }
