@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Dtos.Problemea.Submission;
+using API.Interfaces.Evalution;
 using API.Interfaces.Submission;
+using API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers.SubmissionController
@@ -13,11 +15,11 @@ namespace API.Controllers.SubmissionController
         [Route("api/[controller]")]
         public class SubmissionController : ControllerBase
         {
-            private readonly ISubmissionService _submissionService;
+            private readonly IUnifiedEvaluationService _unifiedEvaluation;
 
-            public SubmissionController(ISubmissionService submissionService)
+            public SubmissionController(IUnifiedEvaluationService unifiedEvaluation)
             {
-                _submissionService = submissionService;
+                _unifiedEvaluation = unifiedEvaluation;
             }
 
             [HttpPost]
@@ -26,7 +28,7 @@ namespace API.Controllers.SubmissionController
             {
                 try
                 {
-                    var result = await _submissionService.EvaluateSubmissionAsync(request);
+                    var result = await _unifiedEvaluation.EvaluateAndSaveSubmissionAsync(request);
                     return Ok(result);
                 }
                 catch (Exception ex)

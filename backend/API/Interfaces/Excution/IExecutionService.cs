@@ -9,5 +9,6 @@ namespace API.Interfaces.Excution
     public interface IExecutionService
     {
         Task<ExecutionResultDto> ExecuteCodeAsync(string sourceCode, string stdin, int languageId);
+        Task<ExecutionResultDto> GetResultByTokenAsync(string token);
     }
 }

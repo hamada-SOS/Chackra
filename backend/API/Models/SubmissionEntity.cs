@@ -19,6 +19,7 @@ namespace API.Models
         public string Language { get; set; } // VARCHAR(20)
         public int LanguageId {get;set;}
         public string Result { get; set; } // VARCHAR(50)
+        public bool Passed {get;set;}
         public decimal ExecutionTime { get; set; } // DECIMAL(5,2)
         public decimal MemoryUsed { get; set; } // DECIMAL(8,2)
         public int Points { get; set; }
