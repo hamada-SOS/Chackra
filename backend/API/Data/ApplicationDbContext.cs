@@ -21,7 +21,7 @@ namespace API.Data
         public DbSet<Problem> Problems { get; set; }
        
         public DbSet<TestCase> TestCases {get; set;}
-        public DbSet<Submission> Submissions { get; set; }
+        public DbSet<SubmissionEntity> Submissions { get; set; }
         public DbSet<Leaderboard> Leaderboards { get; set; }
         public DbSet<CompetitiveRoom> CompetitiveRooms { get; set; }
         public DbSet<Room_Problem> RoomProblems { get; set; }

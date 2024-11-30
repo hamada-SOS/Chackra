@@ -1,7 +1,7 @@
 using API.Models;
-using API.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using API.Data;
+using API.Interfaces.Submissionn;
 
 namespace API.Repositories
 {
@@ -14,23 +14,23 @@ namespace API.Repositories
             _context = context;
         }
 
-        public async Task<Submission> SaveSubmissionAsync(Submission submission)
+        public async Task<SubmissionEntity> SaveSubmissionAsync(SubmissionEntity submissionEntity)
         {
             // Add the submission to the database
-            _context.Submissions.Add(submission);
+            _context.Submissions.Add(submissionEntity);
 
             // Save changes to persist the submission
             await _context.SaveChangesAsync();
 
-            return submission;
+            return submissionEntity;
         }
 
-        public async Task<Submission?> GetSubmissionByIdAsync(Guid submissionId)
+        public async Task<SubmissionEntity> GetSubmissionByIdAsync(int submissionId)
         {
             // Retrieve a specific submission by its ID
             return await _context.Submissions
-                .Include(s => s.TestCases) // Optionally include related entities
-                .FirstOrDefaultAsync(s => s.Id == submissionId);
+                // .Include(s => s.TestCases) // Optionally include related entities
+                .FirstOrDefaultAsync(s => s.SubmissionID == submissionId);
         }
     }
 }

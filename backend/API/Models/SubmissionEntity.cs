@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace API.Models
 {
-    public class Submission
+    public class SubmissionEntity
     {
         public int SubmissionID { get; set; } // Primary Key
         public string StudentID { get; set; } // Foreign Key (User)
@@ -13,7 +13,7 @@ namespace API.Models
 
         public int ProblemID { get; set; } // Foreign Key
         public Problem Problem { get; set; }
-
+        public string Token {get; set;}
         public DateTime SubmissionDate { get; set; }
         public string Code { get; set; } // TEXT
         public string Language { get; set; } // VARCHAR(20)

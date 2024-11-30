@@ -43,4 +43,25 @@ public class ExecutionService : IExecutionService
 
         return submission ?? throw new Exception("Invalid response from execution engine.");
     }
+
+    public async Task<ExecutionResultDto> GetResultByTokenAsync(string token)
+    {
+        var client = _httpClientFactory.CreateClient("Judge0");
+
+        var resultEndpoint = _configuration["Judge0:ResultEndpoint"];
+        var url = $"{client.BaseAddress}{resultEndpoint}/{token}";
+
+        var response = await client.GetAsync(url);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var errorContent = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Failed to fetch execution result: {response.ReasonPhrase}. Details: {errorContent}");
+        }
+
+        var resultResponse = await response.Content.ReadAsStringAsync();
+        var executionResult = JsonConvert.DeserializeObject<ExecutionResultDto>(resultResponse);
+
+        return executionResult ?? throw new Exception("Invalid response from execution engine.");
+    }
 }
