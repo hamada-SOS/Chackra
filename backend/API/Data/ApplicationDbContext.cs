@@ -37,7 +37,8 @@ namespace API.Data
             // Primary Key Configuration for CompetitiveRoom
             modelBuilder.Entity<CompetitiveRoom>()
                 .HasKey(cr => cr.RoomID);  // Ensure the primary key is correctly recognized
-
+            modelBuilder.Entity<SubmissionEntity>()
+                .HasKey(s => s.SubmissionID);
 
             // Many-to-Many: Room_Problem
             modelBuilder.Entity<Room_Problem>()

@@ -16,7 +16,7 @@ namespace API.Models
 
         // Additional properties specific to your application
 
-        public ICollection<Submission> Submissions { get; set; }
+        public ICollection<SubmissionEntity> Submissions { get; set; }
         public ICollection<Leaderboard> Leaderboards { get; set; }
         public ICollection<CompetitiveRoom> HostedRooms { get; set; }
         

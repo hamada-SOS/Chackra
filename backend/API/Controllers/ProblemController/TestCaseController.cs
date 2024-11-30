@@ -10,9 +10,9 @@ namespace API.Controllers.ProblemController
 {
     public class TestCaseController: ControllerBase
     {
-        private readonly ITestCases _testCases;
+        private readonly ITestCaseRepository _testCases;
 
-        public TestCaseController(ITestCases testCases)
+        public TestCaseController(ITestCaseRepository testCases)
         {
             _testCases = testCases;
         }

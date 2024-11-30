@@ -3,6 +3,7 @@ using System.Text;
 using API.Data;
 using API.Interfaces;
 using API.Interfaces.Account;
+using API.Interfaces.Evalution;
 using API.Interfaces.Problema;
 using API.Interfaces.testcase;
 using API.Models;
@@ -97,6 +98,8 @@ internal class Program
         builder.Services.AddScoped<IStudentRepository, StudentRepository>();
         builder.Services.AddScoped<IProblemRepository, ProblemRepository>();
         builder.Services.AddScoped<ITestCaseRepository, TestCaseRepository>();
+        builder.Services.AddScoped<IUnifiedEvaluationService, UnifiedEvaluationService>();
+
 
         builder.Services.AddHttpClient("Judge0", client =>
         {
