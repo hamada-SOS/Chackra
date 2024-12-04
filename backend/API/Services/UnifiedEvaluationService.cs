@@ -33,17 +33,18 @@ namespace API.Services
         }
 
         // Evaluate and Save Submission
-        public async Task<SubmissionResultDto> EvaluateAndSaveSubmissionAsync(SubmissionRequestDto request)
+        public async Task<List<TestCaseResult>> EvaluateAndSaveSubmissionAsync(SubmissionRequestDto request)
         {
             // Validate problem existence
-            var problem = await _problemRepository.GetProblemDetails(request.ProblemId);
+            var problem = await _problemRepository.GetProblemDetails(request.ProblemID);
             if (problem == null)
                 throw new ArgumentException("Invalid problem ID");
 
             // Fetch test cases
-            var testCases = await _testCaseRepository.GetTestCasesByProblemIdAsync(request.ProblemId);
+            var testCases = await _testCaseRepository.GetTestCasesByProblemIdAsync(request.ProblemID);
             if (testCases == null || !testCases.Any())
-                throw new Exception($"No test cases found for problem ID {request.ProblemId}.");
+                throw new Exception($"No test cases found for problem ID {request.ProblemID}.");
+            
 
             // Evaluate code against each test case
             var results = new List<TestCaseResult>();
@@ -52,48 +53,55 @@ namespace API.Services
             foreach (var testCase in testCases)
             {
                 var executionResult = await _executionService.ExecuteCodeAsync(
-                    request.Code,
+                    request.SourceCode,
                     testCase.Input,
                     request.LanguageId
                 );
+                
+                
 
-                var passed = executionResult.Stdout.Trim() == testCase.ExpectedOutput.Trim();
+                var passed = executionResult.StandardOutput.Trim() == testCase.ExpectedOutput.Trim();
+                Console.WriteLine(executionResult.StandardOutput.Trim(),testCase.ExpectedOutput.Trim());
                 if (!passed) allPassed = false;
 
                 results.Add(new TestCaseResult
                 {
                     Input = testCase.Input,
-                    Output = executionResult.Stdout,
+                    Output = executionResult.StandardOutput,
                     ExpectedOutput = testCase.ExpectedOutput,
                     Passed = passed
                 });
+
+                Console.WriteLine(results);
             }
 
             // Save submission
             var submission = new SubmissionEntity
             {
-                ProblemID = request.ProblemId,
-                Code = request.Code,
+                ProblemID = request.ProblemID,
+                Code = request.SourceCode,
                 LanguageId = request.LanguageId,
                 Passed = allPassed
             };
             var submissionId = await _submissionRepository.SaveSubmissionAsync(submission);
 
             // Return results
-            return new SubmissionResultDto
-            {
-                PassedAllTestCases = allPassed,
-                TestCaseResults = results
-            };
+            // return new SubmissionResultDto
+            // {
+            //     PassedAllTestCases = allPassed,
+            //     TestCaseResults = results
+            // };
 
+
+            return results;
             
         }
 
         // Fetch Results by Token
-        public async Task<ExecutionResultDto> GetResultByTokenAsync(string token)
-        {
-            return await _executionService.GetResultByTokenAsync(token);
-        }
+        // public async Task<ExecutionResultDto> GetResultByTokenAsync(string token)
+        // {
+        //     return await _executionService.GetResultByTokenAsync(token);
+        // }
 
         // Direct Evaluation Without Saving
         public async Task<EvaluationResultDto> EvaluateSubmissionAsync(int problemId, string sourceCode, int languageId)
@@ -113,14 +121,14 @@ namespace API.Services
                 );
 
                 // Compare actual output with expected output
-                bool isPassed = executionResult.Stdout.Trim() == testCase.ExpectedOutput.Trim();
+                // bool isPassed = executionResult.StandardOutput.Trim() == testCase.ExpectedOutput.Trim();
 
                 evaluationResults.Add(new TestCaseResultDto
                 {
                     Input = testCase.Input,
                     ExpectedOutput = testCase.ExpectedOutput,
-                    ActualOutput = executionResult.Stdout,
-                    Passed = isPassed
+                    // ActualOutput = executionResult.StandardOutput,
+                    // Passed = isPassed
                 });
             }
 

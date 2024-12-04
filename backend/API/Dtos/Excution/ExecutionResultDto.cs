@@ -2,14 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace API.Dtos.Excution
 {
     public class ExecutionResultDto
     {
-    public string Stdout { get; set; }
-    public string Stderr { get; set; }
-    public int ExitCode { get; set; }
-    public double ExecutionTime { get; set; }
-    }
+    [JsonProperty("stdout")]
+    public string StandardOutput { get; set; }
+
+    [JsonProperty("stderr")]
+    public string StandardError { get; set; }
+
+    [JsonProperty("status_id")]
+    public int StatusId { get; set; }
+
+    [JsonProperty("time")]
+    public string Time { get; set; }
+
+    [JsonProperty("memory")]
+    public int Memory { get; set; }
+}
 }

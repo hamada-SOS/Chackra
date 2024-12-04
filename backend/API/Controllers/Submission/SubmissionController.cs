@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Dtos.Problemea.Submission;
 using API.Interfaces.Evalution;
+using API.Interfaces.Excution;
 using API.Interfaces.Submission;
 using API.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,12 @@ namespace API.Controllers.SubmissionController
         public class SubmissionController : ControllerBase
         {
             private readonly IUnifiedEvaluationService _unifiedEvaluation;
+            private readonly IExecutionService _executionService;
 
-            public SubmissionController(IUnifiedEvaluationService unifiedEvaluation)
+            public SubmissionController(IUnifiedEvaluationService unifiedEvaluation, IExecutionService executionService)
             {
                 _unifiedEvaluation = unifiedEvaluation;
+                _executionService = executionService;
             }
 
             [HttpPost]

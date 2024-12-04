@@ -4,9 +4,12 @@ using API.Data;
 using API.Interfaces;
 using API.Interfaces.Account;
 using API.Interfaces.Evalution;
+using API.Interfaces.Excution;
 using API.Interfaces.Problema;
+using API.Interfaces.Submissionn;
 using API.Interfaces.testcase;
 using API.Models;
+using API.Repositories;
 using API.Repositories.ProblemRe;
 using API.Repositories.Student;
 using API.Services;
@@ -98,7 +101,9 @@ internal class Program
         builder.Services.AddScoped<IStudentRepository, StudentRepository>();
         builder.Services.AddScoped<IProblemRepository, ProblemRepository>();
         builder.Services.AddScoped<ITestCaseRepository, TestCaseRepository>();
+        builder.Services.AddScoped<IExecutionService, ExecutionService>();
         builder.Services.AddScoped<IUnifiedEvaluationService, UnifiedEvaluationService>();
+        builder.Services.AddScoped<ISubmissionRepository, SubmissionRepository>();
 
 
         builder.Services.AddHttpClient("Judge0", client =>

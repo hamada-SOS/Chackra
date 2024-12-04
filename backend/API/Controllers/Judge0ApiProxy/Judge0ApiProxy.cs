@@ -69,8 +69,6 @@ namespace Judge0ApiProxy.Controllers
             Console.WriteLine(resultResponse);
             var result = JsonConvert.DeserializeObject<Judge0SubmissionResponse>(resultResponse);
             Console.WriteLine(result);
-
-
             return Ok(result);
         }
     }

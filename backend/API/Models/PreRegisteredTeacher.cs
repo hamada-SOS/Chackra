@@ -9,7 +9,7 @@ namespace API.Models
     {
 
         public int Id { get; set; }
-        public string? UniversityId { get; set; }
-        public string? TeacherName { get; set; }
+        public string UniversityId { get; set; }
+        public string TeacherName { get; set; }
     }
 }
