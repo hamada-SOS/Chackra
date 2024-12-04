@@ -33,7 +33,7 @@ namespace API.Services
         }
 
         // Evaluate and Save Submission
-        public async Task<List<TestCaseResult>> EvaluateAndSaveSubmissionAsync(SubmissionRequestDto request)
+        public async Task<SubmissionResultDto> EvaluateAndSaveSubmissionAsync(SubmissionRequestDto request)
         {
             // Validate problem existence
             var problem = await _problemRepository.GetProblemDetails(request.ProblemID);
@@ -87,14 +87,14 @@ namespace API.Services
             var submissionId = await _submissionRepository.SaveSubmissionAsync(submission);
 
             // Return results
-            // return new SubmissionResultDto
-            // {
-            //     PassedAllTestCases = allPassed,
-            //     TestCaseResults = results
-            // };
+            return new SubmissionResultDto
+            {
+                PassedAllTestCases = allPassed,
+                TestCaseResults = results
+            };
 
 
-            return results;
+            // return results;
             
         }
 

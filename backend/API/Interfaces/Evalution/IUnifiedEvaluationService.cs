@@ -10,7 +10,7 @@ namespace API.Interfaces.Evalution
 {
     public interface IUnifiedEvaluationService
     {
-        Task<List<SubmissionResultDto.TestCaseResult>> EvaluateAndSaveSubmissionAsync(SubmissionRequestDto request);
+        Task<SubmissionResultDto> EvaluateAndSaveSubmissionAsync(SubmissionRequestDto request);
         Task<EvaluationResultDto> EvaluateSubmissionAsync(int problemId, string sourceCode, int languageId);
         // Task<ExecutionResultDto> GetResultByTokenAsync(string token); 
         
