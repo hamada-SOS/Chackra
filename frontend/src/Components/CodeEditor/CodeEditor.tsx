@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import prettier from "prettier";
 import MonacoEditor from "@monaco-editor/react";
 import {
   Paper,
@@ -15,8 +16,9 @@ import {
 } from "@mui/material";
 import Tab from "@mui/material/Tab";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { defaultCodeSnippets } from "../../defaultCodeSnippets";
 import { ProblemDetails, TestCase } from "../../Problem";
+import { fetchProblemDetails } from "../../api";
+import { parseJsonText } from "typescript";
 
 interface SubmissionResult {
   standardOutput: string;
@@ -26,12 +28,11 @@ interface SubmissionResult {
 
 interface Props {
   TestCases?: TestCase[];
-  DefaulrCode?:string;
-
+  id?: number;
 }
 
-const Judge0: React.FC<Props> = ({ TestCases, DefaulrCode }) => {
-  const [sourceCode, setSourceCode] = useState<string>();
+const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
+  const [sourceCode, setSourceCode] = useState<string>("");
   const [language, setLanguage] = useState<string>("python");
   const [languageId, setLanguageId] = useState<number>(71); // Default to Python 3
   const [selectedTab, setSelectedTab] = useState("1");
@@ -41,25 +42,42 @@ const Judge0: React.FC<Props> = ({ TestCases, DefaulrCode }) => {
 
   const theme = useTheme();
 
+  useEffect(() => {
+    const loadProblemDetails = async () => {
+      if (!id) return;
+
+      try {
+        const problemDetails = await fetchProblemDetails(id);
+        var formated = problemDetails.defualtCode
+        setSourceCode(formated);
+      } catch (error) {
+        console.error("Error loading problem details:", error);
+      }
+    };
+
+    loadProblemDetails();
+  }, [id]);
+
   const handleLanguageChange = (event: SelectChangeEvent<string>) => {
-    const selectedLanguage = event.target.value as string;
-    setLanguage(selectedLanguage);
+    setLanguage(event.target.value);
   };
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setSelectedTab(newValue);
   };
 
-
   const handleSubmit = async () => {
     setLoading(true);
     setResult(null);
 
     try {
-      const { data: submission } = await axios.post("http://localhost:5149/api/Judge/submit", {
-        sourceCode:sourceCode,
-        LanguageId: languageId,
-      });
+      const { data: submission } = await axios.post(
+        "http://localhost:5149/api/Judge/submit",
+        {
+          sourceCode,
+          LanguageId: languageId,
+        }
+      );
 
       const token = submission.token;
 
@@ -68,11 +86,10 @@ const Judge0: React.FC<Props> = ({ TestCases, DefaulrCode }) => {
           `http://localhost:5149/api/Judge/result/${token}`
         );
         setResult(resultData);
-        console.log(resultData);
-        setLoading(false);
       }, 3000);
     } catch (error) {
       console.error("Error during submission:", error);
+    } finally {
       setLoading(false);
     }
   };
@@ -104,6 +121,7 @@ const Judge0: React.FC<Props> = ({ TestCases, DefaulrCode }) => {
     setSelectedTestCaseIndex(index);
   };
 
+  
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -124,6 +142,7 @@ const Judge0: React.FC<Props> = ({ TestCases, DefaulrCode }) => {
             disableElevation
             sx={{ width: "110px", height: "50px" }}
             onClick={handleSubmit}
+            disabled={loading}
           >
             {loading ? "Running..." : "Run Code"}
           </Button>
@@ -133,7 +152,7 @@ const Judge0: React.FC<Props> = ({ TestCases, DefaulrCode }) => {
             height="400px"
             width="660px"
             language={language}
-            value={DefaulrCode}
+            value={sourceCode}
             onChange={(value) => setSourceCode(value || "")}
             theme="myCustomTheme"
             beforeMount={beforeMount}
@@ -150,82 +169,42 @@ const Judge0: React.FC<Props> = ({ TestCases, DefaulrCode }) => {
             </TabList>
           </Box>
 
-          {/* // Mapping buttons for each test case to allow switching between them. */}
-          <TabPanel value={'1'}>
-
-              {TestCases && TestCases.length > 0 && (
-                <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+          <TabPanel value="1">
+            {TestCases.length > 0 ? (
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                <Box sx={{ display: "flex", gap: 1 }}>
                   {TestCases.map((_, index) => (
                     <Button
                       key={index}
-                      variant={selectedTestCaseIndex === index ? 'contained' : 'outlined'}
+                      variant={selectedTestCaseIndex === index ? "contained" : "outlined"}
                       onClick={() => handleTestCaseClick(index)}
                     >
                       {`Case ${index + 1}`}
                     </Button>
                   ))}
                 </Box>
-              )}
 
-              {/* // Displaying the information of the selected test case */}
-              {TestCases && TestCases.length > 0 ? (
-                
-                <Box sx={{ margin: '20px', display: 'flex', flexDirection: 'column' }}>
+                <Box>
                   <Typography>Input:</Typography>
-                  <Box
-                    sx={{
-                      background:theme.palette.background.default,
-                      width: 'fit',
-                      height: '30px',
-                      mt: '20px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      padding: '10px',
-                      borderRadius: 2,
-                    }}
-                  >
+                  <Box sx={{ background: theme.palette.background.default, padding: 2, borderRadius: 2 }}>
                     {TestCases[selectedTestCaseIndex].input}
                   </Box>
-
                   <Typography>Expected Output:</Typography>
-                  <Box
-                    sx={{
-                      background:theme.palette.background.default,
-                      width: 'fit',
-                      height: '30px',
-                      mt: '20px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      padding: '10px',
-                      borderRadius: 2,
-                    }}
-                    >
+                  <Box sx={{ background: theme.palette.background.default, padding: 2, borderRadius: 2 }}>
                     {TestCases[selectedTestCaseIndex].expectedOutput}
-
                   </Box>
-                  <Box
-                    sx={{
-                      background:theme.palette.background.default,
-                      width: 'fit',
-                      height: '30px',
-                      mt: '20px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      padding: '10px',
-                      borderRadius: 2,
-                    }}
-                    >
-                    {result?.standardOutput}
-                    
+                  <Typography>Standard Output:</Typography>
+                  <Box sx={{ background: theme.palette.background.default, padding: 2, borderRadius: 2 }}>
+                    {result?.standardOutput || "No Output"}
                   </Box>
                 </Box>
-              ) : (
-                <Typography>No test cases available.</Typography>
-              )}
+              </Box>
+            ) : (
+              <Typography>No test cases available.</Typography>
+            )}
+          </TabPanel>
 
-              </TabPanel>
-              <TabPanel value={'2'}> the test panel</TabPanel>
-
+          <TabPanel value="2">Test Results Panel</TabPanel>
         </TabContext>
       </Paper>
     </Box>

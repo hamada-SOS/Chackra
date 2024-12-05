@@ -21,7 +21,6 @@ const SolvingPage = () => {
 
 
     const [problemsDetails, setProblemsDetails] = useState<ProblemDetails>();
-    const [DefaultCode, setDefaultCode] = useState<string>();
     
     const theme = useTheme();
     const location = useLocation();
@@ -37,9 +36,7 @@ const SolvingPage = () => {
     
             try {
                 const problemmDetails = await fetchProblemDetails(id);
-                setProblemsDetails(problemmDetails);
-                // setDefaultCode(problemmDetails.DefaultCode);
-                
+                setProblemsDetails(problemmDetails);                
             } catch (error) {
                 console.error('Error loading problems:', error);
             } finally {
@@ -49,8 +46,6 @@ const SolvingPage = () => {
         loadProblemDetails();
     }, []);
 
-    console.log(DefaultCode);
-    // console.log(problemsDetails);
 
 
     // console.log(problemsDetails?.testCases)
@@ -69,7 +64,7 @@ const SolvingPage = () => {
                 <Navbar/>
                 <Box sx={{display:'flex', width:'9.rem', height:'900px', background:theme.palette.background.default, padding:'10px'}}>
                     <ProblemDetials ProblemDetails={problemsDetails}/>
-                    <Judge0 TestCases={problemsDetails?.testCases} DefaulrCode={problemsDetails?.DefaultCode}/>
+                    <Judge0 TestCases={problemsDetails?.testCases} id ={id}/>
                 </Box>
             </>
     
