@@ -42,6 +42,16 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
 
   const theme = useTheme();
 
+
+
+  // const handleFormatCode = () => {
+  //   const formatted = prettier.format(sourceCode, {
+  //     parser: "python",
+  //     plugins: [],
+  //   });
+  //   setFormattedCode(formatted);
+  // };
+
   useEffect(() => {
     const loadProblemDetails = async () => {
       if (!id) return;
