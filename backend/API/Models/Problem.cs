@@ -10,7 +10,6 @@ namespace API.Models
         public int ProblemID { get; set; } // Primary Key
         public string Title { get; set; } // VARCHAR(200)
         public string Description { get; set; } // TEXT
-        public string FunctionSignature{get; set;}
         public string DefualtCode{get; set;}
         public string Domain { get; set; }
         public string InputFormat { get; set; }

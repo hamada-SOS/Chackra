@@ -47,8 +47,6 @@ namespace API.Repositories.ProblemRe
                     InputFormat = p.InputFormat,
                     Constraints = p.Constraints,
                     DefualtCode = p.DefualtCode,
-                    FunctionSignature = p.FunctionSignature,
-
                     Note = p.Note,
                     TestCases = p.TestCases.Where(tc => tc.ProblemID == id).ToList()
                 })

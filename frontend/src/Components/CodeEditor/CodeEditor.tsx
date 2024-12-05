@@ -133,8 +133,6 @@ const Judge0: React.FC<Props> = ({ TestCases, ProblemDetails }) => {
               sx={{ width: "150px", height: "50px" }}
             >
               <MenuItem value="python">Python</MenuItem>
-              <MenuItem value="java">Java</MenuItem>
-              <MenuItem value="cpp">C++</MenuItem>
             </Select>
           </FormControl>
 

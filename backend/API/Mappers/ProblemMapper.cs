@@ -24,7 +24,6 @@ namespace API.Mappers
                 Language = problemModel.Language,
                 Difficulty = problemModel.Difficulty,
                 DefualtCode = problemModel.DefualtCode,
-                FunctionSignature = problemModel.FunctionSignature
 
             };
         }
