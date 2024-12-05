@@ -54,6 +54,7 @@ namespace API.Mappers
             {
                 ProblemID = problemModel.ProblemID,
                 Title = problemModel.Title,
+                DefualtCode = problemModel.DefualtCode,
                 Description = problemModel.Description,
                 InputFormat = problemModel.InputFormat,
                 Note = problemModel.Note,

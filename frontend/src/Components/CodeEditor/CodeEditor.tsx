@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import MonacoEditor from "@monaco-editor/react";
 import {
@@ -26,20 +26,17 @@ interface SubmissionResult {
 
 interface Props {
   TestCases?: TestCase[];
-  ProblemDetails:ProblemDetails | undefined;
+  DefaulrCode?:string;
 
 }
 
-const Judge0: React.FC<Props> = ({ TestCases, ProblemDetails }) => {
-  const [sourceCode, setSourceCode] = useState<string>(defaultCodeSnippets.python);
+const Judge0: React.FC<Props> = ({ TestCases, DefaulrCode }) => {
+  const [sourceCode, setSourceCode] = useState<string>();
   const [language, setLanguage] = useState<string>("python");
-  const [setcode, setsetcode] = useState<string>('')
   const [languageId, setLanguageId] = useState<number>(71); // Default to Python 3
-  const [stdin, setStdin] = useState<string>("");
   const [selectedTab, setSelectedTab] = useState("1");
   const [result, setResult] = useState<SubmissionResult | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [currentTestCaseIndex, setCurrentTestCaseIndex] = useState(0)
   const [selectedTestCaseIndex, setSelectedTestCaseIndex] = useState<number>(0);
 
   const theme = useTheme();
@@ -47,19 +44,12 @@ const Judge0: React.FC<Props> = ({ TestCases, ProblemDetails }) => {
   const handleLanguageChange = (event: SelectChangeEvent<string>) => {
     const selectedLanguage = event.target.value as string;
     setLanguage(selectedLanguage);
-    setSourceCode(defaultCodeSnippets[selectedLanguage]);
-    // Set languageId based on selected language
-    const languageIds: { [key: string]: number } = {
-      python: 71,
-      java: 62,
-      cpp: 54,
-    };
-    setLanguageId(languageIds[selectedLanguage]);
   };
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setSelectedTab(newValue);
   };
+
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -110,17 +100,10 @@ const Judge0: React.FC<Props> = ({ TestCases, ProblemDetails }) => {
     });
   };
 
-  // const handleNextClick = () => {
-  //   if (TestCases && TestCases.length > 0) {
-  //     setCurrentTestCaseIndex((prevIndex) => (prevIndex + 1) % TestCases.length);
-      
-  //   }
-  // };
-
   const handleTestCaseClick = (index: number) => {
     setSelectedTestCaseIndex(index);
   };
-  
+
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -145,13 +128,12 @@ const Judge0: React.FC<Props> = ({ TestCases, ProblemDetails }) => {
             {loading ? "Running..." : "Run Code"}
           </Button>
         </Box>
-
         <Box>
           <MonacoEditor
             height="400px"
             width="660px"
             language={language}
-            value={sourceCode}
+            value={DefaulrCode}
             onChange={(value) => setSourceCode(value || "")}
             theme="myCustomTheme"
             beforeMount={beforeMount}
