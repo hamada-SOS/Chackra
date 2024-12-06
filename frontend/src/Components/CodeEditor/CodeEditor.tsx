@@ -32,7 +32,7 @@ interface Props {
 }
 
 const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
-  const [sourceCode, setSourceCode] = useState<string>("");
+  const [sourceCode, setSourceCode] = useState("");
   const [Code, setCode] = useState<string>("");
   const [language, setLanguage] = useState<string>("python");
   const [languageId, setLanguageId] = useState<number>(71); // Default to Python 3
@@ -43,18 +43,49 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
 
   const theme = useTheme();
 
+ function formatPythonCode(state: string): string {
+  try {
+      // Parse the string to get the Python code
+      const code = JSON.parse(state);
+
+      // Split the code into lines
+      const lines = code.split("\n");
+
+      // Remove trailing spaces and ensure consistent indentation
+      const formattedLines = lines.map((line:string) => line.trimEnd());
+
+      // Reformat using basic indentation rules
+      const indentedLines: string[] = [];
+      let indentLevel = 0;
+      const indentSize = 4; // Number of spaces per indent
+
+      for (const line of formattedLines) {
+          if (line.endsWith(":") && !line.startsWith("#")) {
+              // Increase indent level after a colon (e.g., function or loop definitions)
+              indentedLines.push(" ".repeat(indentLevel * indentSize) + line);
+              indentLevel++;
+          } else if (line.trim() === "" || line.startsWith("#")) {
+              // Handle empty lines or comments
+              indentedLines.push(line);
+          } else if (line.startsWith("return") || line.startsWith("print") || line.startsWith("pass")) {
+              // Handle dedentation for certain keywords
+              indentLevel = Math.max(0, indentLevel - 1);
+              indentedLines.push(" ".repeat(indentLevel * indentSize) + line);
+          } else {
+              // Apply current indent level
+              indentedLines.push(" ".repeat(indentLevel * indentSize) + line);
+          }
+      }
+
+      // Join the lines back into a single formatted string
+      return indentedLines.join("\n");
+  } catch (error) {
+      console.error("Error formatting Python code:", error);
+      return state; // Return the original state in case of an error
+  }
+}
 
 
-  const formatCode = async (sourceCode: string) => {
-    try {
-      const response = await axios.post("http://localhost:5000/format-code", {
-        sourceCode,
-      });
-      setCode(response.data.formatted_code);
-    } catch (error) {
-      console.error("Error formatting code:", error);
-    }
-  };;
 
   useEffect(() => {
     const loadProblemDetails = async () => {
@@ -62,16 +93,23 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
 
       try {
         const problemDetails = await fetchProblemDetails(id);
-        var formated = problemDetails.defualtCode 
-      
-        setSourceCode(formated); 
+        var formated = problemDetails.defualtCode
+        setSourceCode(formatPythonCode(formated))
       } catch (error) {
         console.error("Error loading problem details:", error);
       }
     };
+    // const formattedCode = formatPythonCode(sourceCode);
+    // setCode(formattedCode);
 
     loadProblemDetails();
   }, [id]);
+
+  // useEffect(() => {
+  //   const formattedCode = formatPythonCode(sourceCode);
+  //   setCode(formattedCode);
+  // }, []);
+  //   console.log(Code)
 
   const handleLanguageChange = (event: SelectChangeEvent<string>) => {
     setLanguage(event.target.value);
@@ -80,6 +118,9 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setSelectedTab(newValue);
   };
+
+
+
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -109,6 +150,9 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
     }
   };
 
+
+
+
   const beforeMount = (monaco: typeof import("monaco-editor")) => {
     monaco.editor.defineTheme("myCustomTheme", {
       base: "vs-dark",
@@ -135,7 +179,6 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
   const handleTestCaseClick = (index: number) => {
     setSelectedTestCaseIndex(index);
   };
-
   
 
   return (
@@ -156,8 +199,8 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
             variant="contained"
             disableElevation
             sx={{ width: "110px", height: "50px" }}
-            // onClick={handleSubmit}
-            onClick={() => formatCode(sourceCode)} 
+            onClick={handleSubmit}
+            // onClick={() => formatCode(sourceCode)} 
             disabled={loading}
           >
             {loading ? "Running..." : "Run Code"}
