@@ -33,6 +33,7 @@ interface Props {
 
 const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
   const [sourceCode, setSourceCode] = useState<string>("");
+  const [Code, setCode] = useState<string>("");
   const [language, setLanguage] = useState<string>("python");
   const [languageId, setLanguageId] = useState<number>(71); // Default to Python 3
   const [selectedTab, setSelectedTab] = useState("1");
@@ -44,13 +45,16 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
 
 
 
-  // const handleFormatCode = () => {
-  //   const formatted = prettier.format(sourceCode, {
-  //     parser: "python",
-  //     plugins: [],
-  //   });
-  //   setFormattedCode(formatted);
-  // };
+  const formatCode = async (sourceCode: string) => {
+    try {
+      const response = await axios.post("http://localhost:5000/format-code", {
+        sourceCode,
+      });
+      setCode(response.data.formatted_code);
+    } catch (error) {
+      console.error("Error formatting code:", error);
+    }
+  };;
 
   useEffect(() => {
     const loadProblemDetails = async () => {
@@ -58,8 +62,9 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
 
       try {
         const problemDetails = await fetchProblemDetails(id);
-        var formated = problemDetails.defualtCode
-        setSourceCode(formated);
+        var formated = problemDetails.defualtCode 
+      
+        setSourceCode(formated); 
       } catch (error) {
         console.error("Error loading problem details:", error);
       }
@@ -151,7 +156,8 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
             variant="contained"
             disableElevation
             sx={{ width: "110px", height: "50px" }}
-            onClick={handleSubmit}
+            // onClick={handleSubmit}
+            onClick={() => formatCode(sourceCode)} 
             disabled={loading}
           >
             {loading ? "Running..." : "Run Code"}
