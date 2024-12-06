@@ -21,9 +21,9 @@ import { fetchProblemDetails } from "../../api";
 import { parseJsonText } from "typescript";
 
 interface SubmissionResult {
-  standardOutput: string;
-  standardError: string;
-  time: string;
+  SubmissionId: number;
+  PassedAllTestCases: boolean;
+  TestCaseResults: TestCase[];
 }
 
 interface Props {
@@ -85,8 +85,6 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
   }
 }
 
-
-
   useEffect(() => {
     const loadProblemDetails = async () => {
       if (!id) return;
@@ -99,17 +97,8 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
         console.error("Error loading problem details:", error);
       }
     };
-    // const formattedCode = formatPythonCode(sourceCode);
-    // setCode(formattedCode);
-
     loadProblemDetails();
   }, [id]);
-
-  // useEffect(() => {
-  //   const formattedCode = formatPythonCode(sourceCode);
-  //   setCode(formattedCode);
-  // }, []);
-  //   console.log(Code)
 
   const handleLanguageChange = (event: SelectChangeEvent<string>) => {
     setLanguage(event.target.value);
@@ -122,25 +111,24 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
 
 
 
+
   const handleSubmit = async () => {
     setLoading(true);
     setResult(null);
 
     try {
       const { data: submission } = await axios.post(
-        "http://localhost:5149/api/Judge/submit",
+        "http://localhost:5149/api/Submission/submit",
         {
+          ProblemID: id,
           sourceCode,
           LanguageId: languageId,
         }
       );
 
-      const token = submission.token;
+      const resultData = submission;
 
       setTimeout(async () => {
-        const { data: resultData } = await axios.get(
-          `http://localhost:5149/api/Judge/result/${token}`
-        );
         setResult(resultData);
       }, 3000);
     } catch (error) {
@@ -149,6 +137,19 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
       setLoading(false);
     }
   };
+
+  console.log(result);  
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -254,7 +255,7 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
                   </Box>
                   <Typography>Standard Output:</Typography>
                   <Box sx={{ background: theme.palette.background.default, padding: 2, borderRadius: 2 }}>
-                    {result?.standardOutput || "No Output"}
+                    {/* {result?.standardOutput || "No Output"} */}
                   </Box>
                 </Box>
               </Box>

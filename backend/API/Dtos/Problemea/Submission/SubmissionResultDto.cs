@@ -9,7 +9,8 @@ namespace API.Dtos.Problemea.Submission
     {
     public int SubmissionId { get; set; }
     public bool PassedAllTestCases { get; set; }
-    public List<TestCaseResult> TestCaseResults { get; set;
+    public List<TestCaseResult> TestCaseResults { get; set;}
+    public string error {get; set;}
     }
 
 
@@ -23,4 +24,3 @@ namespace API.Dtos.Problemea.Submission
 
 }
     
-}

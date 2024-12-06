@@ -59,10 +59,16 @@ namespace API.Services
                     request.LanguageId
                 );
                 
-                
+                if (executionResult.StandardOutput == null){
+                    var error = new SubmissionResultDto{
+                        PassedAllTestCases = false,
+                        TestCaseResults = null,
+                        error = executionResult.StandardError
+                    };
+                    return error;
+                }
 
                 var passed = executionResult.StandardOutput.Trim() == testCase.ExpectedOutput.Trim();
-                Console.WriteLine(executionResult.StandardOutput.Trim(),testCase.ExpectedOutput.Trim());
                 if (!passed) allPassed = false;
 
                 results.Add(new TestCaseResult
@@ -72,8 +78,6 @@ namespace API.Services
                     ExpectedOutput = testCase.ExpectedOutput,
                     Passed = passed
                 });
-
-                Console.WriteLine(results);
             }
 
             // Save submission
@@ -82,7 +86,8 @@ namespace API.Services
                 ProblemID = request.ProblemID,
                 Code = request.SourceCode,
                 LanguageId = request.LanguageId,
-                Passed = allPassed
+                Passed = allPassed,
+
             };
             var submissionId = await _submissionRepository.SaveSubmissionAsync(submission);
 

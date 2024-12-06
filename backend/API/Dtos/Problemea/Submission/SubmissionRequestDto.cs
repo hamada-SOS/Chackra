@@ -17,7 +17,5 @@ namespace API.Dtos.Problemea.Submission
     [JsonProperty("language_id")]
     public int LanguageId { get; set; }
 
-    [JsonProperty("stdin")]
-    public string StandardInput { get; set; }
 }
 }
