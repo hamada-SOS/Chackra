@@ -45,6 +45,8 @@ namespace API.Repositories.ProblemRe
                     Title = p.Title,
                     Description = p.Description,
                     InputFormat = p.InputFormat,
+                    SampleInput = p.SampleInput,
+                    SampleOutput = p.SampleOutput,
                     Constraints = p.Constraints,
                     DefualtCode = p.DefualtCode,
                     Note = p.Note,

@@ -12,8 +12,9 @@ namespace API.Dtos.Problemea
         public string Title { get; set; } // VARCHAR(200)
         public string Description { get; set; } // TEXT
 
-        public string FunctionSignature{get; set;}
         public string DefualtCode{get; set;}
+        public string SampleInput{get; set;}
+        public string SampleOutput{get; set;}
 
         public string InputFormat { get; set; }
         public string Note { get; set; }

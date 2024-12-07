@@ -22,7 +22,19 @@ export interface Problem {
     input: string;
     expectedOutput: string;
   }
-  
+
+  interface SubmissionResult {
+    SubmissionId: number;
+    PassedAllTestCases: boolean;
+    testCaseResults: TestCaseResult[];
+    error:string
+  }
+  interface TestCaseResult{
+    input: string,
+    expectedOutput: string,
+    output: string,
+    passed: boolean
+  }
   export interface ProblemDetails {
     ProblemID: number,
     title: string,

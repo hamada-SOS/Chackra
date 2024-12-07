@@ -14,6 +14,10 @@ namespace API.Models
         public string DefualtCode{get; set;}
         public string Domain { get; set; }
         public string InputFormat { get; set; }
+        public string SampleInput { get; set; }
+
+        public string SampleOutput { get; set; }
+
         public string Note { get; set; }
         public string Constraints { get; set; }
         public string Catagory {get; set;}

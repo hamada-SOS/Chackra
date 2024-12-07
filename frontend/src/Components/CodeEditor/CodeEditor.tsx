@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import prettier from "prettier";
 import MonacoEditor from "@monaco-editor/react";
 import {
   Paper,
@@ -9,31 +8,23 @@ import {
   FormControl,
   Select,
   MenuItem,
-  Tabs,
   Typography,
   SelectChangeEvent,
   useTheme,
 } from "@mui/material";
 import Tab from "@mui/material/Tab";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { ProblemDetails, TestCase } from "../../Problem";
+import {SubmissionResult, TestCase} from "../../Problem";
 import { fetchProblemDetails } from "../../api";
-import { parseJsonText } from "typescript";
-
-interface SubmissionResult {
-  SubmissionId: number;
-  PassedAllTestCases: boolean;
-  TestCaseResults: TestCase[];
-}
 
 interface Props {
   TestCases?: TestCase[];
   id?: number;
 }
 
+
 const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
   const [sourceCode, setSourceCode] = useState("");
-  const [Code, setCode] = useState<string>("");
   const [language, setLanguage] = useState<string>("python");
   const [languageId, setLanguageId] = useState<number>(71); // Default to Python 3
   const [selectedTab, setSelectedTab] = useState("1");
@@ -43,47 +34,42 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
 
   const theme = useTheme();
 
- function formatPythonCode(state: string): string {
-  try {
-      // Parse the string to get the Python code
-      const code = JSON.parse(state);
-
-      // Split the code into lines
-      const lines = code.split("\n");
-
-      // Remove trailing spaces and ensure consistent indentation
-      const formattedLines = lines.map((line:string) => line.trimEnd());
-
-      // Reformat using basic indentation rules
-      const indentedLines: string[] = [];
-      let indentLevel = 0;
-      const indentSize = 4; // Number of spaces per indent
-
-      for (const line of formattedLines) {
-          if (line.endsWith(":") && !line.startsWith("#")) {
-              // Increase indent level after a colon (e.g., function or loop definitions)
-              indentedLines.push(" ".repeat(indentLevel * indentSize) + line);
-              indentLevel++;
-          } else if (line.trim() === "" || line.startsWith("#")) {
-              // Handle empty lines or comments
-              indentedLines.push(line);
-          } else if (line.startsWith("return") || line.startsWith("print") || line.startsWith("pass")) {
-              // Handle dedentation for certain keywords
-              indentLevel = Math.max(0, indentLevel - 1);
-              indentedLines.push(" ".repeat(indentLevel * indentSize) + line);
-          } else {
-              // Apply current indent level
-              indentedLines.push(" ".repeat(indentLevel * indentSize) + line);
-          }
-      }
-
-      // Join the lines back into a single formatted string
-      return indentedLines.join("\n");
-  } catch (error) {
-      console.error("Error formatting Python code:", error);
-      return state; // Return the original state in case of an error
+  function formatPythonCode(state: string): string {
+    try {
+        // Parse the string to get the Python code
+        const code = JSON.parse(state);
+        // Split the code into lines
+        const lines = code.split("\n");
+        // Remove trailing spaces and ensure consistent indentation
+        const formattedLines = lines.map((line:string) => line.trimEnd());
+        // Reformat using basic indentation rules
+        const indentedLines: string[] = [];
+        let indentLevel = 0;
+        const indentSize = 4; // Number of spaces per indent
+        for (const line of formattedLines) {
+            if (line.endsWith(":") && !line.startsWith("#")) {
+                // Increase indent level after a colon (e.g., function or loop definitions)
+                indentedLines.push(" ".repeat(indentLevel * indentSize) + line);
+                indentLevel++;
+            } else if (line.trim() === "" || line.startsWith("#")) {
+                // Handle empty lines or comments
+                indentedLines.push(line);
+            } else if (line.startsWith("return") || line.startsWith("print") || line.startsWith("pass")) {
+                // Handle dedentation for certain keywords
+                indentLevel = Math.max(0, indentLevel - 1);
+                indentedLines.push(" ".repeat(indentLevel * indentSize) + line);
+            } else {
+                // Apply current indent level
+                indentedLines.push(" ".repeat(indentLevel * indentSize) + line);
+            }
+        }
+        // Join the lines back into a single formatted string
+        return indentedLines.join("\n");
+    } catch (error) {
+        console.error("Error formatting Python code:", error);
+        return state; // Return the original state in case of an error
+    }
   }
-}
 
   useEffect(() => {
     const loadProblemDetails = async () => {
@@ -108,10 +94,6 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
     setSelectedTab(newValue);
   };
 
-
-
-
-
   const handleSubmit = async () => {
     setLoading(true);
     setResult(null);
@@ -130,6 +112,9 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
 
       setTimeout(async () => {
         setResult(resultData);
+        setSelectedTab('2')
+        
+        
       }, 3000);
     } catch (error) {
       console.error("Error during submission:", error);
@@ -137,22 +122,7 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
       setLoading(false);
     }
   };
-
-  console.log(result);  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
 
   const beforeMount = (monaco: typeof import("monaco-editor")) => {
     monaco.editor.defineTheme("myCustomTheme", {
@@ -243,7 +213,6 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
                     </Button>
                   ))}
                 </Box>
-
                 <Box>
                   <Typography>Input:</Typography>
                   <Box sx={{ background: theme.palette.background.default, padding: 2, borderRadius: 2 }}>
@@ -253,10 +222,6 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
                   <Box sx={{ background: theme.palette.background.default, padding: 2, borderRadius: 2 }}>
                     {TestCases[selectedTestCaseIndex].expectedOutput}
                   </Box>
-                  <Typography>Standard Output:</Typography>
-                  <Box sx={{ background: theme.palette.background.default, padding: 2, borderRadius: 2 }}>
-                    {/* {result?.standardOutput || "No Output"} */}
-                  </Box>
                 </Box>
               </Box>
             ) : (
@@ -264,7 +229,85 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
             )}
           </TabPanel>
 
-          <TabPanel value="2">Test Results Panel</TabPanel>
+          <TabPanel value="2">
+            {result ? (
+              result.error ? (
+                <Box
+                  sx={{
+                    backgroundColor: "gray",
+                    color: "red",
+                    padding: 2,
+                    borderRadius: 2,
+                  }}
+                >
+                  <Typography variant="body1">
+                    <strong>Error:</strong> {result.error}
+                  </Typography>
+                </Box>
+              ) : result.testCaseResults && result.testCaseResults.length > 0 ? (
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  <Box sx={{ display: "flex", gap: 1 }}>
+                    {result.testCaseResults.map((_, index) => (
+                      <Button
+                        key={index}
+                        variant={selectedTestCaseIndex === index ? "contained" : "outlined"}
+                        onClick={() => handleTestCaseClick(index)}
+                      >
+                        {`Case ${index + 1}`}
+                      </Button>
+                    ))}
+                  </Box>
+                  {result.testCaseResults[selectedTestCaseIndex] && (
+                    <Box>
+                      <Typography variant="body1">Input:</Typography>
+                      <Box
+                        sx={{
+                          background: theme.palette.background.default,
+                          padding: 2,
+                          borderRadius: 2,
+                          overflowX: "auto",
+                        }}
+                      >
+                        <pre>{result.testCaseResults[selectedTestCaseIndex].input}</pre>
+                      </Box>
+                      <Typography variant="body1">Expected Output:</Typography>
+                      <Box
+                        sx={{
+                          background: theme.palette.background.default,
+                          padding: 2,
+                          borderRadius: 2,
+                          overflowX: "auto",
+                        }}
+                      >
+                        <pre>{result.testCaseResults[selectedTestCaseIndex].expectedOutput}</pre>
+                      </Box>
+                      <Typography variant="body1">Actual Output:</Typography>
+                      <Box
+                        sx={{
+                          background: theme.palette.background.default,
+                          padding: 2,
+                          borderRadius: 2,
+                          overflowX: "auto",
+                        }}
+                      >
+                        <pre>{result.testCaseResults[selectedTestCaseIndex].output}</pre>
+                      </Box>
+                      <Typography variant="body1">
+                        Status:{" "}
+                        <span style={{ color: result.testCaseResults[selectedTestCaseIndex].passed ? "green" : "red" }}>
+                          {result.testCaseResults[selectedTestCaseIndex].passed ? "Passed" : "Failed"}
+                        </span>
+                      </Typography>
+                    </Box>
+                  )}
+                </Box>
+              ) : (
+                <Typography>No test results available</Typography>
+              )
+            ) : (
+              <Typography>Run Your Code to View Result</Typography>
+            )}
+          </TabPanel>
         </TabContext>
       </Paper>
     </Box>
