@@ -153,7 +153,8 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
   
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column" }}>
+    // TODO handle Drag
+    <Box  sx={{ display: "flex", flexDirection: "column" }}>
       <Paper elevation={3} sx={{ background: "#d2dff3", height: "500px", ml: "15px", padding: "10px" }}>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <FormControl sx={{ width: "150px", height: "60px", borderRadius: 3 }}>
@@ -171,7 +172,6 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
             disableElevation
             sx={{ width: "110px", height: "50px" }}
             onClick={handleSubmit}
-            // onClick={() => formatCode(sourceCode)} 
             disabled={loading}
           >
             {loading ? "Running..." : "Run Code"}
@@ -214,11 +214,11 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
                   ))}
                 </Box>
                 <Box>
-                  <Typography>Input:</Typography>
+                  <Typography sx={{fontSize:'0.9rem', opacity:0.7, mb:1}}>Input:</Typography>
                   <Box sx={{ background: theme.palette.background.default, padding: 2, borderRadius: 2 }}>
                     {TestCases[selectedTestCaseIndex].input}
                   </Box>
-                  <Typography>Expected Output:</Typography>
+                  <Typography sx={{fontSize:'0.9rem', opacity:0.7, mb:1}}>Expected Output:</Typography>
                   <Box sx={{ background: theme.palette.background.default, padding: 2, borderRadius: 2 }}>
                     {TestCases[selectedTestCaseIndex].expectedOutput}
                   </Box>
@@ -252,6 +252,7 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
                         key={index}
                         variant={selectedTestCaseIndex === index ? "contained" : "outlined"}
                         onClick={() => handleTestCaseClick(index)}
+                        //Todo Deynamic coloring for buttns
                       >
                         {`Case ${index + 1}`}
                       </Button>
@@ -259,38 +260,43 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
                   </Box>
                   {result.testCaseResults[selectedTestCaseIndex] && (
                     <Box>
-                      <Typography variant="body1">Input:</Typography>
+                      <Typography sx={{fontSize:'0.9rem', opacity:0.7, mb:1}}>Input:</Typography>
                       <Box
                         sx={{
                           background: theme.palette.background.default,
                           padding: 2,
                           borderRadius: 2,
                           overflowX: "auto",
+                          mb: 1
+
                         }}
                       >
-                        <pre>{result.testCaseResults[selectedTestCaseIndex].input}</pre>
+                        {result.testCaseResults[selectedTestCaseIndex].input}
                       </Box>
-                      <Typography variant="body1">Expected Output:</Typography>
+                      <Typography sx={{fontSize:'0.9rem', opacity:0.7, mb:1}}>Expected Output:</Typography>
                       <Box
                         sx={{
                           background: theme.palette.background.default,
                           padding: 2,
                           borderRadius: 2,
                           overflowX: "auto",
+                          mb: 1
+
                         }}
                       >
-                        <pre>{result.testCaseResults[selectedTestCaseIndex].expectedOutput}</pre>
+                        {result.testCaseResults[selectedTestCaseIndex].expectedOutput}
                       </Box>
-                      <Typography variant="body1">Actual Output:</Typography>
+                      <Typography sx={{fontSize:'0.9rem', opacity:0.7, mb:1}}>Actual Output:</Typography>
                       <Box
                         sx={{
                           background: theme.palette.background.default,
                           padding: 2,
                           borderRadius: 2,
                           overflowX: "auto",
+                          mb: 1
                         }}
                       >
-                        <pre>{result.testCaseResults[selectedTestCaseIndex].output}</pre>
+                        {result.testCaseResults[selectedTestCaseIndex].output}
                       </Box>
                       <Typography variant="body1">
                         Status:{" "}
