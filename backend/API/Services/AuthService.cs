@@ -35,17 +35,11 @@ namespace API.Services
 
         public async Task<IdentityResult> RegisterStudentAsync(RegisterStudentDto registerStudentDto)
         {
-            var validID = await _context.PreRegisteredStudents.FirstOrDefaultAsync(s => s.UniversityId == registerStudentDto.UniversityId);
-            if (validID == null)
-            {
-                throw new Exception("Sduent Dont Exisit");
-            }
             var user = new ApplicationUser
             {
-                UserName = registerStudentDto.Email, // Or set it to UniversityId if you want
+                UserName = registerStudentDto.Username,
                 Email = registerStudentDto.Email,
                 UniversityId = registerStudentDto.UniversityId,
-                ForcePasswordChange = true // Force password change on first login
             };
             // Create the user with the default password
             var result = await _userManager.CreateAsync(user, registerStudentDto.Password);
@@ -59,36 +53,7 @@ namespace API.Services
 
             return result;
         }
-
-        public async Task<IdentityResult> RegisterTeacherAsync(RegisterStudentDto registerStudentDto)
-        {
-
-            var validID = await _context.PreRegisteredTeachers.FirstOrDefaultAsync(s => s.UniversityId == registerStudentDto.UniversityId);
-            if (validID == null)
-            {
-                throw new Exception("Teacher Dont Exisit");
-            }
-            var user = new ApplicationUser
-            {
-                UserName = registerStudentDto.Email, // Or set it to UniversityId if you want
-                Email = registerStudentDto.Email,
-                UniversityId = registerStudentDto.UniversityId,
-                ForcePasswordChange = true // Force password change on first login
-            };
-
-            // Create the user with the default password
-            var result = await _userManager.CreateAsync(user, registerStudentDto.Password);
-
-            // You can also assign roles if needed, e.g., student roles
-            if (result.Succeeded)
-            {
-                // Optionally, assign a default "Student" role to the user
-                await _userManager.AddToRoleAsync(user, "Teacher");
-            }
-
-            return result;
-        }
-
+        
 
         public async Task<string> TeacherLoginAsync(LoginDto loginDto)
         {
@@ -102,19 +67,6 @@ namespace API.Services
 
             return GenerateJwtToken(user);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         public async Task<string> LoginAsync(LoginDto loginDto)
         {
@@ -136,7 +88,6 @@ namespace API.Services
 
             if (result.Succeeded)
             {
-                user.ForcePasswordChange = false;
                 await _userManager.UpdateAsync(user);
             }
 

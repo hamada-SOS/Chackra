@@ -7,7 +7,6 @@ interface props {
 }
 const RegisterForm: React.FC<props> = ({setIsLogin}): JSX.Element => {
     
-  const [universityId, setUniversityId] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
@@ -15,7 +14,6 @@ const RegisterForm: React.FC<props> = ({setIsLogin}): JSX.Element => {
     e.preventDefault();
     try {
       await axios.post('http://localhost:5149/api/Auth/register', {
-        universityId,
         email,
         password
       });
@@ -30,12 +28,6 @@ const RegisterForm: React.FC<props> = ({setIsLogin}): JSX.Element => {
     <div>
       <h2>Register</h2>
       <form onSubmit={handleRegister}>
-        <input
-          type="text"
-          placeholder="University ID"
-          value={universityId}
-          onChange={e => setUniversityId(e.target.value)}
-        />
         <input
           type="email"
           placeholder="Email"

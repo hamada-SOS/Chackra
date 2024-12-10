@@ -46,34 +46,6 @@ namespace API.Controllers.AuthController
             }
         }
 
-        [HttpPost("Tregister")]
-        public async Task<IActionResult> TRegister([FromBody] RegisterStudentDto registerStudentDto)
-        {
-            var result = await _authService.RegisterTeacherAsync(registerStudentDto);
-            if (result.Succeeded)
-            {
-                return Ok("Teacher registered successfully.");
-            }
-
-            return BadRequest(result.Errors);
-        }
-
-        [HttpPost("Tlogin")]
-        public async Task<IActionResult> TLogin(LoginDto loginDto)
-        {
-            try
-            {
-                var token = await _authService.TeacherLoginAsync(loginDto);
-                return Ok(new { Token = token });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-
-
 
 
         [HttpPost("refresh-token")]
