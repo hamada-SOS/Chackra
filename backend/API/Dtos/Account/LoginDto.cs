@@ -7,7 +7,7 @@ namespace API.Dtos.Account
 {
     public class LoginDto
     {
-        public string UniversityId { get; set; }
+        public string Email { get; set; }
         public string Password { get; set; }
     }
 

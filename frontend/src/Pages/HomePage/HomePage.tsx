@@ -4,10 +4,12 @@ import Navbar from '../../Components/Navbar/Navbar'
 import { Box, Button, colors, Typography } from '@mui/material'
 import { useTheme } from '@emotion/react'
 import { useNavigate } from 'react-router'
+import { useAuth } from '../../Global/Context'
 
 interface Props {}
 
 const HomePage = (props: Props) => {
+  const { nameId } = useAuth();
   const navigate = useNavigate();
 
   const handleNavigation = (path: string) => {
@@ -24,6 +26,8 @@ const HomePage = (props: Props) => {
           <Typography sx={{fontSize:'h2.fontSize', fontWeight:'h2.fontWeight', marginTop:'10px', marginBottom:'10px'}}>A Hub for Competitive Programmers</Typography>
           <Typography sx={{fontSize:'h4.fontSize', fontWeight:'h6.fontWeight', whiteSpace:'pre-line'}}>Solve problems, participate in contests</Typography>
           <Typography sx={{fontSize:'h4.fontSize', fontWeight:'h6.fontWeight'}}>and climb the <span style={{color:'#3a31d8'}}>leaderboard!!</span></Typography>
+          <Typography sx={{fontSize:'h4.fontSize', fontWeight:'h6.fontWeight'}}>{nameId}</Typography>
+
 
           <Box sx={{marginTop:'30px', display:'flex', justifyContent:'space-between'}}>
             <Button variant='outlined' color='secondary' size='large' sx={{marginRight:'70px'} }>Join a Contset</Button>

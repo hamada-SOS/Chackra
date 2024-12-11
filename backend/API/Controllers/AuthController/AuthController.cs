@@ -33,7 +33,7 @@ namespace API.Controllers.AuthController
         }
 
         [HttpPost("Slogin")]
-        public async Task<IActionResult> SLogin(LoginDto loginDto)
+        public async Task<IActionResult> SLogin([FromBody]LoginDto loginDto)
         {
             try
             {

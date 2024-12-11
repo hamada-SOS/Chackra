@@ -5,13 +5,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider } from 'react-router-dom';
 import { routes } from './Routers/Routes';
+import { AuthProvider } from './Global/Context';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <RouterProvider router={routes}/>
+    <AuthProvider>
+      <RouterProvider router={routes}/>
+    </AuthProvider>
   </React.StrictMode>
 );
 

@@ -39,48 +39,48 @@ namespace API.Services
             {
                 UserName = registerStudentDto.Username,
                 Email = registerStudentDto.Email,
-                UniversityId = registerStudentDto.UniversityId,
             };
             // Create the user with the default password
             var result = await _userManager.CreateAsync(user, registerStudentDto.Password);
 
             // You can also assign roles if needed, e.g., student roles
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                // Optionally, assign a default "Student" role to the user
-                await _userManager.AddToRoleAsync(user, "Student");
+                 throw new Exception("somting");
             }
+            await _userManager.AddToRoleAsync(user, "Student");
 
             return result;
         }
         
 
-        public async Task<string> TeacherLoginAsync(LoginDto loginDto)
-        {
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UniversityId == loginDto.UniversityId);
-            if (user == null) throw new Exception("Invalid credentials.");
+public async Task<string> LoginAsync(LoginDto loginDto)
+{
+    if (loginDto == null) throw new ArgumentNullException(nameof(loginDto));
+    if (string.IsNullOrEmpty(loginDto.Email) || string.IsNullOrEmpty(loginDto.Password))
+        throw new ArgumentException("Email and password must be provided.");
 
-            var result = await _signInManager.PasswordSignInAsync(user, loginDto.Password, false, false);
-            if (!result.Succeeded) throw new Exception("Invalid credentials.");
+    // Find user by email
+    var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
+    if (user == null)
+    {
+        // Log the failed attempt
+        // _logger.LogWarning($"Login failed for email: {loginDto.Email}");
+        throw new UnauthorizedAccessException("Email does not exist");
+    }
 
-            // if (user.ForcePasswordChange) throw new Exception("Password change required.");
+    // Verify password
+    var result = await _signInManager.PasswordSignInAsync(user, loginDto.Password, false, false);
+    if (!result.Succeeded)
+    {
+        // Log the failed attempt
+        // _logger.LogWarning($"Invalid password attempt for user: {loginDto.Email}");
+        throw new UnauthorizedAccessException("Invalid email or password");
+    }
 
-            return GenerateJwtToken(user);
-        }
-
-        public async Task<string> LoginAsync(LoginDto loginDto)
-        {
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UniversityId == loginDto.UniversityId);
-            if (user == null) throw new Exception("Invalid credentials.");
-
-            var result = await _signInManager.PasswordSignInAsync(user, loginDto.Password, false, false);
-            if (!result.Succeeded) throw new Exception("Invalid credentials.");
-
-            // if (user.ForcePasswordChange) throw new Exception("Password change required.");
-
-            return GenerateJwtToken(user);
-        }
-
+    // Generate JWT token
+    return GenerateJwtToken(user);
+}
         public async Task<bool> ChangePasswordAsync(ChangePasswordDto changePasswordDto, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -136,8 +136,6 @@ namespace API.Services
             var claims = new[]
             {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim("UniversityId", user.UniversityId)
         };
 
             // Set token expiration time, signing credentials, and other settings
