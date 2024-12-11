@@ -39,7 +39,7 @@ const LoginPage = () => {
                     width: '100%',
                     mb: 3,
                 }}>
-                    <Link to="/" style={{ textDecoration: 'none' }}>
+                    <Link to="/LoginPage" style={{ textDecoration: 'none' }}>
                         <Button variant="outlined">Student</Button>
                     </Link>
                     <Link to="/AdminLogin" style={{ textDecoration: 'none' }}>

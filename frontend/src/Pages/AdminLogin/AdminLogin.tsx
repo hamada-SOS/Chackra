@@ -39,7 +39,7 @@ const AdminLogin: React.FC<Props> = (): JSX.Element => {
             mb: 3,
           }}
         >
-          <Link to="/" style={{ textDecoration: "none" }}>
+          <Link to="/LoginPage" style={{ textDecoration: "none" }}>
             <Button variant="outlined" color="primary">
               Student
             </Button>

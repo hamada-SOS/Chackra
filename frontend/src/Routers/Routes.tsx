@@ -13,7 +13,6 @@ export const routes = createBrowserRouter([
         path:'/',
         element:<App/>,
         children: [
-
             {path:"LoginPage", element:<LoginPage/>},
             {path:"/AdminLogin", element:<AdminLogin/>},
             {path:"/", element:<ProtectedRoute><HomePage/></ProtectedRoute>},
