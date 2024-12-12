@@ -54,6 +54,10 @@ namespace API.Data
                 .WithMany(p => p.ContestProblems)
                 .HasForeignKey(cp => cp.ProblemId);
 
+            
+            modelBuilder.Entity<Participant>()
+                .HasKey(p => p.Id);
+
             // Contest - Participant (1-to-Many)
             modelBuilder.Entity<Participant>()
                 .HasOne(p => p.Contest)

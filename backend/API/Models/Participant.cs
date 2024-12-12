@@ -17,8 +17,6 @@ public class Participant
     public string TeamName { get; set; }
     public DateTime JoinedAt { get; set; }
 
-    public ICollection<SubmissionEntity> Submissions { get; set; }
-
 }
 
 }
