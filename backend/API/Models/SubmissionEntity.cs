@@ -8,9 +8,10 @@ namespace API.Models
     public class SubmissionEntity
     {
         public int SubmissionID { get; set; } // Primary Key
-        public string StudentID { get; set; } // Foreign Key (User)
-        public ApplicationUser Student { get; set; }
-
+        public string UserId { get; set; } // Foreign Key (User)
+        public ApplicationUser User { get; set; }
+        public int ContestId { get; set; }
+        public Contest Contest { get; set; }
         public int ProblemID { get; set; } // Foreign Key
         public Problem Problem { get; set; }
         public string Token {get; set;}
@@ -23,6 +24,7 @@ namespace API.Models
         public decimal ExecutionTime { get; set; } // DECIMAL(5,2)
         public decimal MemoryUsed { get; set; } // DECIMAL(8,2)
         public int Points { get; set; }
+
     }
 
 }
