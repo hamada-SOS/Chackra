@@ -8,7 +8,7 @@ namespace API.Interfaces.Contesttt
     public interface IContestRepository
     {
         Task <List<ContestDTO>>GetContestCards(string id);
-        // Task<Contest> GetContestDetails(int id);
+        Task<ContestDetailsDto> GetContestDetails(int id);
         Task <Contest>CreateContest(ContestDTO contest);
         // Task UpdateAsync(Contest contest);
         // Task DeleteAsync(int id);

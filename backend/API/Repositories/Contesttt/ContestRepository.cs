@@ -7,6 +7,7 @@ using API.Interfaces.Contesttt;
 using API.Models;
 using API.Dtos.Contest;
 using Microsoft.EntityFrameworkCore;
+using API.Dtos.Problemea;
 
 namespace API.Repositories.Contesttt
 {
@@ -60,5 +61,48 @@ namespace API.Repositories.Contesttt
 
             return contestCards;
         }
-    }
+
+        public async Task<ContestDetailsDto> GetContestDetails(int id)
+        {        
+            var contestDetails = await _context.Contests
+            .Where(c => c.Id == id)
+            .Include(c => c.Participants) // Include Participants
+            .Include(c => c.Submissions) // Include Submissions
+            .Include(c => c.ContestProblems) // Include ContestProblems for Problems
+                .ThenInclude(cp => cp.Problem)
+                .ThenInclude(p => p.TestCases) // Include the related Problem
+            .Select(c => new ContestDetailsDto
+            {
+                Name = c.Name,
+                Description = c.Description,
+                StartTime = c.StartTime,
+                EndTime = c.EndTime,
+                IsActive = c.IsActive,
+                HostId = c.HostId,
+                ParticipationType = c.ParticipationType,
+                Problems = c.ContestProblems.Select(cp => new ProblemDetail
+                {
+                    Title = cp.Problem.Title,
+                    Description = cp.Problem.Description,
+                    DefualtCode = cp.Problem.DefualtCode,
+                    SampleInput = cp.Problem.SampleInput,
+                    SampleOutput = cp.Problem.SampleOutput,
+                    InputFormat = cp.Problem.InputFormat,
+                    Note = cp.Problem.Note,
+                    Constraints = cp.Problem.Constraints,
+                    TestCases = cp.Problem.TestCases.Select(tc => new TestCase
+                    {
+                        TestCaseID = tc.TestCaseID,
+                        Input = tc.Input,
+                        ExpectedOutput = tc.ExpectedOutput,
+                    }).ToList()
+                }).ToList(),
+                Participants = c.Participants.ToList(), // Populate Participants directly
+                Submissions = c.Submissions.ToList() // Populate Submissions directly
+            })
+            .FirstOrDefaultAsync();
+
+            return contestDetails;
+            }
+        }
 }

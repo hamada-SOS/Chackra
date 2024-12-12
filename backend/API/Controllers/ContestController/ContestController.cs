@@ -23,7 +23,6 @@ namespace API.Controllers.ContestController
 
         [HttpPost]
         [Route("Create")]
-
         public async Task<IActionResult> CreateContest([FromBody] ContestDTO contestDTO)
         {
             try
@@ -39,7 +38,6 @@ namespace API.Controllers.ContestController
 
 
         [HttpGet("GetContestCards")]
-
         public async Task<IActionResult> GetContestsCards(string id)
         {
             try
@@ -51,6 +49,18 @@ namespace API.Controllers.ContestController
                 {
                     return BadRequest(new { error = ex.Message });
                 }
+        }
+
+        [HttpGet("contestDetails/{id}")]
+        public async Task<IActionResult> GetContestDetailsById(int id){
+
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
+            }
+            
+            var contestDetails = await _contestRepository.GetContestDetails(id);
+            return Ok(contestDetails);
+
         }
     }
 }
