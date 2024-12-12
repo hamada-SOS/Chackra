@@ -13,6 +13,7 @@ public class Contest
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public bool IsActive { get; set; }
+    public string ParticipationType{get;set;}
 
     // Foreign key
     public string HostId { get; set; }

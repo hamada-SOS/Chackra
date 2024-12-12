@@ -14,7 +14,7 @@ namespace API.Models
     public Contest Contest { get; set; }
 
     public int ProblemId { get; set; }
-    public Problem Problem   { get; set; }
+    public Problem Problem  { get; set; }
 
     public DateTime AssignedAt { get; set; }
 }

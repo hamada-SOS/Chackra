@@ -25,7 +25,6 @@ namespace API.Models
         public string Difficulty { get; set; } // VARCHAR(20)
         // Navigation Properties
         public ICollection<TestCase> TestCases { get; set; } // Collection of test cases for this problem
-        public ICollection<Contest> Contests { get; set; }
         public ICollection<SubmissionEntity> Submissions { get; set; }
         public ICollection<ContestProblem> ContestProblems { get; set; }
 

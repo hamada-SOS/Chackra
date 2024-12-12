@@ -17,6 +17,7 @@ namespace API.Repositories
         public async Task<SubmissionEntity> SaveSubmissionAsync(SubmissionEntity submissionEntity)
         {
             // Add the submission to the database
+            
             _context.Submissions.Add(submissionEntity);
 
             // Save changes to persist the submission

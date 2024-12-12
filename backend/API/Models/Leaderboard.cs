@@ -8,7 +8,7 @@ namespace API.Models
     public class Leaderboard
     {
         public int LeaderboardID { get; set; } // Primary Key
-        public string? StudentID { get; set; } // Foreign Key (User)
+        public string StudentID { get; set; } // Foreign Key (User)
         public ApplicationUser Student { get; set; }
 
         public int ProblemID { get; set; } // Foreign Key

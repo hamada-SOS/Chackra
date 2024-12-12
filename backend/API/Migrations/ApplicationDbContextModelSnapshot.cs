@@ -124,8 +124,8 @@ namespace API.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("ProblemID")
-                        .HasColumnType("int");
+                    b.Property<string>("ParticipationType")
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime(6)");
@@ -133,8 +133,6 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("HostId");
-
-                    b.HasIndex("ProblemID");
 
                     b.ToTable("Contests");
                 });
@@ -515,10 +513,6 @@ namespace API.Migrations
                         .HasForeignKey("HostId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("API.Models.Problem", null)
-                        .WithMany("Contests")
-                        .HasForeignKey("ProblemID");
-
                     b.Navigation("Host");
                 });
 
@@ -694,8 +688,6 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.Problem", b =>
                 {
                     b.Navigation("ContestProblems");
-
-                    b.Navigation("Contests");
 
                     b.Navigation("Submissions");
 
