@@ -30,7 +30,7 @@ const HomePage = (props: Props) => {
 
 
           <Box sx={{marginTop:'30px', display:'flex', justifyContent:'space-between'}}>
-            <Button variant='outlined' color='secondary' size='large' sx={{marginRight:'70px'} }>Join a Contset</Button>
+            <Button variant='outlined' onClick={() => handleNavigation('/ContestPage')} color='secondary' size='large' sx={{marginRight:'70px'} }>Join a Contset</Button>
             <Button variant='outlined' onClick={() => handleNavigation('/ProblemtopicsPage')} color='secondary' size='large'>See problems</Button>
 
           </Box>
