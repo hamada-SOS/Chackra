@@ -34,7 +34,9 @@ namespace API.Repositories.Contesttt
                 StartTime = contestDTO.StartTime,
                 EndTime = contestDTO.EndTime,
                 HostId = contestDTO.HostId,
-                IsActive = false // Initially false, computed based on logic
+                IsActive = false,
+                ParticipationType = contestDTO.ParticipationType,
+                JoinCode = await GenerateUniqueJoinCodeAsync()
             };
 
             // Add to the database
@@ -44,6 +46,7 @@ namespace API.Repositories.Contesttt
             return contest;
             
         }
+
 
         public async Task<List<ContestDTO>> GetContestCards(string id)
         {
@@ -66,11 +69,11 @@ namespace API.Repositories.Contesttt
         {        
             var contestDetails = await _context.Contests
             .Where(c => c.Id == id)
-            .Include(c => c.Participants) // Include Participants
-            .Include(c => c.Submissions) // Include Submissions
-            .Include(c => c.ContestProblems) // Include ContestProblems for Problems
+            .Include(c => c.Participants) 
+            .Include(c => c.Submissions)
+            .Include(c => c.ContestProblems) // Include Cont
                 .ThenInclude(cp => cp.Problem)
-                .ThenInclude(p => p.TestCases) // Include the related Problem
+                .ThenInclude(p => p.TestCases) 
             .Select(c => new ContestDetailsDto
             {
                 Name = c.Name,
@@ -97,12 +100,78 @@ namespace API.Repositories.Contesttt
                         ExpectedOutput = tc.ExpectedOutput,
                     }).ToList()
                 }).ToList(),
-                Participants = c.Participants.ToList(), // Populate Participants directly
-                Submissions = c.Submissions.ToList() // Populate Submissions directly
+                Participants = c.Participants.ToList(), 
+                Submissions = c.Submissions.ToList() 
             })
             .FirstOrDefaultAsync();
 
             return contestDetails;
+
             }
+
+        public async Task JoinContestAsync(JoinContestDto join)
+        {
+            // Find the contest by join code
+            var contest = await _context.Contests
+                .Include(c => c.Participants)
+                .FirstOrDefaultAsync(c => c.JoinCode == join.JoinCode);
+
+            if (contest == null)
+                throw new ArgumentException("Invalid join code.");
+
+            // Check if the user is already a participant
+            if (contest.Participants.Any(p => p.UserId == join.UserId))
+                throw new InvalidOperationException("User is already a participant.");
+
+            // Add the user to the contest
+            var participant = new Participant
+            {
+                UserId = join.UserId,
+                ContestId = contest.Id,
+                JoinedAt = DateTime.UtcNow
+            };
+
+            contest.Participants.Add(participant);
+
+            await _context.SaveChangesAsync();
         }
+        public async Task<string> GenerateUniqueJoinCodeAsync()
+        {
+            string joinCode;
+            do
+            {
+                joinCode = Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
+            } while (await _context.Contests.AnyAsync(c => c.JoinCode == joinCode));
+
+            return joinCode;
+        }
+
+        public async Task AddProblemsToContest(AddProblemsToContestDTO dto)
+        {
+        // Fetch the contest
+            var contest = await _context.Contests
+                .Include(c => c.ContestProblems)
+                .FirstOrDefaultAsync(c => c.Id == dto.ContestId);
+
+            if (contest == null)
+                throw new Exception("Contest not found.");
+
+            // Check for duplicates
+            var existingProblemIds = contest.ContestProblems.Select(cp => cp.ProblemId).ToHashSet();
+            var newProblemIds = dto.ProblemIds.Where(pid => !existingProblemIds.Contains(pid)).ToList();
+
+            // Add new problems
+            foreach (var problemId in newProblemIds)
+            {
+                contest.ContestProblems.Add(new ContestProblem
+                {
+                    ContestId = dto.ContestId,
+                    ProblemId = problemId
+                });
+            }
+
+            // Save changes
+            await _context.SaveChangesAsync();
+        }
+    }
 }

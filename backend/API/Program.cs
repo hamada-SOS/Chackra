@@ -15,6 +15,7 @@ using API.Repositories.Contesttt;
 using API.Repositories.ProblemRe;
 using API.Repositories.Student;
 using API.Services;
+using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -96,6 +97,24 @@ internal class Program
             };
         });
 
+        builder.Services.AddMemoryCache();
+        builder.Services.Configure<IpRateLimitOptions>(options =>
+        {
+            options.GeneralRules = new List<RateLimitRule>
+            {
+                new RateLimitRule
+                {
+                    Endpoint = "*:/api/contest/join",
+                    Period = "1m", // Limit to 10 requests per minute
+                    Limit = 10
+                }
+            };
+        });
+        builder.Services.AddInMemoryRateLimiting();
+        builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+
+
+
         builder.Services.AddAuthorization();
 
         // Add services and repositories
@@ -168,6 +187,7 @@ internal class Program
         }
 
         app.UseCors("AllowReactApp");
+        app.UseIpRateLimiting();
 
         app.UseRouting();
 

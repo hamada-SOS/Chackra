@@ -62,5 +62,38 @@ namespace API.Controllers.ContestController
             return Ok(contestDetails);
 
         }
+
+        [HttpPost("join")]
+        public async Task<IActionResult> JoinContest([FromBody] JoinContestDto joinContestDTO)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                await _contestRepository.JoinContestAsync(joinContestDTO);
+                return Ok("Successfully joined the contest.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("add-problems")]
+        public async Task<IActionResult> AddProblemsToContest([FromBody] AddProblemsToContestDTO dto)
+        {
+            try
+            {
+                await _contestRepository.AddProblemsToContest(dto);
+                return Ok(new { message = "Problems added successfully." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+
     }
 }
