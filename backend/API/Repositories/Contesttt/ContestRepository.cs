@@ -51,7 +51,7 @@ namespace API.Repositories.Contesttt
         public async Task<List<ContestDTO>> GetContestCards(string id)
         {
             var contestCards = await _context.Contests.
-            Where(c => c.HostId == id).
+            Where(c => c.HostId == id || c.Participants.Any(p => p.UserId == id)).
             Select(c => new ContestDTO{
                 Name = c.Name,
                 Description = c.Description,

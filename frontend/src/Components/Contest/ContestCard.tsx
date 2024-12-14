@@ -50,9 +50,6 @@ const ContestCard: React.FC<ContestCardProps> = ({
             <strong>Status:</strong> {isActive ? "Active" : "Inactive"}
           </Typography>
           <Typography variant="body2">
-            <strong>Host ID:</strong> {hostId}
-          </Typography>
-          <Typography variant="body2">
             <strong>Participation:</strong> {participationType}
           </Typography>
         </Box>

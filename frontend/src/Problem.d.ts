@@ -50,3 +50,14 @@ export interface Problem {
     testCases:TestCase[]
 
   }
+
+  export interface ContestCards{
+    name: string;
+    description: string;
+    startTime: string; // ISO string for date
+    endTime: string; // ISO string for date
+    isActive: boolean;
+    hostId: string;
+    participationType: string;
+    contestId: string;
+  }
