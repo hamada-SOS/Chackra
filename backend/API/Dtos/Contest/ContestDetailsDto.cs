@@ -16,7 +16,7 @@ namespace API.Dtos.Contest
         public bool IsActive { get; set; }
         public string HostId {get;set;}
         public string ParticipationType{get;set;}
-        public List<ProblemDetail> Problems { get; set; }
+        public List<ProblemCard> Problems { get; set; }
         public List<Participant> Participants { get; set; }
         public List<SubmissionEntity> Submissions { get; set; }
     

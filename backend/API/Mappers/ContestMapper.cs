@@ -12,6 +12,7 @@ namespace API.Mappers
         {
             return new ContestDTO
             {
+                ContestId = contestModel.ContestId,
                 Name = contestModel.Name,
                 Description = contestModel.Description,
                 StartTime = contestModel.StartTime,

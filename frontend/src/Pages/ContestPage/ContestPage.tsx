@@ -81,7 +81,7 @@ const ContestPage: React.FC = () => {
 
   return (
     <>
-      <Box>
+      <Box sx={{backgroundColor:'background.default', height:'720px'}}>
         <Navbar />
         <Box sx={{ marginTop: 3 }}>
           <Button
@@ -100,10 +100,10 @@ const ContestPage: React.FC = () => {
             Create Contest
           </Button>
         </Box>
-        <Box sx={{ padding: 3 }}>
           <Typography variant="h4" gutterBottom>
             Your Contests
           </Typography>
+        <Box sx={{ padding: 6 , background:'#d2dff3'}}>
           <Grid container spacing={2}>
             {contests.map((contest) => (
               <Grid item key={contest.contestId} xs={12} sm={6} md={4}>
@@ -114,7 +114,7 @@ const ContestPage: React.FC = () => {
         </Box>
 
         {/* Join Contest Dialog */}
-        <Dialog open={joinDialogOpen} onClose={() => setJoinDialogOpen(false)}>
+        <Dialog  open={joinDialogOpen} onClose={() => setJoinDialogOpen(false)}>
           <DialogTitle>Join Contest</DialogTitle>
           <DialogContent>
             <TextField

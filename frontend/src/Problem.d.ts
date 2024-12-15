@@ -50,8 +50,8 @@ export interface Problem {
     testCases:TestCase[]
 
   }
-
   export interface ContestCards{
+    contestId:number;
     name: string;
     description: string;
     startTime: string; // ISO string for date
@@ -59,5 +59,26 @@ export interface Problem {
     isActive: boolean;
     hostId: string;
     participationType: string;
-    contestId: string;
+  }
+
+  export interface Participants{
+    id:number,
+    contestId:number,
+    contest:null,
+    userId:string,
+    teamName:string,
+    joinedAt:string
+  }
+
+  export interface ContesttDetails{
+    contestId:number;
+    name: string;
+    description: string;
+    startTime: string; // ISO string for date
+    endTime: string; // ISO string for date
+    isActive: boolean;
+    hostId: string;
+    participationType: string;
+    problems: Problem[]
+    participants: Participants[]
   }

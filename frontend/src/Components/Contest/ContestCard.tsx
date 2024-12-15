@@ -11,7 +11,7 @@ interface ContestCardProps {
   isActive: boolean;
   hostId: string;
   participationType: string;
-  contestId: string; // To navigate to contest details
+  contestId: number; // To navigate to contest details
 }
 
 const ContestCard: React.FC<ContestCardProps> = ({
@@ -26,13 +26,14 @@ const ContestCard: React.FC<ContestCardProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  const handleNavigate = () => {
-    navigate('/ContestDetails');
+  const handleNavigate = (contestIdd:number) => {
+    navigate('/ContestDetails',{ state: { contestIdd } });
+    console.log(contestIdd);
   };
 
   return (
     <Box
-      onClick={handleNavigate}
+      onClick={() => handleNavigate(contestId)}
       sx={{
         maxWidth: 400,
         margin: "16px",

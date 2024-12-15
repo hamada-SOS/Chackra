@@ -51,7 +51,7 @@ namespace API.Controllers.ContestController
                 }
         }
 
-        [HttpGet("contestDetails/{id}")]
+        [HttpGet("contestDetails")]
         public async Task<IActionResult> GetContestDetailsById(int id){
 
             if(!ModelState.IsValid){

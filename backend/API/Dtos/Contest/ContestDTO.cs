@@ -7,6 +7,7 @@ namespace API.Dtos.Contest
 {
     public class ContestDTO
     {
+    public int ContestId {get;set;}
     public string Name { get; set; }
     public string Description { get; set; }
     public DateTime StartTime { get; set; }

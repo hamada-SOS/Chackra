@@ -53,6 +53,7 @@ namespace API.Repositories.Contesttt
             var contestCards = await _context.Contests.
             Where(c => c.HostId == id || c.Participants.Any(p => p.UserId == id)).
             Select(c => new ContestDTO{
+                ContestId = c.Id,
                 Name = c.Name,
                 Description = c.Description,
                 StartTime = c.StartTime,
@@ -83,22 +84,11 @@ namespace API.Repositories.Contesttt
                 IsActive = c.IsActive,
                 HostId = c.HostId,
                 ParticipationType = c.ParticipationType,
-                Problems = c.ContestProblems.Select(cp => new ProblemDetail
+                Problems = c.ContestProblems.Select(cp => new ProblemCard
                 {
+                    Id = cp.Problem.ProblemID,
                     Title = cp.Problem.Title,
-                    Description = cp.Problem.Description,
-                    DefualtCode = cp.Problem.DefualtCode,
-                    SampleInput = cp.Problem.SampleInput,
-                    SampleOutput = cp.Problem.SampleOutput,
-                    InputFormat = cp.Problem.InputFormat,
-                    Note = cp.Problem.Note,
-                    Constraints = cp.Problem.Constraints,
-                    TestCases = cp.Problem.TestCases.Select(tc => new TestCase
-                    {
-                        TestCaseID = tc.TestCaseID,
-                        Input = tc.Input,
-                        ExpectedOutput = tc.ExpectedOutput,
-                    }).ToList()
+                    Diffculty = cp.Problem.Difficulty
                 }).ToList(),
                 Participants = c.Participants.ToList(), 
                 Submissions = c.Submissions.ToList() 
@@ -173,5 +163,9 @@ namespace API.Repositories.Contesttt
             // Save changes
             await _context.SaveChangesAsync();
         }
+        // public Task<bool> DeleteProblemFromContestAsync(int contestProblemId)
+        // {
+        //     throw new NotImplementedException();
+        // }
     }
 }
