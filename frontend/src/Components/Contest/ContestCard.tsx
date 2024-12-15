@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardContent, Typography, Button, Box } from "@mui/material";
+import { Card, CardContent, Typography, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 // Define the props for the contest card
@@ -27,42 +27,45 @@ const ContestCard: React.FC<ContestCardProps> = ({
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate(`/contestDetails/${contestId}`);
+    navigate('/ContestDetails');
   };
 
   return (
-    <Card sx={{ maxWidth: 400, margin: "16px", boxShadow: 3 }}>
-      <CardContent>
-        <Typography variant="h5" component="div" gutterBottom>
-          {name}
-        </Typography>
-        <Typography variant="body2" color="text.secondary" gutterBottom>
-          {description}
-        </Typography>
-        <Box sx={{ marginY: 2 }}>
-          <Typography variant="body2">
-            <strong>Start Time:</strong> {new Date(startTime).toLocaleString()}
+    <Box
+      onClick={handleNavigate}
+      sx={{
+        maxWidth: 400,
+        margin: "16px",
+        boxShadow: 3,
+        cursor: "pointer",
+        "&:hover": { boxShadow: 6 },
+      }}
+    >
+      <Card>
+        <CardContent>
+          <Typography variant="h5" component="div" gutterBottom>
+            {name}
           </Typography>
-          <Typography variant="body2">
-            <strong>End Time:</strong> {new Date(endTime).toLocaleString()}
+          <Typography variant="body2" color="text.secondary" gutterBottom>
+            {description}
           </Typography>
-          <Typography variant="body2">
-            <strong>Status:</strong> {isActive ? "Active" : "Inactive"}
-          </Typography>
-          <Typography variant="body2">
-            <strong>Participation:</strong> {participationType}
-          </Typography>
-        </Box>
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={handleNavigate}
-        >
-          View Details
-        </Button>
-      </CardContent>
-    </Card>
+          <Box sx={{ marginY: 2 }}>
+            <Typography variant="body2">
+              <strong>Start Time:</strong> {new Date(startTime).toLocaleString()}
+            </Typography>
+            <Typography variant="body2">
+              <strong>End Time:</strong> {new Date(endTime).toLocaleString()}
+            </Typography>
+            <Typography variant="body2">
+              <strong>Status:</strong> {isActive ? "Active" : "Inactive"}
+            </Typography>
+            <Typography variant="body2">
+              <strong>Participation:</strong> {participationType}
+            </Typography>
+          </Box>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
 

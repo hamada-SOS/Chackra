@@ -8,6 +8,7 @@ import ProblemByTopics from "../Pages/ProblemByTopicsPage/ProblemByTopics";
 import SolvingPage from "../Pages/solvingPAge/SolvingPage";
 import ProtectedRoute from "./ProtectedRoute";
 import ContestPage from "../Pages/ContestPage/ContestPage";
+import ContestDetails from "../Pages/ContestPage/ContestDetails";
 
 export const routes = createBrowserRouter([
     {
@@ -21,6 +22,7 @@ export const routes = createBrowserRouter([
             {path:"/ProblemByTopics", element:<ProblemByTopics/>},
             {path:"/SolvingPage", element:< SolvingPage/>},
             {path:"/ContestPage", element:< ContestPage/>},
+            {path:"/ContestDetails", element:< ContestDetails/>},
 
         ]
     }
