@@ -22,11 +22,13 @@ const ContestPage: React.FC = () => {
     joinCode: "",
   });
 
+
   useEffect(() => {
     if (nameId) {
       setNewContest((prev) => ({ ...prev, hostId: nameId }));
     }
   }, [nameId]);
+
 
   // Fetch contests associated with the user
   const loadContests = async () => {
@@ -46,6 +48,17 @@ const ContestPage: React.FC = () => {
     }
   }, [nameId]);
 
+
+
+
+
+
+
+
+
+
+
+
   const handleJoinContest = async () => {
     const nameeId = nameId; // Replace with the actual nameId value
     const joincode = joinCode; // Replace with the actual joincode value
@@ -64,6 +77,12 @@ const ContestPage: React.FC = () => {
     }
   };
 
+
+
+
+
+
+
   const handleCreateContest = async () => {
     try {
       console.log(newContest)
@@ -78,6 +97,13 @@ const ContestPage: React.FC = () => {
       console.error("Error creating contest:", error);
     }
   };
+
+
+
+
+
+
+
 
   return (
     <>

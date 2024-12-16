@@ -20,12 +20,13 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 import Navbar from "../../Components/Navbar/Navbar";
 import { ContesttDetails, Problem } from "../../Problem";
 import { fetchProblemsByCategory } from "../../api";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 type DifficultyLevels = "VeryEasy" | "Easy" | "Medium" | "Hard" | "VeryHard";
 
 const ContestDetails: React.FC = () => {
+  const navigate = useNavigate();
   const [problems, setProblems] = useState<Problem[]>([]);
   const [contestDetails, setContestDetails] = useState<ContesttDetails | null>(null);
   const [filteredProblems, setFilteredProblems] = useState<Problem[]>([]);
@@ -134,7 +135,9 @@ const ContestDetails: React.FC = () => {
   };
 
 
-  
+  const handleSolveClick = (id: number) => {
+    navigate(`/SolvingPage`, { state: { id } });
+  };
   return (
     <Box>
       <Navbar />
@@ -148,24 +151,53 @@ const ContestDetails: React.FC = () => {
               </TabList>
             </Box>
 
-            <TabPanel value="1">
-              <Button variant="outlined" onClick={() => setDialogOpen(true)}>
-                Assign
-              </Button>
-            </TabPanel>
+      <TabPanel value="1">
+          {/* Button to open dialog */}
+          <Button variant="outlined" onClick={() => setDialogOpen(true)}>
+            Assign
+          </Button>
+
+          {/* Display fetched problems */}
+          {contestDetails?.problems.length ? (
+            <Box mt={3}>
+            <Typography variant="h6">Contest Problems</Typography>
+            <List>
+              {contestDetails?.problems.map((problem) => (
+                <React.Fragment key={problem.id}>
+                  <ListItem
+                    component="button"
+                    onClick={() => handleSolveClick(problem.id)}
+                    sx={{
+                      cursor: "pointer",
+                      padding: "16px",
+                      "&:hover": { backgroundColor: "#f5f5f5" },
+                    }}
+                  >
+                    <ListItemText
+                      primary={problem.title}
+                      secondary={`Difficulty: ${problem.diffculty}`}
+                    />
+                  </ListItem>
+                  <Divider />
+                </React.Fragment>
+              ))}
+            </List>
+          </Box>
+          ) : (
+            <Typography variant="body2" color="textSecondary">
+              No problems assigned yet.
+            </Typography>
+          )}
+      </TabPanel>
 
             <TabPanel value="2">
               <Typography variant="h6" gutterBottom>
                 Participants
               </Typography>
               <List>
-                {[
-                  { id: 1, name: "Abdirahman Mohamed Osman" },
-                  { id: 2, name: "Abdirisak Hassan" },
-                  { id: 3, name: "Ismail Ali Salad" },
-                ].map((participant) => (
+                {contestDetails?.participants.map((participant) => (
                   <ListItem key={participant.id} divider>
-                    <ListItemText primary={participant.name} />
+                    <ListItemText primary={participant.userId} />
                   </ListItem>
                 ))}
               </List>

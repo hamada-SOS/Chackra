@@ -163,9 +163,46 @@ namespace API.Repositories.Contesttt
             // Save changes
             await _context.SaveChangesAsync();
         }
-        // public Task<bool> DeleteProblemFromContestAsync(int contestProblemId)
-        // {
-        //     throw new NotImplementedException();
-        // }
+        public Task<bool> DeleteProblemFromContestAsync(int contestProblemId)
+        {
+            throw new NotImplementedException();
+        }
+
+public async Task DeleteAsync(DeleteContestDto edto)
+{
+    // Fetch the contest entity by ID
+    var contest = await _context.Contests
+        .Include(c => c.Participants) // Include participants for validation
+        .FirstOrDefaultAsync(c => c.Id == edto.ContestId);
+
+    // If the contest doesn't exist, throw an exception or handle gracefully
+    if (contest == null)
+    {
+        throw new KeyNotFoundException($"Contest with ID {edto.ContestId} was not found.");
+    }
+
+    // Check if the user is the host
+    if (contest.HostId == edto.UserId)
+    {
+        // If the user is the host, delete the contest
+        _context.Contests.Remove(contest);
+        await _context.SaveChangesAsync();
+        return;
+    }
+
+    // Check if the user is a participant
+    var participant = contest.Participants.FirstOrDefault(p => p.UserId == edto.UserId);
+    if (participant != null)
+    {
+        // If the user is a participant, remove them from the contest
+        contest.Participants.Remove(participant);
+        await _context.SaveChangesAsync();
+        return;
+    }
+
+    // If the user is neither the host nor a participant, throw an exception
+    throw new UnauthorizedAccessException("You are not authorized to delete this contest or your participation.");
+}
+
     }
 }

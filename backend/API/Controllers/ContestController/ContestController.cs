@@ -94,6 +94,23 @@ namespace API.Controllers.ContestController
             }
         }
 
+    [HttpDelete("delete")]
+    public async Task<IActionResult> DeleteContest([FromBody] DeleteContestDto edto)
+    {
+        try
+        {
+            await _contestRepository.DeleteAsync(edto);
+            return NoContent(); // HTTP 204: Successful deletion, no content to return
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message }); // HTTP 404: Contest not found
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "An error occurred while processing your request.", details = ex.Message }); // HTTP 500: Internal Server Error
+        }
+    }
 
     }
 }
