@@ -107,30 +107,36 @@ const ContestPage: React.FC = () => {
 
   return (
     <>
-      <Box sx={{backgroundColor:'background.default', height:'720px'}}>
+      <Box sx={{backgroundColor:'background.default', height:'fit'}}>
         <Navbar />
-        <Box sx={{ marginTop: 3 }}>
+        <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', flexDirection:"column"}}>
+        <Box sx={{display:'flex', justifyContent:'space-between', width:'1100px' }}>
+          <Typography variant="h4" gutterBottom sx={{mt:6, fontWeight:'bold', fontSize:'2.3rem'}}>
+            Your Contests
+          </Typography>
+
+        <Box sx={{ marginTop: 6, display:'flex', gap:5}}>
           <Button
-            variant="contained"
+            variant="outlined"
             color="primary"
             onClick={() => setJoinDialogOpen(true)}
-            sx={{ marginRight: 2 }}
+            sx={{ height:'42px'}}
           >
             Join Contest
           </Button>
           <Button
-            variant="contained"
+            variant="outlined"
             color="secondary"
+            sx={{height:'42px'}}
+
             onClick={() => setCreateDialogOpen(true)}
           >
             Create Contest
           </Button>
         </Box>
-          <Typography variant="h4" gutterBottom>
-            Your Contests
-          </Typography>
-        <Box sx={{ padding: 6 , background:'#d2dff3'}}>
-          <Grid container spacing={2}>
+        </Box>
+        <Box sx={{ padding: 3 , background:'#d2dff3', width:'1100px', height:'520px', overflow:'auto', borderRadius:4}}>
+          <Grid container spacing={1}>
             {contests.map((contest) => (
               <Grid item key={contest.contestId} xs={12} sm={6} md={4}>
                 <ContestCard {...contest} />
@@ -138,6 +144,7 @@ const ContestPage: React.FC = () => {
             ))}
           </Grid>
         </Box>
+            </Box>
 
         {/* Join Contest Dialog */}
         <Dialog  open={joinDialogOpen} onClose={() => setJoinDialogOpen(false)}>

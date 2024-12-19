@@ -54,6 +54,7 @@ const ContestCard: React.FC<ContestCardProps> = ({
       if (response.status === 200) {
         console.log(`Contest ${contestId} deleted successfully`);
         // Handle UI update, e.g., remove the card
+        
       } else {
         console.error(`Failed to delete contest ${contestId}:`, response.data);
       }
