@@ -23,7 +23,8 @@ namespace API.Models
         public bool Passed {get;set;}
         public decimal ExecutionTime { get; set; } // DECIMAL(5,2)
         public decimal MemoryUsed { get; set; } // DECIMAL(8,2)
-        public int Points { get; set; }
+        public DateTime SubmissionTime {get; set;}
+        public int Score { get; set; }
 
     }
 

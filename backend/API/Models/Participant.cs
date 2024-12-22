@@ -14,6 +14,8 @@ public class Participant
     public Contest Contest { get; set; }
     public string UserId { get; set; }
     public ApplicationUser User { get; set; }
+    public int Score { get; set; }
+
     public string TeamName { get; set; }
     public DateTime JoinedAt { get; set; }
 

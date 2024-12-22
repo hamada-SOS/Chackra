@@ -16,14 +16,17 @@ import Tab from "@mui/material/Tab";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import {SubmissionResult, TestCase} from "../../Problem";
 import { fetchProblemDetails } from "../../api";
+import { useAuth } from "../../Global/Context";
+import { useLocation } from "react-router";
 
 interface Props {
   TestCases?: TestCase[];
   id?: number;
+  contestId:number
 }
 
 
-const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
+const Judge0: React.FC<Props> = ({ TestCases = [], id, contestId }) => {
   const [sourceCode, setSourceCode] = useState("");
   const [language, setLanguage] = useState<string>("python");
   const [languageId, setLanguageId] = useState<number>(71); // Default to Python 3
@@ -31,8 +34,11 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
   const [result, setResult] = useState<SubmissionResult | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedTestCaseIndex, setSelectedTestCaseIndex] = useState<number>(0);
-
+  const location = useLocation();
+  const isContestProblem = location.state?.isContestProblem || false;
   const theme = useTheme();
+  const { nameId } = useAuth();
+  
 
   function formatPythonCode(state: string): string {
     try {
@@ -71,6 +77,7 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
     }
   }
 
+  console.log(isContestProblem)
   useEffect(() => {
     const loadProblemDetails = async () => {
       if (!id) return;
@@ -99,10 +106,14 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id }) => {
     setResult(null);
 
     try {
+      console.log(contestId, nameId)
       const { data: submission } = await axios.post(
         "http://localhost:5149/api/Submission/submit",
         {
-          ProblemID: id,
+          problemID: id,
+          contestId:contestId,
+          userId: nameId,
+          isContestProblem: isContestProblem,
           sourceCode,
           LanguageId: languageId,
         }

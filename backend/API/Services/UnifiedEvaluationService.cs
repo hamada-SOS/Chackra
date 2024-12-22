@@ -1,4 +1,5 @@
 using System.Text;
+using API.Data;
 using API.Dtos.Evalution;
 using API.Dtos.Excution;
 using API.Dtos.Problemea.Submission;
@@ -8,6 +9,7 @@ using API.Interfaces.Problema;
 using API.Interfaces.Submissionn;
 using API.Interfaces.testcase;
 using API.Models;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using static API.Dtos.Problemea.Submission.SubmissionResultDto;
 
@@ -19,22 +21,137 @@ namespace API.Services
         private readonly IProblemRepository _problemRepository;
         private readonly ITestCaseRepository _testCaseRepository;
         private readonly ISubmissionRepository _submissionRepository;
+        private readonly ApplicationDbContext _context;
 
         public UnifiedEvaluationService(
             IExecutionService executionService,
             IProblemRepository problemRepository,
             ITestCaseRepository testCaseRepository,
-            ISubmissionRepository submissionRepository)
+            ISubmissionRepository submissionRepository,
+            ApplicationDbContext context)
         {
             _executionService = executionService;
             _problemRepository = problemRepository;
             _testCaseRepository = testCaseRepository;
             _submissionRepository = submissionRepository;
+            _context = context;
         }
 
         // Evaluate and Save Submission
-        public async Task<SubmissionResultDto> EvaluateAndSaveSubmissionAsync(SubmissionRequestDto request)
+public async Task<SubmissionResultDto> EvaluateAndSaveSubmissionAsync(SubmissionRequestDto request)
+{
+    if (request.IsContestProblem)
+    {
+        // Validate if the submission is part of the contest
+        var contest = await _context.Contests
+            .Include(c => c.ContestProblems)
+            .FirstOrDefaultAsync(c => c.Id == request.ContestId);
+                // Fetch the TeamName from the Participant table
+        var participant = await _context.Participants
+            .FirstOrDefaultAsync(p => p.ContestId == request.ContestId && p.UserId == request.UserId);
+
+        if (contest == null) throw new Exception("Contest not found.");
+        if (!contest.ContestProblems.Any(cp => cp.ProblemId == request.ProblemID))
+            throw new Exception("Problem not part of the contest.");
+
+        // Ensure the contest is active
+        // if (contest.Status != "InProgress")
+        //     throw new Exception("Contest is not active.");
+
+        // Retrieve test cases for the problem
+        var CtestCases = await _testCaseRepository.GetTestCasesByProblemIdAsync(request.ProblemID);
+        if (CtestCases == null || !CtestCases.Any())
+            throw new Exception($"No test cases found for problem ID {request.ProblemID}.");
+
+        var testCaseResults = new List<TestCaseResult>();
+        bool CallPassed = true;
+        int totalScore = 0;
+        int maxScorePerTestCase = 100 / CtestCases.Count;
+
+        foreach (var testCase in CtestCases)
         {
+            var executionResult = await _executionService.ExecuteCodeAsync(
+                request.SourceCode,
+                testCase.Input,
+                request.LanguageId
+            );
+
+            if (executionResult.StandardOutput == null)
+            {
+                var errorResult = new SubmissionResultDto
+                {
+                    PassedAllTestCases = false,
+                    TestCaseResults = null,
+                    error = executionResult.StandardError
+                };
+                return errorResult;
+            }
+
+            var passed = executionResult.StandardOutput.Trim() == testCase.ExpectedOutput.Trim();
+            if (!passed) CallPassed = false;
+
+            if (passed)
+            {
+                totalScore += maxScorePerTestCase;
+            }
+
+            testCaseResults.Add(new TestCaseResult
+            {
+                Input = testCase.Input,
+                Output = executionResult.StandardOutput,
+                ExpectedOutput = testCase.ExpectedOutput,
+                Passed = passed
+            });
+        }
+
+        // Save the submission details
+        var Csubmission = new SubmissionEntity
+        {
+            ProblemID = request.ProblemID,
+            ContestId = request.ContestId,
+            UserId = request.UserId,
+            Code = request.SourceCode,
+            LanguageId = request.LanguageId,
+            Passed = CallPassed,
+            Score = totalScore,
+            SubmissionTime = DateTime.UtcNow
+        };
+        await _submissionRepository.SaveSubmissionAsync(Csubmission);
+
+        // Update the leaderboard
+        var leaderboardEntry = await _context.Leaderboards
+            .FirstOrDefaultAsync(l => l.ContestId == request.ContestId && l.UserId == request.UserId);
+
+        if (leaderboardEntry == null)
+        {
+            leaderboardEntry = new Leaderboard
+            {
+                ContestId = request.ContestId,
+                UserId = request.UserId,
+                TotalScore = totalScore,
+                LastSubmissionTime = DateTime.UtcNow,
+                TeamName = participant.TeamName
+            };
+            _context.Leaderboards.Add(leaderboardEntry);
+        }
+        else
+        {
+            leaderboardEntry.TotalScore += totalScore;
+            leaderboardEntry.LastSubmissionTime = DateTime.UtcNow;
+        }
+
+        await _context.SaveChangesAsync();
+
+        // Return the results
+        return new SubmissionResultDto
+        {
+            PassedAllTestCases = CallPassed,
+            TestCaseResults = testCaseResults,
+            Score = totalScore
+        };
+    }
+    
+        
             // Validate problem existence
             var problem = await _problemRepository.GetProblemDetails(request.ProblemID);
             if (problem == null)
@@ -97,11 +214,10 @@ namespace API.Services
                 PassedAllTestCases = allPassed,
                 TestCaseResults = results
             };
-
-
-            // return results;
             
-        }
+}
+
+            // return resul
 
         // Fetch Results by Token
         // public async Task<ExecutionResultDto> GetResultByTokenAsync(string token)

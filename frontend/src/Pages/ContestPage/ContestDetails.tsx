@@ -164,8 +164,8 @@ const ContestDetails: React.FC = () => {
   };
 
 
-  const handleSolveClick = (id: number) => {
-    navigate(`/SolvingPage`, { state: { id } });
+  const handleSolveClick = (id: number, contestIdd: number) => {
+    navigate(`/SolvingPage`, { state: { id , contestIdd, isContestProblem: true } });
   };
   return (
     <Box>
@@ -207,7 +207,7 @@ const ContestDetails: React.FC = () => {
                   <React.Fragment key={problem.id}>
                     <ListItem
                       component="button"
-                      onClick={() => handleSolveClick(problem.id)}
+                      onClick={() => handleSolveClick(problem.id, contestIdd)}
                       sx={{
                         cursor: "pointer",
                         padding: "16px",

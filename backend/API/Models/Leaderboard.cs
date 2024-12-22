@@ -7,15 +7,23 @@ namespace API.Models
 {
     public class Leaderboard
     {
-        public int LeaderboardID { get; set; } // Primary Key
-        public string StudentID { get; set; } // Foreign Key (User)
-        public ApplicationUser Student { get; set; }
+        public int Id { get; set; } // Primary Key
 
-        public int ProblemID { get; set; } // Foreign Key
-        public Problem Problem { get; set; }
+        // Foreign keys
+        public int ContestId { get; set; }
+        public Contest Contest { get; set; }
 
-        public int Points { get; set; }
-        public int Ranking { get; set; }
+        public string UserId { get; set; } // For individual participants
+        public ApplicationUser User { get; set; }
+
+        public string TeamName { get; set; } // For team-based contests
+
+        // Scoring and ranking
+        public int TotalScore { get; set; }
+        public int Rank { get; set; }
+
+        // Timestamps
+        public DateTime LastSubmissionTime { get; set; } // Used for tie-breaking
     }
 
 }

@@ -58,7 +58,7 @@ const ProblemByTopics = () => {
   }, [filters, problems]);
 
   const handleSolveClick = (id: number) => {
-    navigate(`/SolvingPage`, { state: { id } });
+    navigate(`/SolvingPage`, { state: { id, isContestProblem: false } });
   };
 
   return (
