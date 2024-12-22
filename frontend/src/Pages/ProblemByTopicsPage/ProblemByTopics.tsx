@@ -52,7 +52,7 @@ const ProblemByTopics = () => {
       }
 
       setFilteredProblems(filtered);
-    };
+    };  
 
     applyFilters();
   }, [filters, problems]);

@@ -25,7 +25,10 @@ const ProblemtopicsPage = () => {
         <Typography variant='h4' color='#010104' sx={{ fontWeight: 600 }}>Solve problems to enhance your skills</Typography>
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-        <Typography variant='h5' sx={{ color: 'text.main', padding: '20px 10px', opacity: 0.8 }}>Solve By Topics</Typography>
+        {/* <Typography variant='h5' sx={{ color: 'text.main', padding: '20px 10px', opacity: 0.8 }}>Solve By Topics</Typography> */}
+                  <Typography variant="h6" gutterBottom sx={{mt:4, fontSize:'1.8rem'}}>
+                    Solve by topics
+                  </Typography>
         <Box sx={{
           display: 'flex',
           width: '800px',

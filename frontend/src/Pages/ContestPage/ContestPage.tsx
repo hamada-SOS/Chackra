@@ -109,13 +109,17 @@ const ContestPage: React.FC = () => {
     <>
       <Box sx={{backgroundColor:'background.default', height:'fit'}}>
         <Navbar />
+              <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', background: '#d2dff3', padding: '20px 100px' }}>
+                <Typography variant='h6' sx={{ opacity: 0.6 }}>Contest</Typography>
+                <Typography variant='h4' color='#010104' sx={{ fontWeight: 600 }}>Compete to showcase your skills</Typography>
+              </Box>
         <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', flexDirection:"column"}}>
         <Box sx={{display:'flex', justifyContent:'space-between', width:'1100px' }}>
-          <Typography variant="h4" gutterBottom sx={{mt:6, fontWeight:'bold', fontSize:'2.3rem'}}>
+          <Typography variant="h6" gutterBottom sx={{mt:6, fontSize:'2.3rem'}}>
             Your Contests
           </Typography>
 
-        <Box sx={{ marginTop: 6, display:'flex', gap:5}}>
+        <Box sx={{ marginTop: 7.3, display:'flex', gap:5}}>
           <Button
             variant="outlined"
             color="primary"

@@ -69,7 +69,7 @@ const ContestCard: React.FC<ContestCardProps> = ({
         width: 300,
         borderRadius: 2,
         margin: "16px",
-        boxShadow: 4,
+        // boxShadow: 4,
         cursor: "pointer",
         overflow: "hidden",
         transition: "transform 0.3s ease",
