@@ -111,6 +111,35 @@ const ContestDetails: React.FC = () => {
     );
   };
 
+  const handleDeleteP = async (
+    e: React.MouseEvent,
+    contestId: number,
+    problemId: number,
+  ) => {
+    e.stopPropagation(); // Prevent triggering the card navigation
+
+    try {
+      console.log(contestId, problemId)
+      const response = await axios.delete("http://localhost:5149/api/Contest/deletecP", {
+        data: {
+          contestId,
+          problemId,
+        },
+      });
+
+      if (response.status === 200) {
+        console.log(`ProblemContest ${problemId} deleted successfully`);
+        // Handle UI update, e.g., remove the card
+        
+      } else {
+        console.error(`Failed to delete problem ${problemId}:`, response.data);
+      }
+    } catch (error) {
+      console.error("Error deleting contest:", error);
+    }
+  };
+
+
   const handleFinish = async () => {
     if (!contestIdd) {
       console.error("Contest ID is undefined");
@@ -148,10 +177,11 @@ const ContestDetails: React.FC = () => {
               <TabList onChange={handleTabChange} aria-label="contest details tabs">
                 <Tab label="Add Problems" value="1" />
                 <Tab label="Participants" value="2" />
+                <Tab label ="Start Contest" value="3"/>
               </TabList>
             </Box>
 
-      <TabPanel value="1">
+      <TabPanel value="1" sx={{display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
           {/* Button to open dialog */}
           <Button variant="outlined" onClick={() => setDialogOpen(true)}>
             Assign
@@ -159,48 +189,89 @@ const ContestDetails: React.FC = () => {
 
           {/* Display fetched problems */}
           {contestDetails?.problems.length ? (
-            <Box mt={3}>
-            <Typography variant="h6">Contest Problems</Typography>
-            <List>
-              {contestDetails?.problems.map((problem) => (
-                <React.Fragment key={problem.id}>
-                  <ListItem
-                    component="button"
-                    onClick={() => handleSolveClick(problem.id)}
-                    sx={{
-                      cursor: "pointer",
-                      padding: "16px",
-                      "&:hover": { backgroundColor: "#f5f5f5" },
-                    }}
-                  >
-                    <ListItemText
-                      primary={problem.title}
-                      secondary={`Difficulty: ${problem.diffculty}`}
-                    />
-                  </ListItem>
-                  <Divider />
-                </React.Fragment>
-              ))}
-            </List>
-          </Box>
-          ) : (
-            <Typography variant="body2" color="textSecondary">
-              No problems assigned yet.
+          <Box sx={{ mb: 3, width: '80%' }}>
+            <Typography variant="h4" gutterBottom>
+              Contest Problems
             </Typography>
-          )}
+            <Box
+              sx={{
+                maxHeight: '500px', // Adjust height as needed
+                overflowY: 'auto', // Enable vertical scrolling
+                border: '1px solid #ddd', // Optional: Add a border for better visibility
+                borderRadius: '8px', // Optional: Rounded corners
+                padding: '8px', // Optional: Padding inside the scrollable area
+              }}
+            >
+              <List>
+                {contestDetails?.problems.map((problem) => (
+                  <React.Fragment key={problem.id}>
+                    <ListItem
+                      component="button"
+                      onClick={() => handleSolveClick(problem.id)}
+                      sx={{
+                        cursor: "pointer",
+                        padding: "16px",
+                        mb: 1,
+                        "&:hover": { backgroundColor: "#f5f5f5" },
+                      }}
+                    >
+                      <ListItemText
+                        primary={problem.title}
+                        secondary={`Difficulty: ${problem.diffculty}`}
+                      />
+                      {/* Delete Button */}
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        onClick={(e) => handleDeleteP(e, contestIdd, problem.id)}
+                        sx={{ marginLeft: "auto" }} // Align to the right
+                      >
+                        Delete
+                      </Button>
+                    </ListItem>
+                    <Divider />
+                  </React.Fragment>
+                ))}
+              </List>
+            </Box>
+          </Box>
+        ) : (
+          <Typography variant="body2" color="textSecondary">
+            No problems assigned yet.
+          </Typography>
+        )}
+
       </TabPanel>
 
-            <TabPanel value="2">
-              <Typography variant="h6" gutterBottom>
+            <TabPanel value="2" sx={{display:'flex', justifyContent:'center'}}>
+              <Box sx={{width:"60%"}}>
+              <Typography variant="h2" gutterBottom>
+                Host
+              </Typography>
+              <List sx={{ mb: 5 }}>
+                {contestDetails?.participants
+                  .filter((participant) => participant.userId === contestDetails.hostId)
+                  .map((host) => (
+                    <ListItem key={host.userId} divider>
+                      <ListItemText primary={host.username} />
+                    </ListItem>
+                  ))}
+              </List>
+
+              <Typography variant="h4" gutterBottom>
                 Participants
               </Typography>
               <List>
-                {contestDetails?.participants.map((participant) => (
-                  <ListItem key={participant.id} divider>
-                    <ListItemText primary={participant.userId} />
-                  </ListItem>
-                ))}
+                {contestDetails?.participants
+                  .filter((participant) => participant.userId !== contestDetails.hostId)
+                  .map((participant) => (
+                    <ListItem key={participant.userId} divider>
+                      <ListItemText primary={participant.username} />
+                    </ListItem>
+                  ))}
               </List>
+
+              </Box>
             </TabPanel>
           </TabContext>
         </Paper>

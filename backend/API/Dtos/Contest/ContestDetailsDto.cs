@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Dtos.Participnt;
 using API.Dtos.Problemea;
 using API.Models;
 
@@ -17,7 +18,7 @@ namespace API.Dtos.Contest
         public string HostId {get;set;}
         public string ParticipationType{get;set;}
         public List<ProblemCard> Problems { get; set; }
-        public List<Participant> Participants { get; set; }
+        public List<ParticipantDto> Participants { get; set; }
         public List<SubmissionEntity> Submissions { get; set; }
     
 

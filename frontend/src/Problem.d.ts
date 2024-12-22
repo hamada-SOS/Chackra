@@ -62,12 +62,11 @@ export interface Problem {
   }
 
   export interface Participants{
-    id:number,
-    contestId:number,
-    contest:null,
-    userId:string,
-    teamName:string,
-    joinedAt:string
+    id:number;
+    contestId:number;
+    userId:string;
+    username:string;
+    team:string;
   }
 
   export interface ContesttDetails{

@@ -15,7 +15,7 @@ namespace API.Interfaces.Contesttt
         Task <string>GenerateUniqueJoinCodeAsync();
         Task AddProblemsToContest(AddProblemsToContestDTO dto);
         // Task<List<ContestProblem>> GetProblemsByContestIdAsync(int contestId);
-        Task<bool> DeleteProblemFromContestAsync(int contestProblemId);
+        Task DeleteProblemFromContestAsync(DeleteContestProblem contestProblemId);
         Task DeleteAsync(DeleteContestDto edto);
     }
 }

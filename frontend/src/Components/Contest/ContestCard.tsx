@@ -35,7 +35,6 @@ const ContestCard: React.FC<ContestCardProps> = ({
     navigate("/ContestDetails", { state: { contestIdd } });
   };
 
-  // Function to delete a contest
   const handleDelete = async (
     e: React.MouseEvent,
     contestId: number,
