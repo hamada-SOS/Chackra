@@ -25,7 +25,9 @@ import { ContesttDetails, Problem } from "../../Problem";
 import { fetchProblemsByCategory } from "../../api";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import Countdown, { CountdownRenderProps } from "react-countdown";
+import CircularCountdown from "./EnhancedCountdown";
+import EnhancedCountdown from "./EnhancedCountdown";
 type DifficultyLevels = "VeryEasy" | "Easy" | "Medium" | "Hard" | "VeryHard";
 
 const ContestDetails: React.FC = () => {
@@ -36,8 +38,8 @@ const ContestDetails: React.FC = () => {
   const [problemIds, setProblemIds] = useState<number[]>([]);
   const [tabValue, setTabValue] = useState("1");
   const [isDialogOpen, setDialogOpen] = useState(false);
-  const [teamBProgress, setteamBProgress] = useState(70)
-  const [teamAProgress, setteamAProgress] = useState(20)
+  const [teamBProgress, setteamBProgress] = useState(50)
+  const [teamAProgress, setteamAProgress] = useState(50)
   const [progress, setProgress] = useState(80)
   const [leadingTeam, setleadingTeam] = useState('BCS15-A')
   const [winner, setwinner] = useState(false)
@@ -191,6 +193,10 @@ const ContestDetails: React.FC = () => {
   const handleSolveClick = (id: number, contestIdd: number) => {
     navigate(`/SolvingPage`, { state: { id , contestIdd, isContestProblem: true } });
   };
+
+
+
+
   return (
     <Box>
       <Navbar />
@@ -299,18 +305,21 @@ const ContestDetails: React.FC = () => {
             </TabPanel>
             <TabPanel value='3'>
             <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                padding="16px"
-                style={{ backgroundColor: theme.palette.background.default }}
+                sx={{display:'flex', justifyContent:'space-between', alignItems:'baseline', p:'16px',
+                  backgroundColor: theme.palette.background.default,
+                  width:'1200px',
+                  mt:-10,
+                  borderRadius:1,
+                  height:'500px'
+                }}
+  
               >
                 {/* Team A Panel */}
                 <Paper
                   elevation={3}
                   style={{
                     padding: '16px',
-                    width: '200px',
+                    width: '300px',
                     backgroundColor: theme.palette.primary.light,
                     color: theme.palette.primary.contrastText,
                   }}
@@ -319,24 +328,25 @@ const ContestDetails: React.FC = () => {
                     {/* {teamA.name} */}
                     BCS17-F
                   </Typography>
+                  <Divider/>
                   {/* {teamA.members.map((member) => (
                     <Typography key={member} variant="body2">
                       {member}
                     </Typography>
                   ))} */}
-                  <Typography> mohmaed </Typography>
-                  <Typography> mohmaed </Typography>
-                  <Typography> mohmaed </Typography>
-                  <Typography> mohmaed </Typography>
+                  <Typography sx={{p:0.5}}> Ali Ahmed Kheyre </Typography>
+                  <Typography sx={{p:0.5}}> Omar Abdirizak Hirse </Typography>
+                  <Typography sx={{p:0.5}}> Fardowsa Amhed Abukar </Typography>
+                  <Typography sx={{p:0.5}}> mohmaed Abdi Nur </Typography>
                 </Paper>
 
                 {/* Progress Bar and Central Circle */}
                 <Box display="flex" flexDirection="column" alignItems="center" width="60%" position="relative">
                 {/* Combined Progress Bar */}
-                <Box width="60%" position="relative">
+                <Box width="95%" position="relative">
                         <Box
                           style={{
-                            height: '20px',
+                            height: '10px',
                             borderRadius: '10px',
                             background: progressBarBackground,
                           }}
@@ -353,10 +363,10 @@ const ContestDetails: React.FC = () => {
 
 
                   {/* Central Circle */}
-                  <Box
+                  {/* <Box
                     style={{
                       position: 'absolute',
-                      top: '10%',
+                      top: '50%',
                       left: '50%',
                       transform: 'translate(-50%, -50%)',
                       width: '100px',
@@ -372,11 +382,11 @@ const ContestDetails: React.FC = () => {
                     <Typography variant="h6">
                       {leadingTeam ? `Leading: ${leadingTeam}` : 'Dominating...'}
                     </Typography>
-                  </Box>
+                  </Box> */}
 
                   {/* Countdown Timer */}
                   <Box position="relative" display="inline-flex" marginTop="16px">
-                    <CircularProgress
+                    {/* <CircularProgress
                       variant="determinate"
                       value={(80 / 100) * 100}
                       style={{ color: theme.palette.info.main }}
@@ -394,7 +404,8 @@ const ContestDetails: React.FC = () => {
                       <Typography variant="caption" style={{ color: theme.palette.text.primary }}>
                         {60}s
                       </Typography>
-                    </Box>
+                    </Box> */}
+                    <EnhancedCountdown/>
                   </Box>
                 </Box>
 
@@ -403,7 +414,7 @@ const ContestDetails: React.FC = () => {
                   elevation={3}
                   style={{
                     padding: '16px',
-                    width: '200px',
+                    width: '300px',
                     backgroundColor: theme.palette.error.light,
                     color: theme.palette.error.contrastText,
                   }}
@@ -412,15 +423,17 @@ const ContestDetails: React.FC = () => {
                     {/* {teamB.name} */}
                     BCS15-S
                   </Typography>
+                  <Divider/>
                   {/* {teamB.members.map((member) => (
                     <Typography key={member} variant="body2">
                       {member}
                     </Typography>
                   ))} */}
-                  <Typography> mohmaed </Typography>
-                  <Typography> mohmaed </Typography>
-                  <Typography> mohmaed </Typography>
-                  <Typography> mohmaed </Typography>
+                  <Typography sx={{p:0.5}}> mohmaed Abdi Nur </Typography>
+                  <Typography sx={{p:0.5}}> Omar Abdirizak Hirse </Typography>
+                  <Typography sx={{p:0.5}}> Ali Ahmed Kheyre </Typography>
+                  <Typography sx={{p:0.5}}> Fardowsa Amhed Abukar </Typography>
+                  
                 </Paper>
               </Box>        
             </TabPanel>
