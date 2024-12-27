@@ -5,6 +5,7 @@ import axios from "axios";
 import ContestCard from "../../Components/Contest/ContestCard";
 import { useAuth } from "../../Global/Context";
 import { ContestCards } from "../../Problem";
+import { fetchUserContests, joinContest } from "../../api";
 
 const ContestPage: React.FC = () => {
   const { nameId } = useAuth();
@@ -33,10 +34,8 @@ const ContestPage: React.FC = () => {
   // Fetch contests associated with the user
   const loadContests = async () => {
     try {
-      const response = await axios.get("http://localhost:5149/api/Contest/GetContestCards", {
-        params: { id: nameId },
-      });
-      setContests(response.data);
+      const response = await fetchUserContests(nameId)
+      setContests(response);
     } catch (error) {
       console.error("Error fetching contests:", error);
     }
@@ -49,39 +48,20 @@ const ContestPage: React.FC = () => {
   }, [nameId]);
 
 
-
-
-
-
-
-
-
-
-
-
   const handleJoinContest = async () => {
     const nameeId = nameId; // Replace with the actual nameId value
     const joincode = joinCode; // Replace with the actual joincode value
   
     try {
-      const response = await axios.post("http://localhost:5149/api/Contest/join", {
-        userId: nameeId, // Map nameId to userId
-        joincode: joincode, // Pass joincode directly
-      });
+      const response = await joinContest(nameeId, joincode)
   
-      alert(response.data);
+      alert(response);
       setJoinDialogOpen(false);
       loadContests(); // Refresh contests after joining
     } catch (error) {
       console.error("Error joining contest:", error);
     }
   };
-
-
-
-
-
-
 
   const handleCreateContest = async () => {
     try {
@@ -97,13 +77,6 @@ const ContestPage: React.FC = () => {
       console.error("Error creating contest:", error);
     }
   };
-
-
-
-
-
-
-
 
   return (
     <>

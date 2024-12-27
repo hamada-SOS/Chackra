@@ -22,7 +22,8 @@ import { useLocation } from "react-router";
 interface Props {
   TestCases?: TestCase[];
   id?: number;
-  contestId:number
+  contestId:number;
+  // onSolve: (problemId: string) => Promise<boolean>;
 }
 
 
@@ -77,7 +78,6 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id, contestId }) => {
     }
   }
 
-  console.log(isContestProblem)
   useEffect(() => {
     const loadProblemDetails = async () => {
       if (!id) return;

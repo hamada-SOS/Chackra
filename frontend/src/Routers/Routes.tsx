@@ -9,6 +9,8 @@ import SolvingPage from "../Pages/solvingPAge/SolvingPage";
 import ProtectedRoute from "./ProtectedRoute";
 import ContestPage from "../Pages/ContestPage/ContestPage";
 import ContestDetails from "../Pages/ContestPage/ContestDetails";
+import ContestDetailsP from "../Pages/ContestPage/ContestDetailsP";
+import ContestSolvingPage from "../Pages/solvingPAge/ContestSolvingPage";
 
 export const routes = createBrowserRouter([
     {
@@ -23,6 +25,8 @@ export const routes = createBrowserRouter([
             {path:"/SolvingPage", element:< SolvingPage/>},
             {path:"/ContestPage", element:< ContestPage/>},
             {path:"/ContestDetails", element:< ContestDetails/>},
+            {path:"/ContestDetailsP", element:< ContestDetailsP/>},
+            {path:"/ContestSolvingPage", element:< ContestSolvingPage/>},
 
         ]
     }

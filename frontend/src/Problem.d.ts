@@ -36,7 +36,7 @@ export interface Problem {
     passed: boolean
   }
   export interface ProblemDetails {
-    ProblemID: number,
+    problemID: number,
     title: string,
     description:string,
     inputFormat:string,
@@ -80,4 +80,15 @@ export interface Problem {
     participationType: string;
     problems: Problem[]
     participants: Participants[]
+  }
+
+
+  export interface newContest{
+    name: string;
+    description: string;
+    startTime: string;
+    endTime: string;
+    hostId: string;
+    participationType: string;
+    joinCode: string;
   }

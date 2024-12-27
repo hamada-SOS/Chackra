@@ -130,5 +130,19 @@ namespace API.Controllers.ContestController
         }
     }
 
+        [HttpGet("GetContestProblems")]
+        public async Task<IActionResult> GetContestProblems(int contestId)
+        {
+            try
+                {
+                    var result = await _contestRepository.GetProblemsByContestIdAsync(contestId);
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(new { error = ex.Message });
+                }
+        }
+
     }
 }

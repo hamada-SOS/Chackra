@@ -227,5 +227,25 @@ namespace API.Repositories.Contesttt
             throw new UnauthorizedAccessException("You are not authorized to delete this contest or your participation.");
         }
 
+        public async Task<List<ProblemDetail>> GetProblemsByContestIdAsync(int contestId)
+        {
+            
+            var contestPorblems = await _context.ContestProblems.
+            Where(c => c.ContestId == contestId).
+            Select(p => new ProblemDetail{
+                ProblemID = p.Problem.ProblemID,
+                Title = p.Problem.Title,
+                    Description = p.Problem.Description,
+                    InputFormat = p.Problem.InputFormat,
+                    SampleInput = p.Problem.SampleInput,
+                    SampleOutput = p.Problem.SampleOutput,
+                    Constraints = p.Problem.Constraints,
+                    DefualtCode = p.Problem.DefualtCode,
+                    Note = p.Problem.Note,
+                    TestCases = p.Problem.TestCases.ToList()
+            }).ToListAsync();
+
+            return contestPorblems;
+        }
     }
 }

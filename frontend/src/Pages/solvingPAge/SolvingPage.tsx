@@ -6,10 +6,11 @@ import MonacoEditor from "@monaco-editor/react";
 import { useState } from 'react';
 import Navbar from '../../Components/Navbar/Navbar';
 import { useLocation } from 'react-router-dom';
-import ProblemDetials from '../../Components/CodeEditor/ProblemDetails';
+import ProblemDetials from '../../Components/CodeEditor/ProbleemDetails';
 import Judge0 from '../../Components/CodeEditor/CodeEditor';
 import { ProblemDetails } from '../../Problem';
 import { fetchProblemDetails } from '../../api';
+import ProbleemDetials from '../../Components/CodeEditor/ProbleemDetails';
 
 // Define props for the SolvingPage component
 // type SolvingPageProps = {
@@ -60,7 +61,7 @@ const SolvingPage = () => {
             <>  
                 <Navbar/>
                 <Box sx={{display:'flex', width:'9.rem', height:'900px', background:theme.palette.background.default, padding:'10px'}}>
-                    <ProblemDetials ProblemDetails={problemsDetails}/>
+                    <ProbleemDetials ProblemDetails={problemsDetails}/>
                     <Judge0 TestCases={problemsDetails?.testCases} id ={id} contestId={contestIdd}/>
                 </Box>
             </>

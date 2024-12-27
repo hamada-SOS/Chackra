@@ -31,8 +31,14 @@ const ContestCard: React.FC<ContestCardProps> = ({
   const { nameId } = useAuth(); // Assuming `nameId` is the user ID
 
   // Function to navigate to contest details
-  const handleNavigate = (contestIdd: number) => {
-    navigate("/ContestDetails", { state: { contestIdd } });
+  const handleNavigate = (contestIdd: number, userId:string | null) => {
+    if (userId == hostId){
+      navigate("/ContestDetails", { state: { contestIdd } });
+    }
+    else {
+      navigate("/ContestDetailsP", { state: { contestIdd, nameId } });
+
+    }
   };
 
   const handleDelete = async (
@@ -64,7 +70,7 @@ const ContestCard: React.FC<ContestCardProps> = ({
 
   return (
     <Box
-      onClick={() => handleNavigate(contestId)}
+      onClick={() => handleNavigate(contestId, nameId)}
       sx={{
         width: 300,
         borderRadius: 2,

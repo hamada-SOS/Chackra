@@ -22,7 +22,7 @@ import {
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import Navbar from "../../Components/Navbar/Navbar";
 import { ContesttDetails, Problem } from "../../Problem";
-import { fetchProblemsByCategory } from "../../api";
+import { addProblemsToContest, deleteProblemFromContest, fetchContestDetails, fetchProblemsByCategory } from "../../api";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Countdown, { CountdownRenderProps } from "react-countdown";
@@ -106,10 +106,8 @@ const ContestDetails: React.FC = () => {
 
     const loadContestDetails = async () => {
       try {
-        const response = await axios.get("http://localhost:5149/api/Contest/contestDetails", {
-            params: { id: contestIdd },
-          });
-        setContestDetails(response.data);
+        const response = await fetchContestDetails(contestIdd)
+        setContestDetails(response);
         console.log(contestDetails)
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -146,13 +144,7 @@ const ContestDetails: React.FC = () => {
 
     try {
       console.log(contestId, problemId)
-      const response = await axios.delete("http://localhost:5149/api/Contest/deletecP", {
-        data: {
-          contestId,
-          problemId,
-        },
-      });
-
+      const response = await deleteProblemFromContest(contestId, problemId)
       if (response.status === 200) {
         console.log(`ProblemContest ${problemId} deleted successfully`);
         // Handle UI update, e.g., remove the card
@@ -177,7 +169,7 @@ const ContestDetails: React.FC = () => {
       problemIds: problemIds,
     };
     try {
-      const response = await axios.post("http://localhost:5149/api/Contest/add-problems", requestData);
+      const response = await addProblemsToContest(requestData.contestId, requestData.problemIds)
       console.log("Problems successfully assigned to the contest:", response.data);
       setDialogOpen(false);
     } catch (error) {
@@ -189,11 +181,9 @@ const ContestDetails: React.FC = () => {
     }
   };
 
-
   const handleSolveClick = (id: number, contestIdd: number) => {
     navigate(`/SolvingPage`, { state: { id , contestIdd, isContestProblem: true } });
   };
-
 
 
 

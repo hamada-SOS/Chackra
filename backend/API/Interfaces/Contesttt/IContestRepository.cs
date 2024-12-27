@@ -1,4 +1,5 @@
 using API.Dtos.Contest;
+using API.Dtos.Problemea;
 using API.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace API.Interfaces.Contesttt
         Task JoinContestAsync(JoinContestDto join);
         Task <string>GenerateUniqueJoinCodeAsync();
         Task AddProblemsToContest(AddProblemsToContestDTO dto);
-        // Task<List<ContestProblem>> GetProblemsByContestIdAsync(int contestId);
+        Task<List<ProblemDetail>> GetProblemsByContestIdAsync(int contestId);
         Task DeleteProblemFromContestAsync(DeleteContestProblem contestProblemId);
         Task DeleteAsync(DeleteContestDto edto);
     }

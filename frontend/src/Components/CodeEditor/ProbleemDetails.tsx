@@ -11,7 +11,7 @@ interface Props {
 }
 
 
-const ProblemDetials = ({ProblemDetails}: Props) => {
+const ProbleemDetials = ({ProblemDetails}: Props) => {
 
     const theme = useTheme();
     // const [problemsDetails, setProblemsDetails] = useState<ProblemDetails>();
@@ -39,6 +39,7 @@ const ProblemDetials = ({ProblemDetails}: Props) => {
 
   return (
     <>
+    
     <Paper elevation={3} sx={{borderRadius:2, background:"#d2dff3", ml:'10px'}}>
         <Box sx={{display:'flex', flexDirection:'column', width:'590px', height:'720px', background: "#d2dff3", borderRadius:2, padding:'20px'}}>
             <Typography sx={{fontSize:'1.4rem', fontWeight:'bold', mb:'40px' }}>{ProblemDetails?.title}</Typography>
@@ -73,4 +74,4 @@ const ProblemDetials = ({ProblemDetails}: Props) => {
   )
 }
 
-export default ProblemDetials
+export default ProbleemDetials
