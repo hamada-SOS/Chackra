@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { RouterProvider } from 'react-router-dom';
 import { routes } from './Routers/Routes';
 import { AuthProvider } from './Global/Context';
+import { ResultProvider } from './Global/resultContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -13,7 +14,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={routes}/>
+      <ResultProvider>
+        <RouterProvider router={routes}/>
+      </ResultProvider>
     </AuthProvider>
   </React.StrictMode>
 );

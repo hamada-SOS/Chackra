@@ -12,6 +12,7 @@ namespace API.Dtos.Problemea.Submission
     public int Score {get;set;}
     public List<TestCaseResult> TestCaseResults { get; set;}
     public string error {get; set;}
+    public string Team {get;set;}
 
 
     }

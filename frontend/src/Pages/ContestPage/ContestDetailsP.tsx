@@ -17,9 +17,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const ContestDetails: React.FC = () => {
   const navigate = useNavigate();
-  const [contestDetails, setContestDetails] = useState<ContesttDetails | null>(null);
+  const [contestDetails, setContestDetails] = useState<ContesttDetails | null>();
   const [tabValue, setTabValue] = useState("1");
-  const theme = useTheme()
   const location = useLocation();
   const { contestIdd } = location.state || { contestIdd: null };
 

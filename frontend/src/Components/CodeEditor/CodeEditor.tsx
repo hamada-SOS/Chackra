@@ -18,6 +18,7 @@ import {SubmissionResult, TestCase} from "../../Problem";
 import { fetchProblemDetails } from "../../api";
 import { useAuth } from "../../Global/Context";
 import { useLocation } from "react-router";
+import { useResultContext } from "../../Global/resultContext";
 
 interface Props {
   TestCases?: TestCase[];
@@ -32,7 +33,7 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id, contestId }) => {
   const [language, setLanguage] = useState<string>("python");
   const [languageId, setLanguageId] = useState<number>(71); // Default to Python 3
   const [selectedTab, setSelectedTab] = useState("1");
-  const [result, setResult] = useState<SubmissionResult | null>(null);
+  const {result, setResult} = useResultContext();
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedTestCaseIndex, setSelectedTestCaseIndex] = useState<number>(0);
   const location = useLocation();
@@ -92,6 +93,7 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id, contestId }) => {
     };
     loadProblemDetails();
   }, [id]);
+
 
   const handleLanguageChange = (event: SelectChangeEvent<string>) => {
     setLanguage(event.target.value);

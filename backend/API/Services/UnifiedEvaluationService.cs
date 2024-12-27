@@ -147,7 +147,8 @@ public async Task<SubmissionResultDto> EvaluateAndSaveSubmissionAsync(Submission
         {
             PassedAllTestCases = CallPassed,
             TestCaseResults = testCaseResults,
-            Score = totalScore
+            Score = totalScore,
+            Team = participant.TeamName
         };
     }
     

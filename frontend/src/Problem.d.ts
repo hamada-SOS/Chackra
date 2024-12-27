@@ -27,7 +27,8 @@ export interface Problem {
     SubmissionId: number;
     PassedAllTestCases: boolean;
     testCaseResults: TestCaseResult[];
-    error:string
+    error:string;
+    team:string;
   }
   interface TestCaseResult{
     input: string,

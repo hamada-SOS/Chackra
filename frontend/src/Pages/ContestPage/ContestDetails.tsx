@@ -25,8 +25,6 @@ import { ContesttDetails, Problem } from "../../Problem";
 import { addProblemsToContest, deleteProblemFromContest, fetchContestDetails, fetchProblemsByCategory } from "../../api";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Countdown, { CountdownRenderProps } from "react-countdown";
-import CircularCountdown from "./EnhancedCountdown";
 import EnhancedCountdown from "./EnhancedCountdown";
 type DifficultyLevels = "VeryEasy" | "Easy" | "Medium" | "Hard" | "VeryHard";
 
@@ -40,9 +38,6 @@ const ContestDetails: React.FC = () => {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [teamBProgress, setteamBProgress] = useState(0)
   const [teamAProgress, setteamAProgress] = useState(0)
-  const [progress, setProgress] = useState(80)
-  const [leadingTeam, setleadingTeam] = useState('BCS15-A')
-  const [winner, setwinner] = useState(false)
   const [filters, setFilters] = useState<{
     difficulty: Record<DifficultyLevels, boolean>;
   }>({
