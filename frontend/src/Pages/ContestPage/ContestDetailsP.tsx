@@ -71,7 +71,6 @@ const ContestDetails: React.FC = () => {
                     </ListItem>
                   ))}
               </List>
-
               </Box>
             </TabPanel>
 

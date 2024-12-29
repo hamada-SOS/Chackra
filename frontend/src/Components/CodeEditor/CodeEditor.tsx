@@ -40,6 +40,8 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id, contestId }) => {
   const isContestProblem = location.state?.isContestProblem || false;
   const theme = useTheme();
   const { nameId } = useAuth();
+  const {setteamBProgress, setteamAProgress} = useResultContext()
+  
   
 
   function formatPythonCode(state: string): string {
@@ -126,6 +128,15 @@ const Judge0: React.FC<Props> = ({ TestCases = [], id, contestId }) => {
       setTimeout(async () => {
         setResult(resultData);
         setSelectedTab('2')
+
+            // Update team progress
+            if (result?.PassedAllTestCases) {
+                if (result?.team === "TeamA") {
+                    setteamAProgress((prev) => prev + result?.score);
+                } else if (resultData.team === "TeamB") {
+                    setteamBProgress((prev) => prev + result?.score);
+                }
+            }
         
         
       }, 3000);

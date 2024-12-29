@@ -26,6 +26,7 @@ import { addProblemsToContest, deleteProblemFromContest, fetchContestDetails, fe
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import EnhancedCountdown from "./EnhancedCountdown";
+import { useResultContext } from "../../Global/resultContext";
 type DifficultyLevels = "VeryEasy" | "Easy" | "Medium" | "Hard" | "VeryHard";
 
 const ContestDetails: React.FC = () => {
@@ -36,8 +37,7 @@ const ContestDetails: React.FC = () => {
   const [problemIds, setProblemIds] = useState<number[]>([]);
   const [tabValue, setTabValue] = useState("1");
   const [isDialogOpen, setDialogOpen] = useState(false);
-  const [teamBProgress, setteamBProgress] = useState(0)
-  const [teamAProgress, setteamAProgress] = useState(0)
+  const {teamBProgress, teamAProgress} = useResultContext()
   const [filters, setFilters] = useState<{
     difficulty: Record<DifficultyLevels, boolean>;
   }>({

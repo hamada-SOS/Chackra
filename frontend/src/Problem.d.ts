@@ -29,6 +29,7 @@ export interface Problem {
     testCaseResults: TestCaseResult[];
     error:string;
     team:string;
+    score:number
   }
   interface TestCaseResult{
     input: string,
