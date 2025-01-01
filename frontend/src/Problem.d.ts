@@ -96,13 +96,8 @@ export interface Problem {
   }
 
   interface LeaderboardData {
-    teamA: Team;
-    teamB: Team;
-  }
-  
-  interface Team {
-    name: string;
-    members: string[];
-    progress: number;
+    teamName: string;
+    totalScore: number;
+    lastSubmissionTime:string
   }
   

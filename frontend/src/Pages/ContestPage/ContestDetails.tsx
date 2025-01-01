@@ -21,7 +21,7 @@ import {
 } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import Navbar from "../../Components/Navbar/Navbar";
-import { ContesttDetails, Problem } from "../../Problem";
+import { ContesttDetails, LeaderboardData, Problem } from "../../Problem";
 import { addProblemsToContest, deleteProblemFromContest, fetchContestDetails, fetchProblemsByCategory } from "../../api";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -54,7 +54,7 @@ const ContestDetails: React.FC = () => {
   const location = useLocation();
   const { contestIdd } = location.state || { contestIdd: null };
   const [connection, setConnection] = useState<HubConnection | null>(null);
-  const [leaderboardData, setLeaderboardData] = useState<any[]>([]); // Update with the leaderboard data structure
+  const [leaderboardData, setLeaderboardData] = useState<LeaderboardData | null>(null); // Update with the leaderboard data structure
   
   const totalProgress = teamAProgress + teamBProgress;
 
@@ -123,11 +123,11 @@ useEffect(() => {
   const setupSignalRConnection = async () => {
     if (contestIdd) {
       const hubConnection = new HubConnectionBuilder()
-        .withUrl(`http://localhost:5149/signalr/contestHub`)
+        .withUrl(`http://localhost:5149/contestHub`)
         .withAutomaticReconnect()
         .build();
 
-      hubConnection.on("UpdateLeaderboard", (updatedData) => {
+      hubConnection.on("BroadcastLeaderboardUpdate", (updatedData) => {
         setLeaderboardData(updatedData);
       });
 
@@ -151,11 +151,7 @@ useEffect(() => {
 
 
 
-
-
-
-
-
+console.log(leaderboardData)
 
 
 
