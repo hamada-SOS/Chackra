@@ -94,3 +94,15 @@ export interface Problem {
     participationType: string;
     joinCode: string;
   }
+
+  interface LeaderboardData {
+    teamA: Team;
+    teamB: Team;
+  }
+  
+  interface Team {
+    name: string;
+    members: string[];
+    progress: number;
+  }
+  

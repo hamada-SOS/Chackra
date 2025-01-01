@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text;
 using API.Data;
+using API.Hubs;
 using API.Interfaces;
 using API.Interfaces.Account;
 using API.Interfaces.Contesttt;
@@ -116,7 +117,7 @@ internal class Program
 
 
         builder.Services.AddAuthorization();
-
+        builder.Services.AddSignalR();
         // Add services and repositories
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddScoped<IStudentRepository, StudentRepository>();
@@ -188,8 +189,14 @@ internal class Program
 
         app.UseCors("AllowReactApp");
         app.UseIpRateLimiting();
+        app.MapHub<ContestHub>("/contestHub");
 
+//         app.UseEndpoints(endpoints =>
+// {
+//     endpoints.MapHub<ContestHub>("/contestHub");
+// });
         app.UseRouting();
+
 
         app.UseAuthentication();
         app.UseAuthorization();

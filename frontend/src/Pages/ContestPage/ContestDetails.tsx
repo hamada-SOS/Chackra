@@ -27,6 +27,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import EnhancedCountdown from "./EnhancedCountdown";
 import { useResultContext } from "../../Global/resultContext";
+import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 type DifficultyLevels = "VeryEasy" | "Easy" | "Medium" | "Hard" | "VeryHard";
 
 const ContestDetails: React.FC = () => {
@@ -52,7 +53,9 @@ const ContestDetails: React.FC = () => {
   const theme = useTheme()
   const location = useLocation();
   const { contestIdd } = location.state || { contestIdd: null };
-
+  const [connection, setConnection] = useState<HubConnection | null>(null);
+  const [leaderboardData, setLeaderboardData] = useState<any[]>([]); // Update with the leaderboard data structure
+  
   const totalProgress = teamAProgress + teamBProgress;
 
   // Calculate individual percentages
@@ -112,6 +115,51 @@ const ContestDetails: React.FC = () => {
         }
       };
     };
+
+
+
+// SignalR connection setup
+useEffect(() => {
+  const setupSignalRConnection = async () => {
+    if (contestIdd) {
+      const hubConnection = new HubConnectionBuilder()
+        .withUrl(`http://localhost:5149/signalr/contestHub`)
+        .withAutomaticReconnect()
+        .build();
+
+      hubConnection.on("UpdateLeaderboard", (updatedData) => {
+        setLeaderboardData(updatedData);
+      });
+
+      try {
+        await hubConnection.start();
+        console.log("Connected to SignalR hub");
+        await hubConnection.invoke("JoinContestGroup", contestIdd);
+        setConnection(hubConnection);
+      } catch (error) {
+        console.error("Failed to connect to SignalR hub:", error);
+      }
+    }
+  };
+
+  setupSignalRConnection();
+
+  return () => {
+    connection?.stop().then(() => console.log("Disconnected from SignalR hub"));
+  };
+}, [contestIdd]);
+
+
+
+
+
+
+
+
+
+
+
+
 
    useEffect(() => {
       if (contestIdd) {
@@ -287,7 +335,7 @@ const ContestDetails: React.FC = () => {
               </List>
 
               </Box>
-            </TabPanel>
+              </TabPanel>
             <TabPanel value='3'>
             <Box
                 sx={{display:'flex', justifyContent:'space-between', alignItems:'baseline', p:'16px',
@@ -366,11 +414,11 @@ const ContestDetails: React.FC = () => {
                     BCS15-S
                   </Typography>
                   <Divider/>
-                  {/* {teamB.members.map((member) => (
+                   {/* {teamB.members.map((member) => (
                     <Typography key={member} variant="body2">
                       {member}
                     </Typography>
-                  ))} */}
+                  ))}  */}
                   <Typography sx={{p:0.5}}> mohmaed Abdi Nur </Typography>
                   <Typography sx={{p:0.5}}> Omar Abdirizak Hirse </Typography>
                   <Typography sx={{p:0.5}}> Ali Ahmed Kheyre </Typography>
@@ -379,6 +427,8 @@ const ContestDetails: React.FC = () => {
                 </Paper>
               </Box>        
             </TabPanel>
+            
+
           </TabContext>
         </Paper>
       </Box>

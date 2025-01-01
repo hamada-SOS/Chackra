@@ -3,12 +3,14 @@ using API.Data;
 using API.Dtos.Evalution;
 using API.Dtos.Excution;
 using API.Dtos.Problemea.Submission;
+using API.Hubs;
 using API.Interfaces.Evalution;
 using API.Interfaces.Excution;
 using API.Interfaces.Problema;
 using API.Interfaces.Submissionn;
 using API.Interfaces.testcase;
 using API.Models;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using static API.Dtos.Problemea.Submission.SubmissionResultDto;
@@ -21,6 +23,7 @@ namespace API.Services
         private readonly IProblemRepository _problemRepository;
         private readonly ITestCaseRepository _testCaseRepository;
         private readonly ISubmissionRepository _submissionRepository;
+        private readonly IHubContext<ContestHub> _hubContext;
         private readonly ApplicationDbContext _context;
 
         public UnifiedEvaluationService(
@@ -28,12 +31,15 @@ namespace API.Services
             IProblemRepository problemRepository,
             ITestCaseRepository testCaseRepository,
             ISubmissionRepository submissionRepository,
-            ApplicationDbContext context)
+            ApplicationDbContext context,
+            IHubContext<ContestHub> hubContext
+            )
         {
             _executionService = executionService;
             _problemRepository = problemRepository;
             _testCaseRepository = testCaseRepository;
             _submissionRepository = submissionRepository;
+            _hubContext = hubContext;
             _context = context;
         }
 
@@ -141,6 +147,23 @@ public async Task<SubmissionResultDto> EvaluateAndSaveSubmissionAsync(Submission
         }
 
         await _context.SaveChangesAsync();
+
+        // Fetch updated leaderboard data
+        var leaderboardData = await _context.Leaderboards
+            .Where(l => l.ContestId == request.ContestId)
+            .OrderByDescending(l => l.TotalScore)
+            .Select(l => new    
+            {
+                l.TeamName,
+                l.TotalScore,
+                l.LastSubmissionTime
+            })
+            .ToListAsync();
+
+        // Broadcast leaderboard updates
+
+        await _hubContext.Clients.Group($"Contest_{request.ContestId}")
+            .SendAsync("ReceiveLeaderboardUpdate", leaderboardData);
 
         // Return the results
         return new SubmissionResultDto
