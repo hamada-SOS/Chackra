@@ -9,6 +9,7 @@ using API.Dtos.Contest;
 using Microsoft.EntityFrameworkCore;
 using API.Dtos.Problemea;
 using API.Dtos.Participnt;
+using API.Dtos.teams;
 
 namespace API.Repositories.Contesttt
 {
@@ -67,7 +68,7 @@ namespace API.Repositories.Contesttt
             return contestCards;
         }
 
-      public async Task<ContestDetailsDto> GetContestDetails(int id)
+ public async Task<ContestDetailsDto> GetContestDetails(int id)
 {
     var contestDetails = await _context.Contests
         .Where(c => c.Id == id)
@@ -101,12 +102,30 @@ namespace API.Repositories.Contesttt
                         .FirstOrDefault(),
                     Team = p.TeamName
                 }).ToList(),
+            Teams = c.Participants
+                .GroupBy(p => p.TeamName)
+                .Where(g => g.All(p => p.UserId != c.HostId)) // Exclude the host's team
+                .Select(g => new TeamDto
+                {
+                    TeamName = g.Key,
+                    Members = g.Select(p => new TeamMemberDto
+                    {
+                        UserId = p.UserId,
+                        Username = _context.Users
+                            .Where(u => u.Id == p.UserId)
+                            .Select(u => u.UserName)
+                            .FirstOrDefault()
+                    }).ToList()
+                }).ToList(),
             Submissions = c.Submissions.ToList()
         })
         .FirstOrDefaultAsync();
 
     return contestDetails;
 }
+
+
+
 
 
         public async Task JoinContestAsync(JoinContestDto join)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Dtos.Participnt;
 using API.Dtos.Problemea;
+using API.Dtos.teams;
 using API.Models;
 
 namespace API.Dtos.Contest
@@ -19,6 +20,8 @@ namespace API.Dtos.Contest
         public string ParticipationType{get;set;}
         public List<ProblemCard> Problems { get; set; }
         public List<ParticipantDto> Participants { get; set; }
+        public List<TeamDto> Teams { get; set; }
+
         public List<SubmissionEntity> Submissions { get; set; }
     
 

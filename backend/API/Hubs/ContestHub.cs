@@ -20,7 +20,7 @@ namespace API.Hubs
         // Broadcast leaderboard updates
         public async Task BroadcastLeaderboardUpdate(int contestId, object leaderboardData)
         {
-            await Clients.Group($"Contest_{contestId}").SendAsync("ReceiveLeaderboardUpdate", leaderboardData);
+            await Clients.Group($"Contest_{contestId}").SendAsync("BroadcastLeaderboardUpdate", leaderboardData);
         }
     }
 }

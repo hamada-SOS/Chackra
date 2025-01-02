@@ -163,7 +163,7 @@ public async Task<SubmissionResultDto> EvaluateAndSaveSubmissionAsync(Submission
         // Broadcast leaderboard updates
 
         await _hubContext.Clients.Group($"Contest_{request.ContestId}")
-            .SendAsync("ReceiveLeaderboardUpdate", leaderboardData);
+            .SendAsync("BroadcastLeaderboardUpdate", leaderboardData);
 
         // Return the results
         return new SubmissionResultDto

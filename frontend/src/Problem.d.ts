@@ -82,6 +82,7 @@ export interface Problem {
     participationType: string;
     problems: Problem[]
     participants: Participants[]
+    teams: Team[]
   }
 
 
@@ -100,4 +101,9 @@ export interface Problem {
     totalScore: number;
     lastSubmissionTime:string
   }
+
+  interface Team {
+    teamName: string;
+    members: { userId: string; username: string }[];
+  } 
   

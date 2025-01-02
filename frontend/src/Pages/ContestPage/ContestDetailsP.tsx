@@ -45,35 +45,35 @@ const ContestDetails: React.FC = () => {
             </Box>
 
             <TabPanel value="1" sx={{display:'flex', justifyContent:'center'}}>
-              <Box sx={{width:"60%"}}>
-              <Typography variant="h2" gutterBottom>
-                Host
-              </Typography>
-              <List sx={{ mb: 5 }}>
-                {contestDetails?.participants
-                  .filter((participant) => participant.userId === contestDetails.hostId)
-                  .map((host) => (
-                    <ListItem key={host.userId} divider>
-                      <ListItemText primary={host.username} />
-                    </ListItem>
-                  ))}
-              </List>
-
-              <Typography variant="h4" gutterBottom>
-                Participants
-              </Typography>
-              <List>
-                {contestDetails?.participants
-                  .filter((participant) => participant.userId !== contestDetails.hostId)
-                  .map((participant) => (
-                    <ListItem key={participant.userId} divider>
-                      <ListItemText primary={participant.username} />
-                    </ListItem>
-                  ))}
-              </List>
-              </Box>
-            </TabPanel>
-
+                          <Box sx={{width:"60%"}}>
+                          <Typography variant="h2" gutterBottom>
+                            Host
+                          </Typography>
+                          <List sx={{ mb: 5 }}>
+                            {contestDetails?.participants
+                              .filter((participant) => participant.userId === contestDetails.hostId)
+                              .map((host) => (
+                                <ListItem key={host.userId} divider>
+                                  <ListItemText primary={host.username} />
+                                </ListItem>
+                              ))}
+                          </List>
+            
+                          <Typography variant="h4" gutterBottom>
+                            Participants
+                          </Typography>
+                          <List>
+                            {contestDetails?.participants
+                              .filter((participant) => participant.userId !== contestDetails.hostId)
+                              .map((participant) => (
+                                <ListItem key={participant.userId} divider>
+                                  <ListItemText primary={participant.username} />
+                                </ListItem>
+                              ))}
+                          </List>
+            
+                          </Box>
+                          </TabPanel>
             <TabPanel value='2'>
                 <Button variant="outlined" onClick={() => handleSolveClick(contestIdd)}>start sovle</Button>
             </TabPanel>

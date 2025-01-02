@@ -38,7 +38,7 @@ const ContestDetails: React.FC = () => {
   const [problemIds, setProblemIds] = useState<number[]>([]);
   const [tabValue, setTabValue] = useState("1");
   const [isDialogOpen, setDialogOpen] = useState(false);
-  const {teamBProgress, teamAProgress} = useResultContext()
+  const {teamBProgress, teamAProgress, setteamAProgress, setteamBProgress} = useResultContext()
   const [filters, setFilters] = useState<{
     difficulty: Record<DifficultyLevels, boolean>;
   }>({
@@ -54,7 +54,7 @@ const ContestDetails: React.FC = () => {
   const location = useLocation();
   const { contestIdd } = location.state || { contestIdd: null };
   const [connection, setConnection] = useState<HubConnection | null>(null);
-  const [leaderboardData, setLeaderboardData] = useState<LeaderboardData | null>(null); // Update with the leaderboard data structure
+  const [leaderboardData, setLeaderboardData] = useState<LeaderboardData[] | null>(null); // Update with the leaderboard data structure
   
   const totalProgress = teamAProgress + teamBProgress;
 
@@ -62,15 +62,35 @@ const ContestDetails: React.FC = () => {
   const teamAPercentage = (teamAProgress / totalProgress) * 100 || 0;
   const teamBPercentage = (teamBProgress / totalProgress) * 100 || 0;
 
-    // Determine progress bar color
-    const progressBarBackground =
-    teamAPercentage === 0 && teamBPercentage === 0
-      ? theme.palette.grey[400] // Gray when no progress
-      : `linear-gradient(to right, 
-          ${theme.palette.primary.main} ${teamAPercentage}%, 
-          ${theme.palette.error.main} ${teamAPercentage}% ${teamAPercentage + teamBPercentage}%)`;
-
-
+  console.log(teamAProgress)
+  console.log(teamBProgress)
+  
+  useEffect(() => {
+    if (leaderboardData && contestDetails) {
+      // Calculate Team A's total score
+      const teamAScore = leaderboardData
+        .filter((team) => team.teamName === contestDetails.teams[0]?.teamName)
+        .reduce((acc, team) => acc + team.totalScore, 0);
+  
+      // Calculate Team B's total score
+      const teamBScore = leaderboardData
+        .filter((team) => team.teamName === contestDetails.teams[1]?.teamName)
+        .reduce((acc, team) => acc + team.totalScore, 0);
+  
+      // Update progress states
+      setteamAProgress(teamAScore);
+      setteamBProgress(teamBScore);
+    }
+  }, [leaderboardData, contestDetails, setteamAProgress, setteamBProgress]);
+  
+          
+              // Determine progress bar color
+              const progressBarBackground =
+              teamAPercentage === 0 && teamBPercentage === 0
+                ? theme.palette.grey[400] // Gray when no progress
+                : `linear-gradient(to right, 
+                    ${theme.palette.primary.main} ${teamAPercentage}%, 
+                    ${theme.palette.error.main} ${teamAPercentage}% ${teamAPercentage + teamBPercentage}%)`;
 
   useEffect(() => {
     const loadProblems = async () => {
@@ -332,98 +352,105 @@ console.log(leaderboardData)
 
               </Box>
               </TabPanel>
-            <TabPanel value='3'>
-            <Box
-                sx={{display:'flex', justifyContent:'space-between', alignItems:'baseline', p:'16px',
-                  backgroundColor: theme.palette.background.default,
-                  width:'1200px',
-                  mt:-10,
-                  borderRadius:1,
-                  height:'500px'
-                }}
-  
-              >
-                {/* Team A Panel */}
-                <Paper
-                  elevation={3}
-                  style={{
-                    padding: '16px',
-                    width: '300px',
-                    backgroundColor: theme.palette.primary.light,
-                    color: theme.palette.primary.contrastText,
-                  }}
-                >
-                  <Typography variant="h6" style={{ fontWeight: 'bold' }}>
-                    {/* {teamA.name} */}
-                    BCS17-F
-                  </Typography>
-                  <Divider/>
-                  {/* {teamA.members.map((member) => (
-                    <Typography key={member} variant="body2">
-                      {member}
-                    </Typography>
-                  ))} */}
-                  <Typography sx={{p:0.5}}> Ali Ahmed Kheyre </Typography>
-                  <Typography sx={{p:0.5}}> Omar Abdirizak Hirse </Typography>
-                  <Typography sx={{p:0.5}}> Fardowsa Amhed Abukar </Typography>
-                  <Typography sx={{p:0.5}}> mohmaed Abdi Nur </Typography>
-                </Paper>
+              <TabPanel value="3">
+  <Box
+    sx={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'baseline',
+      p: '16px',
+      backgroundColor: theme.palette.background.default,
+      width: '1200px',
+      mt: -10,
+      borderRadius: 1,
+      height: '500px',
+    }}
+  >
+    {/* Team A Panel */}
+    {contestDetails && contestDetails.teams.length >= 2 && (
+      <Paper
+        elevation={3}
+        style={{
+          padding: '16px',
+          width: '300px',
+          backgroundColor: theme.palette.primary.light,
+          color: theme.palette.primary.contrastText,
+        }}
+      >
+        <Typography variant="h6" style={{ fontWeight: 'bold' }}>
+          {contestDetails.teams[0].teamName}
+        </Typography>
+        <Divider />
+        {contestDetails.teams[0].members.map((member) => (
+          <Typography key={member.userId} sx={{ p: 0.5 }}>
+            {member.username}
+          </Typography>
+        ))}
+      </Paper>
+    )}
 
-                {/* Progress Bar and Central Circle */}
-                <Box display="flex" flexDirection="column" alignItems="center" width="60%" position="relative">
-                {/* Combined Progress Bar */}
-                <Box width="95%" position="relative">
-                        <Box
-                          style={{
-                            height: '10px',
-                            borderRadius: '10px',
-                            background: progressBarBackground,
-                          }}
-                        />
-                        <Box
-                          display="flex"
-                          justifyContent="space-between"
-                          style={{ marginTop: '8px', color: theme.palette.text.primary }}
-                        >
-                          <Typography variant="caption">{teamAPercentage.toFixed(1)}% (Team A)</Typography>
-                          <Typography variant="caption">{teamBPercentage.toFixed(1)}% (Team B)</Typography>
-                        </Box>
-                </Box>
+    {/* Progress Bar and Central Circle */}
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      width="60%"
+      position="relative"
+    >
+      {/* Combined Progress Bar */}
+      <Box width="95%" position="relative">
+        <Box
+          style={{
+            height: '10px',
+            borderRadius: '10px',
+            background: progressBarBackground,
+          }}
+        />
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          style={{ marginTop: '8px', color: theme.palette.text.primary }}
+        >
+          <Typography variant="caption">
+            {teamAPercentage.toFixed(1)}% (Team A)
+          </Typography>
+          <Typography variant="caption">
+            {teamBPercentage.toFixed(1)}% (Team B)
+          </Typography>
+        </Box>
+      </Box>
 
-                  {/* Countdown Timer */}
-                  <Box position="relative" display="inline-flex" marginTop="16px">
-                    <EnhancedCountdown/>
-                  </Box>
-                </Box>
-                {/* Team B Panel */}
-                <Paper
-                  elevation={3}
-                  style={{
-                    padding: '16px',
-                    width: '300px',
-                    backgroundColor: theme.palette.error.light,
-                    color: theme.palette.error.contrastText,
-                  }}
-                >
-                  <Typography variant="h6" style={{ fontWeight: 'bold' }}>
-                    {/* {teamB.name} */}
-                    BCS15-S
-                  </Typography>
-                  <Divider/>
-                   {/* {teamB.members.map((member) => (
-                    <Typography key={member} variant="body2">
-                      {member}
-                    </Typography>
-                  ))}  */}
-                  <Typography sx={{p:0.5}}> mohmaed Abdi Nur </Typography>
-                  <Typography sx={{p:0.5}}> Omar Abdirizak Hirse </Typography>
-                  <Typography sx={{p:0.5}}> Ali Ahmed Kheyre </Typography>
-                  <Typography sx={{p:0.5}}> Fardowsa Amhed Abukar </Typography>
-                  
-                </Paper>
-              </Box>        
-            </TabPanel>
-            
+      {/* Countdown Timer */}
+      <Box position="relative" display="inline-flex" marginTop="16px">
+        <EnhancedCountdown />
+      </Box>
+    </Box>
+
+    {/* Team B Panel */}
+    {contestDetails && contestDetails.teams.length >= 2 && (
+      <Paper
+        elevation={3}
+        style={{
+          padding: '16px',
+          width: '300px',
+          backgroundColor: theme.palette.error.light,
+          color: theme.palette.error.contrastText,
+        }}
+      >
+        <Typography variant="h6" style={{ fontWeight: 'bold' }}>
+          {contestDetails.teams[1].teamName}
+        </Typography>
+        <Divider />
+        {contestDetails.teams[1].members.map((member) => (
+          <Typography key={member.userId} sx={{ p: 0.5 }}>
+            {member.username}
+          </Typography>
+        ))}
+      </Paper>
+    )}
+  </Box>
+</TabPanel>
+
 
           </TabContext>
         </Paper>
