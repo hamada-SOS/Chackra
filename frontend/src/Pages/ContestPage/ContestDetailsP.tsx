@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -12,17 +12,17 @@ import {
 } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import Navbar from "../../Components/Navbar/Navbar";
-import { ContesttDetails } from "../../Problem";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useResultContext } from "../../Global/resultContext";
+import { fetchContestDetails } from "../../api";
+import axios from "axios";
 
-const ContestDetails: React.FC = () => {
+const ContestDetailsP: React.FC = () => {
   const navigate = useNavigate();
-  const [contestDetails, setContestDetails] = useState<ContesttDetails | null>();
+  const {contestDetails, setContestDetails} = useResultContext()
   const [tabValue, setTabValue] = useState("1");
   const location = useLocation();
-  const { contestIdd } = location.state || { contestIdd: null };
-
-
+  const { contestIdd, nameId } = location.state || { contestIdd: null , nameId:null};
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
@@ -31,6 +31,21 @@ const ContestDetails: React.FC = () => {
     navigate(`/ContestSolvingPage`, { state: {contestIdd, isContestProblem: true } });
   };
 
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        if (contestIdd) {
+          const response = await fetchContestDetails(contestIdd);
+          setContestDetails(response);
+        }
+      } catch (error) {
+        console.error("Error fetching contest details:", error);
+      }
+    };
+  
+    fetchDetails();
+  }, [contestIdd, setContestDetails]);
+  
   return (
     <Box>
       <Navbar />
@@ -40,49 +55,50 @@ const ContestDetails: React.FC = () => {
             <Box borderBottom={1} borderColor="divider">
               <TabList onChange={handleTabChange} aria-label="contest details tabs">
                 <Tab label="Participants" value="1" />
-                <Tab label ="Start Contest" value="2"/>
+                <Tab label="Start Contest" value="2" />
               </TabList>
             </Box>
-
-            <TabPanel value="1" sx={{display:'flex', justifyContent:'center'}}>
-                          <Box sx={{width:"60%"}}>
-                          <Typography variant="h2" gutterBottom>
-                            Host
-                          </Typography>
-                          <List sx={{ mb: 5 }}>
-                            {contestDetails?.participants
-                              .filter((participant) => participant.userId === contestDetails.hostId)
-                              .map((host) => (
-                                <ListItem key={host.userId} divider>
-                                  <ListItemText primary={host.username} />
-                                </ListItem>
-                              ))}
-                          </List>
-            
-                          <Typography variant="h4" gutterBottom>
-                            Participants
-                          </Typography>
-                          <List>
-                            {contestDetails?.participants
-                              .filter((participant) => participant.userId !== contestDetails.hostId)
-                              .map((participant) => (
-                                <ListItem key={participant.userId} divider>
-                                  <ListItemText primary={participant.username} />
-                                </ListItem>
-                              ))}
-                          </List>
-            
-                          </Box>
-                          </TabPanel>
-            <TabPanel value='2'>
-                <Button variant="outlined" onClick={() => handleSolveClick(contestIdd)}>start sovle</Button>
-            </TabPanel>
+           <TabPanel value="1" sx={{display:'flex', justifyContent:'center'}}>
+                         <Box sx={{width:"60%"}}>
+                         <Typography variant="h2" gutterBottom>
+                           Host
+                         </Typography>
+                         <List sx={{ mb: 5 }}>
+                           {contestDetails?.participants
+                             .filter((participant) => participant.userId === contestDetails.hostId)
+                             .map((host) => (
+                               <ListItem key={host.userId} divider>
+                                 <ListItemText primary={host.username} />
+                               </ListItem>
+                             ))}
+                         </List>
            
+                         <Typography variant="h4" gutterBottom>
+                           Participants
+                         </Typography>
+                         <List>
+                           {contestDetails?.participants
+                             .filter((participant) => participant.userId !== contestDetails.hostId)
+                             .map((participant) => (
+                               <ListItem key={participant.userId} divider>
+                                 <ListItemText primary={participant.username} />
+                               </ListItem>
+                             ))}
+                         </List>
+           
+                         </Box>
+                         </TabPanel>
+  
+            <TabPanel value="2">
+              <Button variant="outlined" onClick={() => handleSolveClick(contestIdd)}>
+                Start Solve
+              </Button>
+            </TabPanel>
           </TabContext>
         </Paper>
       </Box>
-     </Box>
+    </Box>
   );
-};
-
-export default ContestDetails;
+}
+  
+export default ContestDetailsP;

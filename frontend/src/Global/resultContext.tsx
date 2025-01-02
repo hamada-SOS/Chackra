@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { SubmissionResult } from '../Problem';
+import { ContesttDetails, SubmissionResult } from '../Problem';
 
 interface GlobalStateContextType {
   result: SubmissionResult | null;
@@ -8,6 +8,8 @@ interface GlobalStateContextType {
   setteamBProgress : React.Dispatch<React.SetStateAction<number>>;
   teamAProgress: number
   setteamAProgress : React.Dispatch<React.SetStateAction<number>>;
+  contestDetails: ContesttDetails | null;
+  setContestDetails:  React.Dispatch<React.SetStateAction<ContesttDetails | null>>
 }
 
 const resultContext = createContext<GlobalStateContextType | undefined>(undefined);
@@ -16,6 +18,7 @@ export const ResultProvider = ({ children }: { children: ReactNode }) => {
   const [result, setResult] = useState<SubmissionResult | null>(null);
   const [teamBProgress, setteamBProgress] = useState<number>(0)
   const [teamAProgress, setteamAProgress] = useState<number>(0)
+  const [contestDetails, setContestDetails] = useState<ContesttDetails | null>(null);
 
 
   const incrementTeamAProgress = (value: number) => {
@@ -25,9 +28,10 @@ export const ResultProvider = ({ children }: { children: ReactNode }) => {
   const incrementTeamBProgress = (value: number) => {
     setteamBProgress((prev) => prev + value);
   };
+  
 
   return (
-    <resultContext.Provider value={{ result, setResult , teamBProgress, setteamBProgress, teamAProgress, setteamAProgress}}>
+    <resultContext.Provider value={{ result, setResult , teamBProgress, setteamBProgress, teamAProgress, setteamAProgress,contestDetails, setContestDetails}}>
       {children}
     </resultContext.Provider>
   );

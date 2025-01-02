@@ -33,12 +33,11 @@ type DifficultyLevels = "VeryEasy" | "Easy" | "Medium" | "Hard" | "VeryHard";
 const ContestDetails: React.FC = () => {
   const navigate = useNavigate();
   const [problems, setProblems] = useState<Problem[]>([]);
-  const [contestDetails, setContestDetails] = useState<ContesttDetails | null>(null);
   const [filteredProblems, setFilteredProblems] = useState<Problem[]>([]);
   const [problemIds, setProblemIds] = useState<number[]>([]);
   const [tabValue, setTabValue] = useState("1");
   const [isDialogOpen, setDialogOpen] = useState(false);
-  const {teamBProgress, teamAProgress, setteamAProgress, setteamBProgress} = useResultContext()
+  const {teamBProgress, teamAProgress, setteamAProgress, setteamBProgress, contestDetails, setContestDetails} = useResultContext()
   const [filters, setFilters] = useState<{
     difficulty: Record<DifficultyLevels, boolean>;
   }>({
@@ -65,24 +64,24 @@ const ContestDetails: React.FC = () => {
   console.log(teamAProgress)
   console.log(teamBProgress)
   
-  useEffect(() => {
-    if (leaderboardData && contestDetails) {
-      // Calculate Team A's total score
-      const teamAScore = leaderboardData
-        .filter((team) => team.teamName === contestDetails.teams[0]?.teamName)
-        .reduce((acc, team) => acc + team.totalScore, 0);
-  
-      // Calculate Team B's total score
-      const teamBScore = leaderboardData
-        .filter((team) => team.teamName === contestDetails.teams[1]?.teamName)
-        .reduce((acc, team) => acc + team.totalScore, 0);
-  
-      // Update progress states
-      setteamAProgress(teamAScore);
-      setteamBProgress(teamBScore);
-    }
-  }, [leaderboardData, contestDetails, setteamAProgress, setteamBProgress]);
-  
+useEffect(() => {
+  if (leaderboardData && contestDetails) {
+    // Calculate Team A's total score
+    const teamAScore = leaderboardData
+      .filter((team) => team.teamName === contestDetails.teams[0]?.teamName)
+      .reduce((acc, team) => acc + team.totalScore, 0);
+
+    // Calculate Team B's total score
+    const teamBScore = leaderboardData
+      .filter((team) => team.teamName === contestDetails.teams[1]?.teamName)
+      .reduce((acc, team) => acc + team.totalScore, 0);
+
+    // Update progress states
+    setteamAProgress(teamAScore);
+    setteamBProgress(teamBScore);
+  }
+}, [leaderboardData, contestDetails, setteamAProgress, setteamBProgress]);
+
           
               // Determine progress bar color
               const progressBarBackground =
