@@ -9,6 +9,8 @@ import {
   ListItemText,
   Tab,
   useTheme,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import Navbar from "../../Components/Navbar/Navbar";
@@ -18,19 +20,40 @@ import { fetchContestDetails } from "../../api";
 import axios from "axios";
 
 const ContestDetailsP: React.FC = () => {
+
   const navigate = useNavigate();
-  const {contestDetails, setContestDetails} = useResultContext()
+  const {contestDetails, setContestDetails, isActive, setIsActive} = useResultContext()
   const [tabValue, setTabValue] = useState("1");
   const location = useLocation();
   const { contestIdd, nameId } = location.state || { contestIdd: null , nameId:null};
+  const [alertOpen, setAlertOpen] = useState(false); // State to control the Snackbar visibility
+
+
+
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
   };
-  const handleSolveClick = (contestIdd: number) => {
-    navigate(`/ContestSolvingPage`, { state: {contestIdd, isContestProblem: true } });
-  };
 
+  const handleSolveClick = (contestIdd: number, isActive: boolean) => {
+    if (isActive) {
+      navigate(`/ContestSolvingPage`, {
+        state: { contestIdd, isContestProblem: true },
+      });
+    } else {
+      setAlertOpen(true);
+      setIsActive(false); // Ensure state reflects the inactive contest
+    }
+  };
+  
+  const handleCloseAlert = () => {
+    setAlertOpen(false); // Close the alert
+  }
+
+  useEffect(() => {
+    console.log('isActive state:', isActive);
+  }, [isActive]);
+  
   useEffect(() => {
     const fetchDetails = async () => {
       try {
@@ -46,6 +69,8 @@ const ContestDetailsP: React.FC = () => {
     fetchDetails();
   }, [contestIdd, setContestDetails]);
   
+
+
   return (
     <Box>
       <Navbar />
@@ -86,13 +111,23 @@ const ContestDetailsP: React.FC = () => {
                              ))}
                          </List>
            
-                         </Box>
-                         </TabPanel>
+             </Box>
+            </TabPanel>
   
             <TabPanel value="2">
-              <Button variant="outlined" onClick={() => handleSolveClick(contestIdd)}>
+              <Button variant="outlined" onClick={() => handleSolveClick(contestIdd, isActive)}>
                 Start Solve
               </Button>
+              <Snackbar
+                  open={alertOpen}
+                  autoHideDuration={3000}
+                  onClose={handleCloseAlert}
+                  anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                >
+                  <Alert onClose={handleCloseAlert} severity="warning">
+                    Contest is not active yet.
+                  </Alert>
+                </Snackbar>
             </TabPanel>
           </TabContext>
         </Paper>

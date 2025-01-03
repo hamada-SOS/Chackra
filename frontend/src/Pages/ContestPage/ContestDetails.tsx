@@ -60,9 +60,6 @@ const ContestDetails: React.FC = () => {
   // Calculate individual percentages
   const teamAPercentage = (teamAProgress / totalProgress) * 100 || 0;
   const teamBPercentage = (teamBProgress / totalProgress) * 100 || 0;
-
-  console.log(teamAProgress)
-  console.log(teamBProgress)
   
 useEffect(() => {
   if (leaderboardData && contestDetails) {
@@ -125,7 +122,6 @@ useEffect(() => {
       try {
         const response = await fetchContestDetails(contestIdd)
         setContestDetails(response);
-        console.log(contestDetails)
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.error("Failed to fetch contest details:", error.response?.data || error.message);
@@ -167,13 +163,6 @@ useEffect(() => {
     connection?.stop().then(() => console.log("Disconnected from SignalR hub"));
   };
 }, [contestIdd]);
-
-
-
-console.log(leaderboardData)
-
-
-
 
 
    useEffect(() => {
@@ -454,10 +443,6 @@ console.log(leaderboardData)
           </TabContext>
         </Paper>
       </Box>
-
-
-
-
 
 
 

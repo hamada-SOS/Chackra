@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Countdown, { CountdownRenderProps } from 'react-countdown';
 import { Box, Button, Typography } from '@mui/material';
+import { useResultContext } from '../../Global/resultContext';
 
 const EnhancedCountdown = () => {
-  const countdownDuration = 3600; // 1 hour in milliseconds
+  const countdownDuration = 360000; // 1 hour in milliseconds
   const [startTime, setStartTime] = useState<number | null>(null);
   const [paused, setPaused] = useState<boolean>(false);
   const [remainingTime, setRemainingTime] = useState<number>(countdownDuration);
-
+  const { isActive, setIsActive } = useResultContext();
   const renderer = ({ total, completed }: CountdownRenderProps) => {
     if (completed) {
       return (
@@ -85,6 +86,7 @@ const EnhancedCountdown = () => {
   const handleStart = () => {
     setStartTime(Date.now() + remainingTime);
     setPaused(false);
+    setIsActive(true)
   };
 
   const handlePause = () => {
@@ -92,18 +94,28 @@ const EnhancedCountdown = () => {
     if (startTime) {
       setRemainingTime(startTime - Date.now());
     }
+    setIsActive(false)
   };
 
   const handleResume = () => {
     setStartTime(Date.now() + remainingTime);
     setPaused(false);
+    setIsActive(true)
+
   };
 
   const handleRestart = () => {
     setRemainingTime(countdownDuration);
     setStartTime(null);
     setPaused(false);
+    setIsActive(false)
+
   };
+
+    useEffect(() => {
+      console.log('isActive state:', isActive);
+    }, [isActive]);
+    
 
   return (
     <Box

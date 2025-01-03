@@ -9,7 +9,10 @@ interface GlobalStateContextType {
   teamAProgress: number
   setteamAProgress : React.Dispatch<React.SetStateAction<number>>;
   contestDetails: ContesttDetails | null;
-  setContestDetails:  React.Dispatch<React.SetStateAction<ContesttDetails | null>>
+  setContestDetails:  React.Dispatch<React.SetStateAction<ContesttDetails | null>>;
+  isActive: boolean;
+  setIsActive: (active: boolean) => void;
+
 }
 
 const resultContext = createContext<GlobalStateContextType | undefined>(undefined);
@@ -19,6 +22,7 @@ export const ResultProvider = ({ children }: { children: ReactNode }) => {
   const [teamBProgress, setteamBProgress] = useState<number>(0)
   const [teamAProgress, setteamAProgress] = useState<number>(0)
   const [contestDetails, setContestDetails] = useState<ContesttDetails | null>(null);
+  const [isActive, setIsActive] = useState<boolean>(false);
 
 
   const incrementTeamAProgress = (value: number) => {
@@ -31,7 +35,7 @@ export const ResultProvider = ({ children }: { children: ReactNode }) => {
   
 
   return (
-    <resultContext.Provider value={{ result, setResult , teamBProgress, setteamBProgress, teamAProgress, setteamAProgress,contestDetails, setContestDetails}}>
+    <resultContext.Provider value={{ result, setResult , teamBProgress, setteamBProgress, teamAProgress, setteamAProgress,contestDetails, setContestDetails, isActive, setIsActive}}>
       {children}
     </resultContext.Provider>
   );
