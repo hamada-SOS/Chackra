@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace API.Migrations
 {
     /// <inheritdoc />
-    public partial class testcasephasewssd : Migration
+    public partial class theGOATh : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -42,7 +42,7 @@ namespace API.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UniversityId = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    batch = table.Column<string>(type: "longtext", nullable: true)
+                    Batch = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ForcePasswordChange = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     RefreshToken = table.Column<string>(type: "longtext", nullable: true)
@@ -97,23 +97,6 @@ namespace API.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "PreRegisteredTeachers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UniversityId = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    TeacherName = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PreRegisteredTeachers", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Problems",
                 columns: table => new
                 {
@@ -123,13 +106,15 @@ namespace API.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    FunctionSignature = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
                     DefualtCode = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Domain = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     InputFormat = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    SampleInput = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    SampleOutput = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Note = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -276,94 +261,36 @@ namespace API.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "CompetitiveRooms",
+                name: "Contests",
                 columns: table => new
                 {
-                    RoomID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    RoomName = table.Column<string>(type: "longtext", nullable: true)
+                    Name = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    HostID = table.Column<string>(type: "varchar(255)", nullable: true)
+                    Description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     StartTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    RoomCode = table.Column<string>(type: "longtext", nullable: true)
+                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    ParticipationType = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    JoinCode = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Status = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    HostId = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CompetitiveRooms", x => x.RoomID);
+                    table.PrimaryKey("PK_Contests", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CompetitiveRooms_AspNetUsers_HostID",
-                        column: x => x.HostID,
+                        name: "FK_Contests_AspNetUsers_HostId",
+                        column: x => x.HostId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Leaderboards",
-                columns: table => new
-                {
-                    LeaderboardID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    StudentID = table.Column<string>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ProblemID = table.Column<int>(type: "int", nullable: false),
-                    Points = table.Column<int>(type: "int", nullable: false),
-                    Ranking = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Leaderboards", x => x.LeaderboardID);
-                    table.ForeignKey(
-                        name: "FK_Leaderboards_AspNetUsers_StudentID",
-                        column: x => x.StudentID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Leaderboards_Problems_ProblemID",
-                        column: x => x.ProblemID,
-                        principalTable: "Problems",
-                        principalColumn: "ProblemID",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Submissions",
-                columns: table => new
-                {
-                    SubmissionID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    StudentID = table.Column<string>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ProblemID = table.Column<int>(type: "int", nullable: false),
-                    SubmissionDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Code = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Language = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Result = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ExecutionTime = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    MemoryUsed = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    Points = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Submissions", x => x.SubmissionID);
-                    table.ForeignKey(
-                        name: "FK_Submissions_AspNetUsers_StudentID",
-                        column: x => x.StudentID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Submissions_Problems_ProblemID",
-                        column: x => x.ProblemID,
-                        principalTable: "Problems",
-                        principalColumn: "ProblemID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -377,8 +304,7 @@ namespace API.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ExpectedOutput = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ProblemID = table.Column<int>(type: "int", nullable: false),
-                    IsPublic = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    ProblemID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -393,24 +319,137 @@ namespace API.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "RoomProblems",
+                name: "ContestProblems",
                 columns: table => new
                 {
-                    RoomID = table.Column<int>(type: "int", nullable: false),
-                    ProblemID = table.Column<int>(type: "int", nullable: false),
-                    AssignedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    ContestId = table.Column<int>(type: "int", nullable: false),
+                    ProblemId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    AssignedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoomProblems", x => new { x.RoomID, x.ProblemID });
+                    table.PrimaryKey("PK_ContestProblems", x => new { x.ContestId, x.ProblemId });
                     table.ForeignKey(
-                        name: "FK_RoomProblems_CompetitiveRooms_RoomID",
-                        column: x => x.RoomID,
-                        principalTable: "CompetitiveRooms",
-                        principalColumn: "RoomID",
+                        name: "FK_ContestProblems_Contests_ContestId",
+                        column: x => x.ContestId,
+                        principalTable: "Contests",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RoomProblems_Problems_ProblemID",
+                        name: "FK_ContestProblems_Problems_ProblemId",
+                        column: x => x.ProblemId,
+                        principalTable: "Problems",
+                        principalColumn: "ProblemID",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Leaderboards",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ContestId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TeamName = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TotalScore = table.Column<int>(type: "int", nullable: false),
+                    Rank = table.Column<int>(type: "int", nullable: false),
+                    LastSubmissionTime = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Leaderboards", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Leaderboards_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Leaderboards_Contests_ContestId",
+                        column: x => x.ContestId,
+                        principalTable: "Contests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Participants",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ContestId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Score = table.Column<int>(type: "int", nullable: false),
+                    TeamName = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    JoinedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Participants", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Participants_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Participants_Contests_ContestId",
+                        column: x => x.ContestId,
+                        principalTable: "Contests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Submissions",
+                columns: table => new
+                {
+                    SubmissionID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ContestId = table.Column<int>(type: "int", nullable: false),
+                    ProblemID = table.Column<int>(type: "int", nullable: false),
+                    Token = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    SubmissionDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Code = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Language = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    LanguageId = table.Column<int>(type: "int", nullable: false),
+                    Result = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Passed = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    ExecutionTime = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    MemoryUsed = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    SubmissionTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Score = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Submissions", x => x.SubmissionID);
+                    table.ForeignKey(
+                        name: "FK_Submissions_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Submissions_Contests_ContestId",
+                        column: x => x.ContestId,
+                        principalTable: "Contests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Submissions_Problems_ProblemID",
                         column: x => x.ProblemID,
                         principalTable: "Problems",
                         principalColumn: "ProblemID",
@@ -456,24 +495,39 @@ namespace API.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CompetitiveRooms_HostID",
-                table: "CompetitiveRooms",
-                column: "HostID");
+                name: "IX_ContestProblems_ProblemId",
+                table: "ContestProblems",
+                column: "ProblemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Leaderboards_ProblemID",
+                name: "IX_Contests_HostId",
+                table: "Contests",
+                column: "HostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Leaderboards_ContestId",
                 table: "Leaderboards",
-                column: "ProblemID");
+                column: "ContestId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Leaderboards_StudentID",
+                name: "IX_Leaderboards_UserId",
                 table: "Leaderboards",
-                column: "StudentID");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoomProblems_ProblemID",
-                table: "RoomProblems",
-                column: "ProblemID");
+                name: "IX_Participants_ContestId",
+                table: "Participants",
+                column: "ContestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Participants_UserId",
+                table: "Participants",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Submissions_ContestId",
+                table: "Submissions",
+                column: "ContestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Submissions_ProblemID",
@@ -481,9 +535,9 @@ namespace API.Migrations
                 column: "ProblemID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Submissions_StudentID",
+                name: "IX_Submissions_UserId",
                 table: "Submissions",
-                column: "StudentID");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TestCases_ProblemID",
@@ -510,16 +564,16 @@ namespace API.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ContestProblems");
+
+            migrationBuilder.DropTable(
                 name: "Leaderboards");
 
             migrationBuilder.DropTable(
+                name: "Participants");
+
+            migrationBuilder.DropTable(
                 name: "PreRegisteredStudents");
-
-            migrationBuilder.DropTable(
-                name: "PreRegisteredTeachers");
-
-            migrationBuilder.DropTable(
-                name: "RoomProblems");
 
             migrationBuilder.DropTable(
                 name: "Submissions");
@@ -531,7 +585,7 @@ namespace API.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "CompetitiveRooms");
+                name: "Contests");
 
             migrationBuilder.DropTable(
                 name: "Problems");

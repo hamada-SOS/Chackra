@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241122194259_testcasephasewssdd")]
-    partial class testcasephasewssdd
+    [Migration("20250225102205_theGOATh")]
+    partial class theGOATh
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,9 @@ namespace API.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("Batch")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -89,9 +92,6 @@ namespace API.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
-                    b.Property<string>("batch")
-                        .HasColumnType("longtext");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -104,63 +104,134 @@ namespace API.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("API.Models.CompetitiveRoom", b =>
+            modelBuilder.Entity("API.Models.Contest", b =>
                 {
-                    b.Property<int>("RoomID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("RoomID"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("HostID")
+                    b.Property<string>("HostId")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("RoomCode")
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("JoinCode")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("RoomName")
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ParticipationType")
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime(6)");
 
-                    b.HasKey("RoomID");
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext");
 
-                    b.HasIndex("HostID");
+                    b.HasKey("Id");
 
-                    b.ToTable("CompetitiveRooms");
+                    b.HasIndex("HostId");
+
+                    b.ToTable("Contests");
+                });
+
+            modelBuilder.Entity("API.Models.ContestProblem", b =>
+                {
+                    b.Property<int>("ContestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProblemId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("AssignedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("ContestId", "ProblemId");
+
+                    b.HasIndex("ProblemId");
+
+                    b.ToTable("ContestProblems");
                 });
 
             modelBuilder.Entity("API.Models.Leaderboard", b =>
                 {
-                    b.Property<int>("LeaderboardID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("LeaderboardID"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Points")
+                    b.Property<int>("ContestId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProblemID")
+                    b.Property<DateTime>("LastSubmissionTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Rank")
                         .HasColumnType("int");
 
-                    b.Property<int>("Ranking")
+                    b.Property<string>("TeamName")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("TotalScore")
                         .HasColumnType("int");
 
-                    b.Property<string>("StudentID")
+                    b.Property<string>("UserId")
                         .HasColumnType("varchar(255)");
 
-                    b.HasKey("LeaderboardID");
+                    b.HasKey("Id");
 
-                    b.HasIndex("ProblemID");
+                    b.HasIndex("ContestId");
 
-                    b.HasIndex("StudentID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Leaderboards");
+                });
+
+            modelBuilder.Entity("API.Models.Participant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ContestId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("JoinedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TeamName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContestId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Participants");
                 });
 
             modelBuilder.Entity("API.Models.PreRegisteredStudent", b =>
@@ -183,25 +254,6 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PreRegisteredStudents");
-                });
-
-            modelBuilder.Entity("API.Models.PreRegisteredTeacher", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("TeacherName")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("UniversityId")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PreRegisteredTeachers");
                 });
 
             modelBuilder.Entity("API.Models.Problem", b =>
@@ -230,9 +282,6 @@ namespace API.Migrations
                     b.Property<string>("Domain")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("FunctionSignature")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("InputFormat")
                         .HasColumnType("longtext");
 
@@ -240,6 +289,12 @@ namespace API.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Note")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SampleInput")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SampleOutput")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Title")
@@ -250,25 +305,7 @@ namespace API.Migrations
                     b.ToTable("Problems");
                 });
 
-            modelBuilder.Entity("API.Models.Room_Problem", b =>
-                {
-                    b.Property<int>("RoomID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProblemID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("AssignedTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("RoomID", "ProblemID");
-
-                    b.HasIndex("ProblemID");
-
-                    b.ToTable("RoomProblems");
-                });
-
-            modelBuilder.Entity("API.Models.Submission", b =>
+            modelBuilder.Entity("API.Models.SubmissionEntity", b =>
                 {
                     b.Property<int>("SubmissionID")
                         .ValueGeneratedOnAdd()
@@ -278,6 +315,9 @@ namespace API.Migrations
 
                     b.Property<string>("Code")
                         .HasColumnType("longtext");
+
+                    b.Property<int>("ContestId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("ExecutionTime")
                         .HasColumnType("decimal(65,30)");
@@ -291,8 +331,8 @@ namespace API.Migrations
                     b.Property<decimal>("MemoryUsed")
                         .HasColumnType("decimal(65,30)");
 
-                    b.Property<int>("Points")
-                        .HasColumnType("int");
+                    b.Property<bool>("Passed")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("ProblemID")
                         .HasColumnType("int");
@@ -300,17 +340,28 @@ namespace API.Migrations
                     b.Property<string>("Result")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("StudentID")
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("SubmissionDate")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<DateTime>("SubmissionTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
                     b.HasKey("SubmissionID");
+
+                    b.HasIndex("ContestId");
 
                     b.HasIndex("ProblemID");
 
-                    b.HasIndex("StudentID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Submissions");
                 });
@@ -328,9 +379,6 @@ namespace API.Migrations
 
                     b.Property<string>("Input")
                         .HasColumnType("longtext");
-
-                    b.Property<bool>("IsPublic")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("ProblemID")
                         .HasColumnType("int");
@@ -474,66 +522,92 @@ namespace API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("API.Models.CompetitiveRoom", b =>
+            modelBuilder.Entity("API.Models.Contest", b =>
                 {
                     b.HasOne("API.Models.ApplicationUser", "Host")
-                        .WithMany("HostedRooms")
-                        .HasForeignKey("HostID");
+                        .WithMany("HostedContests")
+                        .HasForeignKey("HostId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Host");
                 });
 
+            modelBuilder.Entity("API.Models.ContestProblem", b =>
+                {
+                    b.HasOne("API.Models.Contest", "Contest")
+                        .WithMany("ContestProblems")
+                        .HasForeignKey("ContestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Models.Problem", "Problem")
+                        .WithMany("ContestProblems")
+                        .HasForeignKey("ProblemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Contest");
+
+                    b.Navigation("Problem");
+                });
+
             modelBuilder.Entity("API.Models.Leaderboard", b =>
                 {
-                    b.HasOne("API.Models.Problem", "Problem")
+                    b.HasOne("API.Models.Contest", "Contest")
                         .WithMany()
-                        .HasForeignKey("ProblemID")
+                        .HasForeignKey("ContestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Models.ApplicationUser", "Student")
+                    b.HasOne("API.Models.ApplicationUser", "User")
                         .WithMany("Leaderboards")
-                        .HasForeignKey("StudentID");
+                        .HasForeignKey("UserId");
 
-                    b.Navigation("Problem");
+                    b.Navigation("Contest");
 
-                    b.Navigation("Student");
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("API.Models.Room_Problem", b =>
+            modelBuilder.Entity("API.Models.Participant", b =>
                 {
-                    b.HasOne("API.Models.Problem", "Problem")
-                        .WithMany("RoomProblems")
-                        .HasForeignKey("ProblemID")
+                    b.HasOne("API.Models.Contest", "Contest")
+                        .WithMany("Participants")
+                        .HasForeignKey("ContestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Models.CompetitiveRoom", "Room")
-                        .WithMany("RoomProblems")
-                        .HasForeignKey("RoomID")
+                    b.HasOne("API.Models.ApplicationUser", "User")
+                        .WithMany("Participants")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Contest");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("API.Models.SubmissionEntity", b =>
+                {
+                    b.HasOne("API.Models.Contest", "Contest")
+                        .WithMany("Submissions")
+                        .HasForeignKey("ContestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Problem");
-
-                    b.Navigation("Room");
-                });
-
-            modelBuilder.Entity("API.Models.Submission", b =>
-                {
                     b.HasOne("API.Models.Problem", "Problem")
                         .WithMany("Submissions")
                         .HasForeignKey("ProblemID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Models.ApplicationUser", "Student")
+                    b.HasOne("API.Models.ApplicationUser", "User")
                         .WithMany("Submissions")
-                        .HasForeignKey("StudentID");
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Contest");
 
                     b.Navigation("Problem");
 
-                    b.Navigation("Student");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("API.Models.TestCase", b =>
@@ -600,21 +674,27 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("HostedRooms");
+                    b.Navigation("HostedContests");
 
                     b.Navigation("Leaderboards");
+
+                    b.Navigation("Participants");
 
                     b.Navigation("Submissions");
                 });
 
-            modelBuilder.Entity("API.Models.CompetitiveRoom", b =>
+            modelBuilder.Entity("API.Models.Contest", b =>
                 {
-                    b.Navigation("RoomProblems");
+                    b.Navigation("ContestProblems");
+
+                    b.Navigation("Participants");
+
+                    b.Navigation("Submissions");
                 });
 
             modelBuilder.Entity("API.Models.Problem", b =>
                 {
-                    b.Navigation("RoomProblems");
+                    b.Navigation("ContestProblems");
 
                     b.Navigation("Submissions");
 

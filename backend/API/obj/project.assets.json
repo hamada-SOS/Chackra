@@ -6176,11 +6176,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/hamada/Documents/FOCSA/Chackra/backend/API/API.csproj",
+      "projectUniqueName": "/home/hamada/Documents/proj/Chackra/backend/API/API.csproj",
       "projectName": "API",
-      "projectPath": "/home/hamada/Documents/FOCSA/Chackra/backend/API/API.csproj",
+      "projectPath": "/home/hamada/Documents/proj/Chackra/backend/API/API.csproj",
       "packagesPath": "/home/hamada/.nuget/packages/",
-      "outputPath": "/home/hamada/Documents/FOCSA/Chackra/backend/API/obj/",
+      "outputPath": "/home/hamada/Documents/proj/Chackra/backend/API/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/hamada/.nuget/NuGet/NuGet.Config"
@@ -6287,7 +6287,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.110/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.112/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
